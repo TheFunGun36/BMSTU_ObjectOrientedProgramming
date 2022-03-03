@@ -1,24 +1,25 @@
 #include "ProcessEntry.h"
 #include "FileParse.h"
+#include "FileSave.h"
 
 namespace wireframe {
-    ExitCode processEntry(Command cmd, UserData ud) {
+    ExitCode processEntry(UserData &ud, Command cmd) {
         ExitCode exitCode = ExitCode::ok;
         switch (cmd) {
             case Command::fileLoad:
                 exitCode = objParse(ud.model, ud.fileLineFailed, ud.filename);
                 break;
             case Command::fileSave:
-                // TODO:
+                exitCode = objSave(ud.model, ud.filename);
                 break;
             case Command::modelMove:
-                // TODO:
+                modelMove(ud.model, ud.moveVector);
                 break;
             case Command::modelRotate:
-                // TODO:
+                modelRotate(ud.model, ud.rotatePoint, ud.rotateAngles);
                 break;
             case Command::modelScale:
-                // TODO:
+                modelScale(ud.model, ud.scalePoint, ud.scaleCoeficients);
                 break;
             default:
                 exitCode = ExitCode::cmdInvalid;

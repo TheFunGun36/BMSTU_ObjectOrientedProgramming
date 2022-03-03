@@ -8,6 +8,8 @@ namespace wireframe {
     const static QVector<QString> skippedCommands = {
         "vt",
         "vp",
+        "vn",
+        "s",
         "g",
         "o",
         "mtllib",
@@ -15,15 +17,14 @@ namespace wireframe {
         "#"
     };
 
-    ExitCode objParse(Model3D &model, int &lineFailed, const QString &filename);
     ExitCode objRemoveUnnecessary(QStringList &fileContent, int &lineFailed, QFile &file);
     bool objIsValidCommand(bool &skip, const QString &line);
 
     ExitCode objReadVerticies(QVector<Vertex3D> &vertex, int &lineFailed, const QStringList &fileContent);
     ExitCode objReadVertex(Vertex3D &vertex, const QString &string);
 
-    ExitCode objReadFaces(QList<Surface3Dindex> &faces, int &lineFailed, const QStringList &fileContent);
-    ExitCode objReadFace(Surface3Dindex &face, const QString &string);
+    ExitCode objReadFaces(Model3D &model, int &lineFailed, const QStringList &fileContent);
+    ExitCode objReadFace(Surface3Dindex &face, const QString &string, int verticiesAmount);
 
     ExitCode objParse(Model3D &model, int &lineFailed, const QString &filename) {
         ExitCode exitCode = ExitCode::ok;
@@ -37,17 +38,17 @@ namespace wireframe {
         }
 
         QStringList fileContent;
-        if (exitCode == ExitCode::ok) {
+        if (exitCode == ExitCode::ok)
             exitCode = objRemoveUnnecessary(fileContent, lineFailed, file);
-        }
 
-        if (exitCode == ExitCode::ok) {
+        if (exitCode == ExitCode::ok)
             exitCode = objReadVerticies(model.vertex, lineFailed, fileContent);
-        }
 
-        if (exitCode == ExitCode::ok) {
-            exitCode = objReadFaces(model.face, lineFailed, fileContent);
-        }
+        if (exitCode == ExitCode::ok)
+            exitCode = objReadFaces(model, lineFailed, fileContent);
+
+        if (file.isOpen())
+            file.close();
 
         return exitCode;
     }
@@ -153,9 +154,9 @@ namespace wireframe {
         return success ? ExitCode::ok : ExitCode::fileInvalidVertex;
     }
 
-    ExitCode objReadFaces(QList<Surface3Dindex> &faces, int &lineFailed, const QStringList &fileContent) {
+    ExitCode objReadFaces(Model3D &model, int &lineFailed, const QStringList &fileContent) {
         ExitCode exitCode = ExitCode::ok;
-        faces.clear();
+        model.face.clear();
         lineFailed = -1;
 
         int currentLine = 1;
@@ -164,15 +165,15 @@ namespace wireframe {
         while (exitCode == ExitCode::ok && i != fileContent.constEnd()) {
             if (i->startsWith("f")) {
                 Surface3Dindex s;
-                exitCode = objReadFace(s, *i);
+                exitCode = objReadFace(s, *i, model.vertex.size());
 
                 if (exitCode == ExitCode::ok) {
-                    faces.push_back(s);
+                    model.face.push_back(s);
                 }
                 else {
                     lineFailed = currentLine;
                     exitCode = ExitCode::fileInvalidFace;
-                    faces.clear();
+                    model.face.clear();
                 }
             }
             i++;
@@ -182,7 +183,7 @@ namespace wireframe {
         return exitCode;
     }
 
-    ExitCode objReadFace(Surface3Dindex &face, const QString &string) {
+    ExitCode objReadFace(Surface3Dindex &face, const QString &string, int verticiesAmount) {
         QString str(string);
         str.remove(0, 1);
         QStringList vertexIndexes = str.split(QRegularExpression("[ \t]"), Qt::SkipEmptyParts);
@@ -198,10 +199,13 @@ namespace wireframe {
             QStringList slashes = i->split("/", Qt::SkipEmptyParts);
             int val;
 
-            if (!slashes.size())
+            if (!slashes.size()) {
                 success = false;
-            else
+            }
+            else {
                 val = slashes[0].toInt(&success) - 1;
+                success = val >= 0 && val < verticiesAmount;
+            }
 
             if (success)
                 face.vertexIdx.push_back(val);

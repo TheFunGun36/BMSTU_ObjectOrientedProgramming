@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     canvas = new Canvas(this);
     canvas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    canvas->setMinimumSize(750, 600);
+    canvas->setMinimumSize(600, 400);
 
     auto layout = new QHBoxLayout(this);
     auto leftPanel = new QVBoxLayout(this);
@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent)
     createScaleSection(leftPanel);
     leftPanel->addSpacerItem(new QSpacerItem(0, 20));
     createRotateSection(leftPanel);
-    leftPanel->addSpacerItem(new QSpacerItem(0, 20));
 
     leftPanel->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -51,12 +50,9 @@ void MainWindow::createMoveSection(QVBoxLayout *layout) {
     spinMoveDx = new QDoubleSpinBox(this);
     spinMoveDy = new QDoubleSpinBox(this);
     spinMoveDz = new QDoubleSpinBox(this);
-    //spinMoveDx->setFixedWidth(70);
-    //spinMoveDy->setFixedWidth(70);
-    //spinMoveDz->setFixedWidth(70);
-    //spinMoveDx->setPlaceholderText("x");
-    //spinMoveDy->setPlaceholderText("y");
-    //spinMoveDz->setPlaceholderText("z");
+    spinMoveDx->setRange(-500, 500);
+    spinMoveDy->setRange(-500, 500);
+    spinMoveDz->setRange(-500, 500);
 
     layout->addWidget(new QLabel("Вектор смещения:", this));
     auto layoutData = new QHBoxLayout(this);
@@ -67,6 +63,7 @@ void MainWindow::createMoveSection(QVBoxLayout *layout) {
     layout->addLayout(layoutData);
 
     QPushButton *apply = new QPushButton("Перенести", this);
+    connect(apply, &QPushButton::clicked, this, &MainWindow::moveModel);
     apply->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     layout->addWidget(apply);
 };
@@ -79,21 +76,15 @@ void MainWindow::createScaleSection(QVBoxLayout *layout) {
     spinScaleKx = new QDoubleSpinBox(this);
     spinScaleKy = new QDoubleSpinBox(this);
     spinScaleKz = new QDoubleSpinBox(this);
+    spinScaleKx->setRange(-50, 50);
+    spinScaleKy->setRange(-50, 50);
+    spinScaleKz->setRange(-50, 50);
     spinScaleCenterX = new QDoubleSpinBox(this);
     spinScaleCenterY = new QDoubleSpinBox(this);
     spinScaleCenterZ = new QDoubleSpinBox(this);
-    //spinScaleKx->setFixedWidth(70);
-    //spinScaleKy->setFixedWidth(70);
-    //spinScaleKz->setFixedWidth(70);
-    //spinScaleCenterX->setFixedWidth(70);
-    //spinScaleCenterY->setFixedWidth(70);
-    //spinScaleCenterZ->setFixedWidth(70);
-    //spinScaleKx->setPlaceholderText("x");
-    //spinScaleKy->setPlaceholderText("y");
-    //spinScaleKz->setPlaceholderText("z");
-    //spinScaleCenterX->setPlaceholderText("x");
-    //spinScaleCenterY->setPlaceholderText("y");
-    //spinScaleCenterZ->setPlaceholderText("z");
+    spinScaleCenterX->setRange(-500, 500);
+    spinScaleCenterY->setRange(-500, 500);
+    spinScaleCenterZ->setRange(-500, 500);
 
     layout->addWidget(new QLabel("Коэффициенты масштабирования:", this));
     auto layoutData = new QHBoxLayout(this);
@@ -111,6 +102,7 @@ void MainWindow::createScaleSection(QVBoxLayout *layout) {
     layout->addLayout(layoutCenter);
 
     QPushButton *apply = new QPushButton("Масштабировать", this);
+    connect(apply, &QPushButton::clicked, this, &MainWindow::scaleModel);
     apply->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     layout->addWidget(apply);
 };
@@ -123,21 +115,22 @@ void MainWindow::createRotateSection(QVBoxLayout *layout) {
     spinRotateAngleX = new QDoubleSpinBox(this);
     spinRotateAngleY = new QDoubleSpinBox(this);
     spinRotateAngleZ = new QDoubleSpinBox(this);
+    spinRotateAngleX->setRange(-360, 360);
+    spinRotateAngleY->setRange(-360, 360);
+    spinRotateAngleZ->setRange(-360, 360);
     spinRotateCenterX = new QDoubleSpinBox(this);
     spinRotateCenterY = new QDoubleSpinBox(this);
     spinRotateCenterZ = new QDoubleSpinBox(this);
-    //spinRotateCenterX->setFixedWidth(70);
-    //spinRotateCenterY->setFixedWidth(70);
-    //spinRotateCenterZ->setFixedWidth(70);
-    //lineRotateAngle->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    //spinRotateCenterX->setPlaceholderText("x");
-    //spinRotateCenterY->setPlaceholderText("y");
-    //spinRotateCenterZ->setPlaceholderText("z");
+    spinRotateCenterX->setRange(-500, 500);
+    spinRotateCenterY->setRange(-500, 500);
+    spinRotateCenterZ->setRange(-500, 500);
 
     layout->addWidget(new QLabel("Углы вращения относительно осей:", this));
-    layout->addWidget(spinRotateAngleX);
-    layout->addWidget(spinRotateAngleY);
-    layout->addWidget(spinRotateAngleZ);
+    auto layoutAngles = new QHBoxLayout(this);
+    layoutAngles->addWidget(spinRotateAngleX);
+    layoutAngles->addWidget(spinRotateAngleY);
+    layoutAngles->addWidget(spinRotateAngleZ);
+    layout->addLayout(layoutAngles);
 
     layout->addWidget(new QLabel("Центр поворота:", this));
     auto layoutCenter = new QHBoxLayout(this);
@@ -147,50 +140,111 @@ void MainWindow::createRotateSection(QVBoxLayout *layout) {
     layout->addLayout(layoutCenter);
 
     QPushButton *apply = new QPushButton("Повернуть", this);
+    connect(apply, &QPushButton::clicked, this, &MainWindow::rotateModel);
     apply->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     layout->addWidget(apply);
 }
 
 void MainWindow::createMenu() {
-    auto fileMenu = menuBar()->addMenu("File");
+    QMenu *fileMenu = menuBar()->addMenu("File");
 
-    QAction *fileOpen = new QAction("Открыть", this);
-    fileOpen->setShortcut(QKeySequence::Open);
-    fileOpen->setStatusTip("Открыть файл с 3D моделью");
-    connect(fileOpen, &QAction::triggered, this, &MainWindow::fileOpen);
+    actionFileOpen = new QAction("Открыть", this);
+    actionFileOpen->setShortcut(QKeySequence::Open);
+    actionFileOpen->setStatusTip("Открыть файл с 3D моделью");
+    connect(actionFileOpen, &QAction::triggered, this, &MainWindow::fileOpen);
 
-    QAction *fileSave = new QAction("Сохранить", this);
-    fileSave->setShortcut(QKeySequence::Save);
-    fileSave->setStatusTip("Сохранить изменения");
-    connect(fileSave, &QAction::triggered, this, &MainWindow::fileSave);
+    actionFileSave = new QAction("Сохранить", this);
+    actionFileSave->setShortcut(QKeySequence::Save);
+    actionFileSave->setStatusTip("Сохранить изменения");
+    actionFileSave->setDisabled(true);
+    connect(actionFileSave, &QAction::triggered, this, &MainWindow::fileSave);
 
-    QAction *fileSaveAs = new QAction("Сохранить как...", this);
-    fileSaveAs->setShortcut(QKeySequence::SaveAs);
-    fileSaveAs->setStatusTip("Сохранить файл с 3D моделью");
-    connect(fileSaveAs, &QAction::triggered, this, &MainWindow::fileSaveAs);
+    actionFileSaveAs = new QAction("Сохранить как...", this);
+    actionFileSaveAs->setShortcut(QKeySequence::SaveAs);
+    actionFileSaveAs->setStatusTip("Сохранить файл с 3D моделью");
+    actionFileSaveAs->setDisabled(true);
+    connect(actionFileSaveAs, &QAction::triggered, this, &MainWindow::fileSaveAs);
 
-    fileMenu->addAction(fileOpen);
-    fileMenu->addAction(fileSave);
-    fileMenu->addAction(fileSaveAs);
+    fileMenu->addAction(actionFileOpen);
+    fileMenu->addAction(actionFileSave);
+    fileMenu->addAction(actionFileSaveAs);
 }
 
 void MainWindow::fileOpen() {
+    using namespace wireframe;
     QFileDialog fileDialog(this);
-    QString filename = fileDialog.getOpenFileName();
-    if (filename != "<NULL>") {
-        Model3D model;
-        wireframe::ExitCode exitCode = wireframe::processEntry(wireframe::Command::fileLoad, *userData);
+    QString filename = fileDialog.getOpenFileName(this);
+    if (!filename.isEmpty()) {
+        userData->filename = filename;
+        ExitCode exitCode = processEntry(*userData, Command::fileLoad);
 
-        if (exitCode != wireframe::ExitCode::ok) {
-            QMessageBox::critical(this, "Ошибка", wireframe::getErrorMessage(exitCode, userData->fileLineFailed));
+        if (exitCode != ExitCode::ok) {
+            QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode, userData->fileLineFailed));
+        }
+        else {
+            canvas->setModel(userData->model);
+            currentFilename = filename;
+            actionFileSave->setEnabled(true);
+            actionFileSaveAs->setEnabled(true);
         }
     }
 }
 
 void MainWindow::fileSave() {
-    qDebug() << "save";
+    using namespace wireframe;
+    ExitCode exitCode = processEntry(*userData, Command::fileSave);
+
+    if (exitCode != ExitCode::ok) {
+        QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
+    }
 }
 
 void MainWindow::fileSaveAs() {
-    qDebug() << "save as";
+    using namespace wireframe;
+    QFileDialog fileDialog(this);
+    QString filename = fileDialog.getSaveFileName(this);
+    if (!filename.isEmpty()) {
+        userData->filename = filename;
+        ExitCode exitCode = processEntry(*userData, Command::fileSave);
+
+        if (exitCode != ExitCode::ok) {
+            QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
+        }
+        else {
+            currentFilename = filename;
+        }
+    }
+}
+
+void MainWindow::moveModel() {
+    using namespace wireframe;
+    userData->moveVector.setX(spinMoveDx->value());
+    userData->moveVector.setY(spinMoveDy->value());
+    userData->moveVector.setZ(spinMoveDz->value());
+    ExitCode exitCode = processEntry(*userData, Command::modelMove);
+    canvas->setModel(userData->model);
+}
+
+void MainWindow::scaleModel() {
+    using namespace wireframe;
+    userData->scaleCoeficients.setX(spinScaleKx->value());
+    userData->scaleCoeficients.setY(spinScaleKy->value());
+    userData->scaleCoeficients.setZ(spinScaleKz->value());
+    userData->scalePoint.setX(spinScaleCenterX->value());
+    userData->scalePoint.setY(spinScaleCenterY->value());
+    userData->scalePoint.setZ(spinScaleCenterZ->value());
+    ExitCode exitCode = processEntry(*userData, Command::modelScale);
+    canvas->setModel(userData->model);
+}
+
+void MainWindow::rotateModel() {
+    using namespace wireframe;
+    userData->rotatePoint.setX(spinRotateCenterX->value());
+    userData->rotatePoint.setY(spinRotateCenterY->value());
+    userData->rotatePoint.setZ(spinRotateCenterZ->value());
+    userData->rotateAngles.setX(qDegreesToRadians(spinRotateAngleX->value()));
+    userData->rotateAngles.setY(qDegreesToRadians(spinRotateAngleY->value()));
+    userData->rotateAngles.setZ(qDegreesToRadians(spinRotateAngleZ->value()));
+    ExitCode exitCode = processEntry(*userData, Command::modelRotate);
+    canvas->setModel(userData->model);
 }

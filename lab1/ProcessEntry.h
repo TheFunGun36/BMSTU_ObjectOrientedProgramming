@@ -18,7 +18,8 @@ namespace wireframe {
         fileNotOpened,
         fileInvalidCommand,
         fileInvalidVertex,
-        fileInvalidFace
+        fileInvalidFace,
+        fileNotCreated
     };
 
     struct UserData {
@@ -26,12 +27,12 @@ namespace wireframe {
         Model3D model;
         QVector3D moveVector;
         QVector3D scalePoint;
-        QVector3D scaleCoefficients;
+        QVector3D scaleCoeficients;
         QVector3D rotatePoint;
         QVector3D rotateAngles;
         int fileLineFailed;
     };
 
-    ExitCode processEntry(Command cmd, UserData ud);
+    ExitCode processEntry(UserData &ud, Command cmd);
     QString getErrorMessage(ExitCode error, int lineFailed);
 }

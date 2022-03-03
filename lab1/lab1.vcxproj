@@ -87,6 +87,8 @@
   <ItemGroup>
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="FileParse.cpp" />
+    <ClCompile Include="FileSave.cpp" />
+    <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="ProcessEntry.cpp" />
     <QtRcc Include="MainWindow.qrc" />
     <QtMoc Include="MainWindow.h" />
@@ -94,6 +96,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FileSave.h" />
     <ClInclude Include="ProcessEntry.h" />
     <QtMoc Include="Canvas.h" />
     <ClInclude Include="Model3D.h" />

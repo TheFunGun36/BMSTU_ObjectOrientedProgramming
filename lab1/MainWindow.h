@@ -14,9 +14,9 @@ public:
     ~MainWindow();
 
 private:
-    Canvas *canvas;
-    Model3D currentModel;
     wireframe::UserData *userData;
+    QString currentFilename;
+    Canvas *canvas;
 
     QDoubleSpinBox *spinMoveDx;
     QDoubleSpinBox *spinMoveDy;
@@ -36,6 +36,10 @@ private:
     QDoubleSpinBox *spinRotateCenterY;
     QDoubleSpinBox *spinRotateCenterZ;
 
+    QAction *actionFileOpen;
+    QAction *actionFileSave;
+    QAction *actionFileSaveAs;
+
     void createMoveSection(QVBoxLayout *layout);
     void createScaleSection(QVBoxLayout *layout);
     void createRotateSection(QVBoxLayout *layout);
@@ -45,4 +49,7 @@ private slots:
     void fileOpen();
     void fileSave();
     void fileSaveAs();
+    void moveModel();
+    void scaleModel();
+    void rotateModel();
 };
