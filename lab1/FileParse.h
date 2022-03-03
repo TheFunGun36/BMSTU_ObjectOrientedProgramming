@@ -1,22 +1,9 @@
 #pragma once
 #include <qstring.h>
 #include "Model3D.h"
+#include "ProcessEntry.h"
 
-namespace file {
-    struct ErrorParse {
-        enum Type {
-            noError,
-            fileNotOpened,
-            invalidCommand,
-            invalidVertex,
-            invalidFace
-        };
-
-        Type type;
-        int line;
-        QString filename;
-    };
-
-    bool objParse(Model3D &model, ErrorParse &error, const QString &filename);
-    QString getErrorMessage(const ErrorParse &error);
+namespace wireframe {
+    ExitCode objParse(Model3D &model, int &lineFailed, const QString &filename);
+    QString getErrorMessage(ExitCode error, int lineFailed = -1);
 }

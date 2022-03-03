@@ -85,14 +85,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="FileParse.cpp" />
+    <ClCompile Include="ProcessEntry.cpp" />
     <QtRcc Include="MainWindow.qrc" />
-    <QtUic Include="MainWindow.ui" />
     <QtMoc Include="MainWindow.h" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ProcessEntry.h" />
+    <QtMoc Include="Canvas.h" />
     <ClInclude Include="Model3D.h" />
     <ClInclude Include="FileParse.h" />
   </ItemGroup>

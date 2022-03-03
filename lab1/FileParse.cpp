@@ -4,8 +4,8 @@
 #include <qtextstream.h>
 #include <qregularexpression.h>
 
-namespace file {
-    const QVector<QString> skippedCommands = {
+namespace wireframe {
+    const static QVector<QString> skippedCommands = {
         "vt",
         "vp",
         "g",
@@ -15,70 +15,51 @@ namespace file {
         "#"
     };
 
-    QString getErrorMessage(const ErrorParse &error);
-    bool objParse(Model3D &model, ErrorParse &error, const QString &filename);
-    bool objRemoveUnnecessary(QStringList &fileContent, ErrorParse &error, QFile &file);
+    ExitCode objParse(Model3D &model, int &lineFailed, const QString &filename);
+    ExitCode objRemoveUnnecessary(QStringList &fileContent, int &lineFailed, QFile &file);
     bool objIsValidCommand(bool &skip, const QString &line);
 
-    bool objReadVerticies(QVector<Vertex3D> &vertex, ErrorParse &error, const QStringList &fileContent);
-    bool objReadVertex(Vertex3D &vertex, ErrorParse &error, const QString &string);
+    ExitCode objReadVerticies(QVector<Vertex3D> &vertex, int &lineFailed, const QStringList &fileContent);
+    ExitCode objReadVertex(Vertex3D &vertex, const QString &string);
 
-    bool objReadFaces(QList<Surface3Dindex> &faces, ErrorParse &error, const QStringList &fileContent);
-    bool objReadFace(Surface3Dindex &face, ErrorParse &error, const QString &string);
+    ExitCode objReadFaces(QList<Surface3Dindex> &faces, int &lineFailed, const QStringList &fileContent);
+    ExitCode objReadFace(Surface3Dindex &face, const QString &string);
 
-    QString getErrorMessage(const ErrorParse &error) {
-        QString result = "Данные о 3D модели были успешно считаны из файла " + error.filename;
+    ExitCode objParse(Model3D &model, int &lineFailed, const QString &filename) {
+        ExitCode exitCode = ExitCode::ok;
+        lineFailed = 0;
 
-        switch (error.type) {
-            case ErrorParse::fileNotOpened:
-                result = "Не удалось открыть файл " + error.filename;
-                break;
-            case ErrorParse::invalidCommand:
-                result = "В файле " + error.filename +
-                    " в строке " + QString::number(error.line) +
-                    " используется неизвестная команда";
-                break;
-        }
-
-        return result;
-    }
-
-    bool objParse(Model3D &model, ErrorParse &error, const QString &filename) {
-        bool succeed = true;
-        error.filename = filename;
-        error.type = ErrorParse::noError;
-        error.line = 0;
-        
         // Открыть файл
         QFile file(filename);
 
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            error.type = ErrorParse::fileNotOpened;
-            succeed = false;
+            exitCode = ExitCode::fileNotOpened;
         }
-        
+
         QStringList fileContent;
-        if (succeed) {
-            succeed = objRemoveUnnecessary(fileContent, error, file);
+        if (exitCode == ExitCode::ok) {
+            exitCode = objRemoveUnnecessary(fileContent, lineFailed, file);
         }
 
-        if (succeed) {
-            succeed = objReadVerticies(model.vertex, error, fileContent);
+        if (exitCode == ExitCode::ok) {
+            exitCode = objReadVerticies(model.vertex, lineFailed, fileContent);
         }
 
-        if (succeed) {
-            succeed = objReadFaces(model.face, error, fileContent);
+        if (exitCode == ExitCode::ok) {
+            exitCode = objReadFaces(model.face, lineFailed, fileContent);
         }
 
-        return succeed;
+        return exitCode;
     }
 
-    bool objRemoveUnnecessary(QStringList &fileContent, ErrorParse &error, QFile &file) {
-        bool succeed = true;
+    ExitCode objRemoveUnnecessary(QStringList &fileContent, int &lineFailed, QFile &file) {
+        ExitCode exitCode = ExitCode::ok;
         QTextStream inputStream(&file);
+        lineFailed = -1;
+        fileContent.clear();
         int currentLine = 1;
 
-        while (succeed && !inputStream.atEnd()) {
+        while (exitCode == ExitCode::ok && !inputStream.atEnd()) {
             QString line = inputStream.readLine().trimmed();
             bool shouldSkip;
 
@@ -89,15 +70,14 @@ namespace file {
                 }
             }
             else {
-                error.line = currentLine;
-                error.type = ErrorParse::invalidCommand;
-                succeed = false;
+                lineFailed = currentLine;
+                exitCode = ExitCode::fileInvalidCommand;
             }
 
             currentLine++;
         }
 
-        return succeed;
+        return exitCode;
     }
 
     bool objIsValidCommand(bool &skip, const QString &line) {
@@ -108,7 +88,9 @@ namespace file {
         }
         else {
             succeed = line.startsWith("v ") || line.startsWith("f ");
-            
+            if (!succeed)
+                succeed = line.startsWith("v\t") || line.startsWith("f\t");
+
             if (succeed) {
                 skip = false;
             }
@@ -125,25 +107,26 @@ namespace file {
         return succeed;
     }
 
-    bool objReadVerticies(QVector<Vertex3D> &vertex, ErrorParse &error, const QStringList &fileContent) {
-        bool succeed = true;
+    ExitCode objReadVerticies(QVector<Vertex3D> &vertex, int &lineFailed, const QStringList &fileContent) {
+        ExitCode exitCode = ExitCode::ok;
         vertex.clear();
         vertex.reserve(fileContent.size() / 3);
+        lineFailed = -1;
 
         int currentLine = 0;
 
         auto i = fileContent.constBegin();
-        while (succeed && i != fileContent.constEnd()) {
+        while (exitCode == ExitCode::ok && i != fileContent.constEnd()) {
             if (i->startsWith("v")) {
                 Vertex3D v;
-                succeed = objReadVertex(v, error, *i);
+                exitCode = objReadVertex(v, *i);
 
-                if (succeed) {
+                if (exitCode == ExitCode::ok) {
                     vertex.push_back(v);
                 }
                 else {
-                    error.line = currentLine;
-                    error.type = ErrorParse::invalidVertex;
+                    lineFailed = currentLine;
+                    exitCode = ExitCode::fileInvalidVertex;
                     vertex.clear();
                 }
             }
@@ -151,14 +134,14 @@ namespace file {
             currentLine++;
         }
 
-        return succeed;
+        return exitCode;
     }
 
-    bool objReadVertex(Vertex3D &vertex, ErrorParse &error, const QString &string) {
+    ExitCode objReadVertex(Vertex3D &vertex, const QString &string) {
         QString str(string);
         str.remove(0, 1);
         QStringList numbers = str.split(QRegularExpression("[ \t]"), Qt::SkipEmptyParts);
-        
+
         bool success = numbers.size() >= 3;
         if (success)
             vertex.x = numbers[0].toDouble(&success);
@@ -167,27 +150,28 @@ namespace file {
         if (success)
             vertex.z = numbers[2].toDouble(&success);
 
-        return success;
+        return success ? ExitCode::ok : ExitCode::fileInvalidVertex;
     }
 
-    bool objReadFaces(QList<Surface3Dindex> &faces, ErrorParse &error, const QStringList &fileContent) {
-        bool succeed = true;
+    ExitCode objReadFaces(QList<Surface3Dindex> &faces, int &lineFailed, const QStringList &fileContent) {
+        ExitCode exitCode = ExitCode::ok;
         faces.clear();
+        lineFailed = -1;
 
         int currentLine = 1;
 
         auto i = fileContent.constBegin();
-        while (succeed && i != fileContent.constEnd()) {
+        while (exitCode == ExitCode::ok && i != fileContent.constEnd()) {
             if (i->startsWith("f")) {
                 Surface3Dindex s;
-                succeed = objReadFace(s, error, *i);
+                exitCode = objReadFace(s, *i);
 
-                if (succeed) {
+                if (exitCode == ExitCode::ok) {
                     faces.push_back(s);
                 }
                 else {
-                    error.line = currentLine;
-                    error.type = ErrorParse::invalidFace;
+                    lineFailed = currentLine;
+                    exitCode = ExitCode::fileInvalidFace;
                     faces.clear();
                 }
             }
@@ -195,10 +179,10 @@ namespace file {
             currentLine++;
         }
 
-        return succeed;
+        return exitCode;
     }
 
-    bool objReadFace(Surface3Dindex &face, ErrorParse &error, const QString &string) {
+    ExitCode objReadFace(Surface3Dindex &face, const QString &string) {
         QString str(string);
         str.remove(0, 1);
         QStringList vertexIndexes = str.split(QRegularExpression("[ \t]"), Qt::SkipEmptyParts);
@@ -208,7 +192,7 @@ namespace file {
         bool success = vertexIndexes.size() >= 3;
         if (success)
             face.vertexIdx.reserve(vertexIndexes.size());
-        
+
         auto i = vertexIndexes.begin();
         while (success && i != vertexIndexes.end()) {
             QStringList slashes = i->split("/", Qt::SkipEmptyParts);
@@ -227,6 +211,6 @@ namespace file {
             i++;
         }
 
-        return success;
+        return success ? ExitCode::ok : ExitCode::fileInvalidFace;
     }
 }
