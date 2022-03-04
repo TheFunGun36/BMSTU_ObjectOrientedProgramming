@@ -1,5 +1,6 @@
 #include "Canvas.h"
 #include <qpainter.h>
+#include <qgraphicsitem.h>
 
 constexpr int maxDist = 4000;
 constexpr int gridStep = 50;
@@ -39,18 +40,29 @@ void Canvas::setModel(const wireframe::Model3D &model) {
     scene.setSceneRect(newScene.marginsAdded({ 75, 75, 75, 75 }));
 
     scene.addLine(0, 0, scene.sceneRect().right() - 25, 0, QPen(colorX, 2));
-    scene.addLine(0, 0, 0, scene.sceneRect().top() + 25, QPen(colorY, 2));
-    scene.addEllipse(-5, -5, 10, 10, colorZ, colorZ);
     QPolygonF arrowX({
         { scene.sceneRect().right() - 15, 0 },
         { scene.sceneRect().right() - 25, 5 },
         { scene.sceneRect().right() - 25, -5 }
         });
+    scene.addPolygon(arrowX, colorX, colorX);
+    auto text = scene.addText("X");
+    text->setPos(scene.sceneRect().right() - 18, 0);
+    text->setDefaultTextColor(colorX);
+
+    scene.addLine(0, 0, 0, scene.sceneRect().top() + 25, QPen(colorY, 2));
     QPolygonF arrowY({
         { 0, scene.sceneRect().top() + 15 },
         { 5, scene.sceneRect().top() + 25 },
         { -5, scene.sceneRect().top() + 25 }
         });
-    scene.addPolygon(arrowX, colorX, colorX);
     scene.addPolygon(arrowY, colorY, colorY);
+    text = scene.addText("Y");
+    text->setPos(3, scene.sceneRect().top() + 3);
+    text->setDefaultTextColor(colorY);
+
+    scene.addEllipse(-5, -5, 10, 10, colorZ, colorZ);
+    text = scene.addText("Z");
+    text->setPos(-16, -2);
+    text->setDefaultTextColor(colorZ);
 }
