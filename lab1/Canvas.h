@@ -9,7 +9,7 @@ class Canvas : public QGraphicsView {
 
 public:
     Canvas(QWidget *parent = nullptr);
-    void setModel(const wireframe::Model3D &model);
+    bool setModel(const wireframe::Model3D &model, bool perspective);
 
 private:
     QColor colorX;
@@ -18,7 +18,11 @@ private:
     QColor colorLine;
     QColor colorPoly;
 
+    qreal cameraDistance;
+
     QGraphicsScene scene;
     int сellSize;
+
+    bool toPerspective(QPointF &p, const wireframe::Vertex3D &v);
 };
 

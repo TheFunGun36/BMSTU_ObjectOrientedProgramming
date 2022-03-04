@@ -30,7 +30,9 @@ namespace wireframe {
         QVector3D scaleCoeficients;
         QVector3D rotatePoint;
         QVector3D rotateAngles;
+        qreal cameraDistance;
         int fileLineFailed;
+        bool isPerspective;
     };
 
     ExitCode processEntry(UserData &ud, Command cmd);

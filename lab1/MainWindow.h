@@ -16,6 +16,7 @@ public:
 private:
     wireframe::UserData *userData;
     QString currentFilename;
+    bool perspective;
     Canvas *canvas;
 
     QDoubleSpinBox *spinMoveDx;
@@ -39,6 +40,7 @@ private:
     QAction *actionFileOpen;
     QAction *actionFileSave;
     QAction *actionFileSaveAs;
+    QAction *actionModelPerspective;
 
     void createMoveSection(QVBoxLayout *layout);
     void createScaleSection(QVBoxLayout *layout);
@@ -52,4 +54,5 @@ private slots:
     void moveModel();
     void scaleModel();
     void rotateModel();
+    void updateModel();
 };

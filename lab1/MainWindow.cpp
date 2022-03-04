@@ -12,6 +12,8 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
     userData = new wireframe::UserData;
+    userData->isPerspective = false;
+    userData->cameraDistance = 100;
 
     setCentralWidget(new QWidget(this));
 
@@ -146,8 +148,6 @@ void MainWindow::createRotateSection(QVBoxLayout *layout) {
 }
 
 void MainWindow::createMenu() {
-    QMenu *fileMenu = menuBar()->addMenu("File");
-
     actionFileOpen = new QAction("Открыть", this);
     actionFileOpen->setShortcut(QKeySequence::Open);
     actionFileOpen->setStatusTip("Открыть файл с 3D моделью");
@@ -165,9 +165,23 @@ void MainWindow::createMenu() {
     actionFileSaveAs->setDisabled(true);
     connect(actionFileSaveAs, &QAction::triggered, this, &MainWindow::fileSaveAs);
 
+    QMenu *fileMenu = menuBar()->addMenu("Файл");
     fileMenu->addAction(actionFileOpen);
     fileMenu->addAction(actionFileSave);
     fileMenu->addAction(actionFileSaveAs);
+
+    actionModelPerspective = new QAction("Переключить перспективу", this);
+    actionModelPerspective->setShortcut(QKeySequence::Print);
+    actionModelPerspective->setStatusTip("Переключить между перспективным режимом проекции и ортогональным");
+    actionModelPerspective->setDisabled(true);
+    connect(actionModelPerspective, &QAction::triggered, this, [this]() {
+        using namespace wireframe;
+        perspective = !perspective;
+        updateModel();
+        });
+
+    QMenu *modelMenu = menuBar()->addMenu("Модель");
+    modelMenu->addAction(actionModelPerspective);
 }
 
 void MainWindow::fileOpen() {
@@ -182,10 +196,12 @@ void MainWindow::fileOpen() {
             QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode, userData->fileLineFailed));
         }
         else {
-            canvas->setModel(userData->model);
+            perspective = false;
+            updateModel();
             currentFilename = filename;
             actionFileSave->setEnabled(true);
             actionFileSaveAs->setEnabled(true);
+            actionModelPerspective->setEnabled(true);
         }
     }
 }
@@ -222,7 +238,7 @@ void MainWindow::moveModel() {
     userData->moveVector.setY(spinMoveDy->value());
     userData->moveVector.setZ(spinMoveDz->value());
     ExitCode exitCode = processEntry(*userData, Command::modelMove);
-    canvas->setModel(userData->model);
+    updateModel();
 }
 
 void MainWindow::scaleModel() {
@@ -234,7 +250,7 @@ void MainWindow::scaleModel() {
     userData->scalePoint.setY(spinScaleCenterY->value());
     userData->scalePoint.setZ(spinScaleCenterZ->value());
     ExitCode exitCode = processEntry(*userData, Command::modelScale);
-    canvas->setModel(userData->model);
+    updateModel();
 }
 
 void MainWindow::rotateModel() {
@@ -246,5 +262,14 @@ void MainWindow::rotateModel() {
     userData->rotateAngles.setY(qDegreesToRadians(spinRotateAngleY->value()));
     userData->rotateAngles.setZ(qDegreesToRadians(spinRotateAngleZ->value()));
     ExitCode exitCode = processEntry(*userData, Command::modelRotate);
-    canvas->setModel(userData->model);
+    updateModel();
+}
+
+void MainWindow::updateModel() {
+    if (!canvas->setModel(userData->model, perspective)) {
+        QMessageBox::warning(this, "Модель", "Координата Z вышла за пределы перспективной камеры. "
+            "Режим проекции снова установлен в ортогональный");
+        perspective = false;
+        canvas->setModel(userData->model, perspective);
+    }
 }

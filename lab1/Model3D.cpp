@@ -56,7 +56,7 @@ namespace wireframe {
         for (Vertex3D &v : model.vertex) {
             v.x += vector.x();
             v.y += vector.y();
-            v.y += vector.z();
+            v.z += vector.z();
         }
     }
 
@@ -67,5 +67,4 @@ namespace wireframe {
             v.z = v.z * k.z() + (1 - k.z()) * point.z();
         }
     }
-
 }

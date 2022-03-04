@@ -47,6 +47,9 @@ namespace wireframe {
             case ExitCode::cmdInvalid:
                 result = "В программу была подана неизвестная команда";
                 break;
+            case ExitCode::fileNotCreated:
+                result = "Не удалось создать файл";
+                break;
         }
 
         return result;

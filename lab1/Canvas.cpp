@@ -2,9 +2,6 @@
 #include <qpainter.h>
 #include <qgraphicsitem.h>
 
-constexpr int maxDist = 4000;
-constexpr int gridStep = 50;
-
 Canvas::Canvas(QWidget *parent)
     : scene(this), QGraphicsView(parent) {
     colorX = {200, 0, 0};
@@ -12,17 +9,25 @@ Canvas::Canvas(QWidget *parent)
     colorZ = {0, 0, 200};
     colorLine = {0, 0, 0};
     colorPoly = {50, 50, 50, 10};
+    cameraDistance = 200;
     setScene(&scene);
 }
 
-void Canvas::setModel(const wireframe::Model3D &model) {
+bool Canvas::setModel(const wireframe::Model3D &model, bool perspective) {
     scene.clear();
     scene.update();
 
-    for (auto face : model.face) {
+    for (const auto &face : model.face) {
         QPolygonF poly;
         for (auto i : face.vertexIdx) {
-            QPointF p(model.vertex[i].x, -model.vertex[i].y);
+            QPointF p;
+            if (!perspective) {
+                p = QPointF(model.vertex[i].x, -model.vertex[i].y);
+            }
+            else if (!toPerspective(p, model.vertex[i])) {
+                return false;
+            }
+            
             poly.append(p);
         }
 
@@ -65,4 +70,20 @@ void Canvas::setModel(const wireframe::Model3D &model) {
     text = scene.addText("Z");
     text->setPos(-16, -2);
     text->setDefaultTextColor(colorZ);
+    return true;
+}
+
+
+bool Canvas::toPerspective(QPointF &p, const wireframe::Vertex3D &v) {
+    bool result = true;
+    if (-v.z > cameraDistance) {
+        result = false;
+    }
+    else {
+        qreal k = cameraDistance / (v.z + cameraDistance);
+        p.setX(v.x * k);
+        p.setY(-v.y * k);
+    }
+
+    return result;
 }
