@@ -111,19 +111,19 @@ Exit modelRotate(Model3D *model, Vector3D eulerAngles) {
         ec = Exit::modelUnininialized;
     }
     else {
-        double sinx = sin(eulerAngles.x);
-        double cosx = cos(eulerAngles.x);
-        double siny = sin(eulerAngles.y);
-        double cosy = cos(eulerAngles.y);
-        double sinz = sin(eulerAngles.z);
-        double cosz = cos(eulerAngles.z);
+        Real sinx = sin(eulerAngles.x);
+        Real cosx = cos(eulerAngles.x);
+        Real siny = sin(eulerAngles.y);
+        Real cosy = cos(eulerAngles.y);
+        Real sinz = sin(eulerAngles.z);
+        Real cosz = cos(eulerAngles.z);
 
         for (int i = 0; i < model->points.size; i++) {
             Point3D &p = model->points.arr[i];
             Point3D &c = model->center;
-            double dx = p.x - c.x;
-            double dy = p.y - c.y;
-            double dz = p.z - c.z;
+            Real dx = p.x - c.x;
+            Real dy = p.y - c.y;
+            Real dz = p.z - c.z;
 
             p.y = c.y + dy * cosx + dz * sinx;
             p.z = c.z - dy * sinx + dz * cosx;
@@ -231,9 +231,9 @@ Exit modelProjectOrthogonal(Projection *&projection, const Model3D *model) {
     return ec;
 }
 
-static inline bool isCameraDistanceValid(const Model3D &model, double cameraDistance) {
+static inline bool isCameraDistanceValid(const Model3D &model, Real cameraDistance) {
     bool valid = true;
-    static const double cameraPointBufferDistance = 30;
+    static const Real cameraPointBufferDistance = 30;
 
     Point3D *p = model.points.arr;
     while (valid && p < model.points.arr + model.points.size) {
@@ -244,7 +244,7 @@ static inline bool isCameraDistanceValid(const Model3D &model, double cameraDist
     return valid;
 }
 
-Exit modelProjectPerspective(Projection *&projection, const Model3D *model, double cameraDistance) {
+Exit modelProjectPerspective(Projection *&projection, const Model3D *model, Real cameraDistance) {
     Exit ec = Exit::success;
 
     if (!model) {
@@ -259,7 +259,7 @@ Exit modelProjectPerspective(Projection *&projection, const Model3D *model, doub
 
     if (isOk(ec)) {
         for (int i = 0; i < projection->pointsAmount; i++) {
-            double k = cameraDistance / (model->points.arr[i].z + cameraDistance);
+            Real k = cameraDistance / (model->points.arr[i].z + cameraDistance);
             projection->pointArray[i].x *= k;
             projection->pointArray[i].y *= k;
         }

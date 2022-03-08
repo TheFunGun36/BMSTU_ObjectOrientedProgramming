@@ -1,5 +1,4 @@
 #pragma once
-#include "Point.hpp"
 #include "Exit.hpp"
 #include "Model3D.hpp"
 

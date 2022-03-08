@@ -17,3 +17,11 @@ void polygonFree(Polygon &p) {
     free(p.vertexIndexArray);
     memset(&p, 0, sizeof(Polygon));
 }
+
+void projectionFree(Projection &p) {
+    free(p.pointArray);
+    for (int i = 0; i < p.pointsAmount; i++)
+        polygonFree(p.polygonArray[i]);
+    free(p.polygonArray);
+    zeroMemory(&p);
+}

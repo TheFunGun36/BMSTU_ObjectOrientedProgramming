@@ -1,4 +1,4 @@
-#include "mainwindow.hpp"
+#include "MainWindow.hpp"
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
@@ -14,10 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
     UserOutput uOut;
     Exit exitCode = executeCommand(uOut, userInput(), Command::initialize);
+    cameraDistance = 400;
 
     if (exitCode != Exit::success) {
-        executeCommand(uOut, userInput(exitCode), Command::getErrorMessage);
-        QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
+        showError(exitCode);
         this->destroy();
     }
     else {
@@ -182,35 +182,43 @@ void MainWindow::createMenu() {
     actionModelPerspective->setShortcut(QKeySequence::Print);
     actionModelPerspective->setStatusTip("Переключить между перспективным режимом проекции и ортогональным");
     actionModelPerspective->setDisabled(true);
-    connect(actionModelPerspective, &QAction::triggered, this, [this]() {
-        throw "TODO";
-        });
+    connect(actionModelPerspective, &QAction::triggered, this, &MainWindow::togglePerspective);
 
     QMenu *modelMenu = menuBar()->addMenu("Модель");
     modelMenu->addAction(actionModelPerspective);
+}
+
+void MainWindow::showError(Exit exitCode) {
+    UserOutput uOut;
+    executeCommand(uOut, userInput(exitCode), Command::getErrorMessage);
+    QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
 }
 
 void MainWindow::fileOpen() {
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getOpenFileName(this);
     if (!filename.isEmpty()) {
-        UserInput uIn;
-        uIn.filename = filename.toStdString().c_str();
         UserOutput uOut;
+        const std::string &stdFilename = filename.toStdString();
+        UserInput uIn = userInput(stdFilename.c_str());
         Exit exitCode = executeCommand(uOut, uIn, Command::modelLoad);
 
         if (!isOk(exitCode)) {
-            uIn.exitCode = exitCode;
-            exitCode = executeCommand(uOut, uIn, Command::getErrorMessage);
-            QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
+            showError(exitCode);
         }
         else {
+            bool pSaved = perspective;
             perspective = false;
-            updateModel();
-            currentFilename = filename;
-            actionFileSave->setEnabled(true);
-            actionFileSaveAs->setEnabled(true);
-            actionModelPerspective->setEnabled(true);
+
+            if (updateModel()) {
+                currentFilename = filename;
+                actionFileSave->setEnabled(true);
+                actionFileSaveAs->setEnabled(true);
+                actionModelPerspective->setEnabled(true);
+            }
+            else {
+                perspective = pSaved;
+            }
         }
     }
 }
@@ -286,12 +294,27 @@ void MainWindow::rotateModel() {
     throw "TODO";
 }
 
-void MainWindow::updateModel() {
-    /*if (!canvas->setModel(userData->model, perspective)) {
-        QMessageBox::warning(this, "Модель", "Координата Z вышла за пределы перспективной камеры. "
-            "Режим проекции снова установлен в ортогональный");
-        perspective = false;
-        canvas->setModel(userData->model, perspective);
-    }*/
-    throw "TODO";
+bool MainWindow::updateModel() {
+    bool result = true;
+
+    UserOutput uOut;
+    Command cmd = perspective ? Command::modelProjectPerspective : Command::modelProjectOrhogonal;
+    Exit exitCode = executeCommand(uOut, userInput(cameraDistance), cmd);
+
+    if (!isOk(exitCode)) {
+        showError(exitCode);
+        result = false;
+    }
+    else {
+        canvas->updateProjection(*uOut.projection);
+        projectionFree(*uOut.projection);
+    }
+
+    return result;
+}
+
+void MainWindow::togglePerspective() {
+    perspective = !perspective;
+    if (!updateModel())
+        perspective = !perspective;
 }

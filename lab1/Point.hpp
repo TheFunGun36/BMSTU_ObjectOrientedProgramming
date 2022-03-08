@@ -1,8 +1,7 @@
 #pragma once
+#include "Types.hpp"
 #include <cmath>
 #include <algorithm>
-
-typedef double Real;
 
 struct Point3D {
     Real x;

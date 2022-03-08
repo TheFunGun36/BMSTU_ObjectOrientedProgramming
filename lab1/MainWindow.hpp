@@ -17,6 +17,7 @@ private:
     QString currentFilename;
     bool perspective;
     Canvas *canvas;
+    qreal cameraDistance;
 
     QDoubleSpinBox *spinMoveDx;
     QDoubleSpinBox *spinMoveDy;
@@ -45,6 +46,8 @@ private:
     void createScaleSection(QVBoxLayout *layout);
     void createRotateSection(QVBoxLayout *layout);
     void createMenu();
+    void showError(Exit exitCode);
+    bool updateModel();
 
 private slots:
     void fileOpen();
@@ -53,5 +56,5 @@ private slots:
     void moveModel();
     void scaleModel();
     void rotateModel();
-    void updateModel();
+    void togglePerspective();
 };

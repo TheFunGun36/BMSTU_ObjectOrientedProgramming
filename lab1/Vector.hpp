@@ -2,7 +2,7 @@
 #include "Exit.hpp"
 #include "MemoryImpl.hpp"
 
-const double vectorArrIncCoef = 2.0;
+const Real vectorArrIncCoef = 2.0;
 
 template<typename T>
 struct Vector {

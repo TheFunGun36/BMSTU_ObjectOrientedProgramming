@@ -1,11 +1,12 @@
 #include "ModelFile.hpp"
 #include "Vector.hpp"
 #include "String.hpp"
+#include "Point.hpp"
 
 #define SET_EC_IF_OK(call) if (isOk(ec)) ec = (call)
 
-static const char prefixVertex[] = "v";
-static const char prefixFace[] = "f";
+static const Char prefixVertex[] = "v";
+static const Char prefixFace[] = "f";
 
 static Exit fileReadLine(String *&line, FILE *f) {
     const size_t bufSize = 32;
@@ -13,7 +14,7 @@ static Exit fileReadLine(String *&line, FILE *f) {
     bool endl = false;
 
     while (isOk(ec) && !endl) {
-        char buf[bufSize];
+        Char buf[bufSize];
 
         if (fgets(buf, bufSize, f))
             ec = strAppend(line, buf);
@@ -95,7 +96,7 @@ static Exit parseFace(Polygon &face, const String *line) {
     return ec;
 }
 
-Exit fileModelLoad(Model3D *model, int &lineFailed, const char *filename) {
+Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
     Exit ec = model ? Exit::success : Exit::modelUnininialized;
 
     FILE *file = nullptr;
@@ -160,7 +161,7 @@ Exit fileModelLoad(Model3D *model, int &lineFailed, const char *filename) {
     return ec;
 }
 
-Exit fileModelSave(const Model3D *model, const char *filename) {
+Exit fileModelSave(const Model3D *model, const Char *filename) {
     throw "TODO";
     return Exit();
 }

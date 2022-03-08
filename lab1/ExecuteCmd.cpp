@@ -4,8 +4,8 @@
 #include "Action.hpp"
 #include "MemoryImpl.hpp"
 
-static const char *getErrorMessage(Exit exitCode) {
-    const char *msg = nullptr;
+static const Char *getErrorMessage(Exit exitCode) {
+    const Char *msg = nullptr;
 
     switch (exitCode) {
         case Exit::success:

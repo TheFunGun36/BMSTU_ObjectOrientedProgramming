@@ -4,16 +4,16 @@
 
 struct String {
     size_t allocated;
-    char *memory;
-    char *current;
-    char *end; // указывает на \0
+    Char *memory;
+    Char *current;
+    Char *end; // указывает на \0
 };
 
-static inline bool isSpace(char c) {
+static inline bool isSpace(Char c) {
     return strchr(" \t\v\n\r\f", c);
 }
 
-Exit strInitialize(String *&str, const char *src) {
+Exit strInitialize(String *&str, const Char *src) {
     Exit ec = str ? Exit::strInitialized : Exit::success;
 
     size_t sz = 0;
@@ -33,7 +33,7 @@ Exit strInitialize(String *&str, const char *src) {
         str->allocated = sz;
         str->current = str->memory;
         str->end = str->current + sz - 1;
-        memcpy(str->current, src, sz * sizeof(char));
+        memcpy(str->current, src, sz * sizeof(Char));
     }
     else {
         free(str);
@@ -50,10 +50,10 @@ void strFree(String *&str) {
     str = nullptr;
 }
 
-Exit strAppend(String *str, const char *other) {
+Exit strAppend(String *str, const Char *other) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
-    char *oldMemory = nullptr;
+    Char *oldMemory = nullptr;
     size_t otherLen = 0;
 
     if (!other) {
@@ -71,7 +71,7 @@ Exit strAppend(String *str, const char *other) {
         str->end += ptrDiff;
 
         str->allocated += otherLen;
-        memcpy(str->end, other, (otherLen + 1) * sizeof(char));
+        memcpy(str->end, other, (otherLen + 1) * sizeof(Char));
 
         str->end += otherLen;
     }
@@ -83,14 +83,14 @@ Exit strIsEndl(bool &result, const String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     if (isOk(ec)) {
-        char *end = str->end - 1;
+        Char *end = str->end - 1;
         result = end >= str->current && *end == '\n';
     }
 
     return ec;
 }
 
-Exit strIsFirstWord(bool &result, const String *str, const char *word) {
+Exit strIsFirstWord(bool &result, const String *str, const Char *word) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     if (isOk(ec))
@@ -99,8 +99,8 @@ Exit strIsFirstWord(bool &result, const String *str, const char *word) {
     if (isOk(ec)) {
         result = true;
 
-        const char *p = str->current;
-        const char *w = word;
+        const Char *p = str->current;
+        const Char *w = word;
         while (p < str->end && *w != '\0') {
             result = *p == *w;
 
@@ -115,11 +115,11 @@ Exit strIsFirstWord(bool &result, const String *str, const char *word) {
     return ec;
 }
 
-Exit strCutUntil(String *str, char until) {
+Exit strCutUntil(String *str, Char until) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     if (isOk(ec)) {
-        char *p = str->current;
+        Char *p = str->current;
         while (p < str->end && *p != until)
             p++;
 
@@ -136,7 +136,7 @@ Exit strNextWord(String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     if (isOk(ec)) {
-        char *p = str->current;
+        Char *p = str->current;
 
         while (p < str->end && !isSpace(*p))
             p++;
@@ -161,11 +161,11 @@ Exit strTrim(String *str) {
     return ec;
 }
 
-Exit strToNumber(double &result, const String *str) {
+Exit strToNumber(Real &result, const String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
     
     if (isOk(ec)) {
-        char *end = nullptr;
+        Char *end = nullptr;
         result = strtod(str->current, &end);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
@@ -177,7 +177,7 @@ Exit strToNumber(int &result, const String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     if (isOk(ec)) {
-        char *end = nullptr;
+        Char *end = nullptr;
         result = strtol(str->current, &end, 10);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }

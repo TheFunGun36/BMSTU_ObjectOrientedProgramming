@@ -18,3 +18,4 @@ struct Projection {
 
 Exit polygonCreate(Polygon &p, size_t size);
 void polygonFree(Polygon &p);
+void projectionFree(Projection &p);

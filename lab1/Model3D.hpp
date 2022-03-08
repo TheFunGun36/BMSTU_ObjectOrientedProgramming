@@ -18,5 +18,5 @@ Exit modelScale(Model3D *model, Vector3D scaleVector);
 
 void modelFree(Model3D *&model);
 
-Exit modelProjectPerspective(Projection *&projection, const Model3D *model, double cameraDistance);
+Exit modelProjectPerspective(Projection *&projection, const Model3D *model, Real cameraDistance);
 Exit modelProjectOrthogonal(Projection *&projection, const Model3D *model);
