@@ -85,22 +85,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Canvas.cpp" />
-    <ClCompile Include="FileParse.cpp" />
-    <ClCompile Include="FileSave.cpp" />
     <ClCompile Include="Model3D.cpp" />
-    <ClCompile Include="ProcessEntry.cpp" />
+    <ClCompile Include="ModelFile.cpp" />
+    <ClCompile Include="Projection.cpp" />
+    <ClCompile Include="String.cpp" />
     <QtRcc Include="MainWindow.qrc" />
-    <QtMoc Include="MainWindow.h" />
+    <QtMoc Include="MainWindow.hpp" />
+    <ClCompile Include="ExecuteCmd.cpp" />
+    <ClCompile Include="ExecuteCmd.hpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileSave.h" />
-    <ClInclude Include="ProcessEntry.h" />
-    <QtMoc Include="Canvas.h" />
-    <ClInclude Include="Model3D.h" />
-    <ClInclude Include="FileParse.h" />
+    <QtMoc Include="Canvas.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Action.hpp" />
+    <ClInclude Include="Exit.hpp" />
+    <ClInclude Include="MemoryImpl.hpp" />
+    <ClInclude Include="String.hpp" />
+    <ClInclude Include="Vector.hpp" />
+    <ClInclude Include="Model3D.hpp" />
+    <ClInclude Include="ModelFile.hpp" />
+    <ClInclude Include="Point.hpp" />
+    <ClInclude Include="Projection.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

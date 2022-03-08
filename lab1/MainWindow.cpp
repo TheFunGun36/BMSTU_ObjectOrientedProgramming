@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+#include "mainwindow.hpp"
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
@@ -7,41 +7,49 @@
 #include <qmenubar.h>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
-#include "FileParse.h"
+
+#include "ExecuteCmd.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
-    userData = new wireframe::UserData;
-    userData->isPerspective = false;
-    userData->cameraDistance = 100;
+    UserOutput uOut;
+    Exit exitCode = executeCommand(uOut, userInput(), Command::initialize);
 
-    setCentralWidget(new QWidget(this));
+    if (exitCode != Exit::success) {
+        executeCommand(uOut, userInput(exitCode), Command::getErrorMessage);
+        QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
+        this->destroy();
+    }
+    else {
+        setCentralWidget(new QWidget(this));
 
-    canvas = new Canvas(this);
-    canvas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    canvas->setMinimumSize(600, 400);
+        canvas = new Canvas(this);
+        canvas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        canvas->setMinimumSize(600, 400);
 
-    auto layout = new QHBoxLayout(this);
-    auto leftPanel = new QVBoxLayout(this);
+        auto layout = new QHBoxLayout(this);
+        auto leftPanel = new QVBoxLayout(this);
 
-    centralWidget()->setLayout(layout);
+        centralWidget()->setLayout(layout);
 
-    createMoveSection(leftPanel);
-    leftPanel->addSpacerItem(new QSpacerItem(0, 20));
-    createScaleSection(leftPanel);
-    leftPanel->addSpacerItem(new QSpacerItem(0, 20));
-    createRotateSection(leftPanel);
+        createMoveSection(leftPanel);
+        leftPanel->addSpacerItem(new QSpacerItem(0, 20));
+        createScaleSection(leftPanel);
+        leftPanel->addSpacerItem(new QSpacerItem(0, 20));
+        createRotateSection(leftPanel);
 
-    leftPanel->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+        leftPanel->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-    layout->addLayout(leftPanel);
-    layout->addWidget(canvas);
+        layout->addLayout(leftPanel);
+        layout->addWidget(canvas);
 
-    createMenu();
+        createMenu();
+    }
 }
 
 MainWindow::~MainWindow() {
-    delete userData;
+    UserOutput uOut;
+    executeCommand(uOut, userInput(), Command::uninitialize);
 }
 
 void MainWindow::createMoveSection(QVBoxLayout *layout) {
@@ -175,9 +183,7 @@ void MainWindow::createMenu() {
     actionModelPerspective->setStatusTip("Переключить между перспективным режимом проекции и ортогональным");
     actionModelPerspective->setDisabled(true);
     connect(actionModelPerspective, &QAction::triggered, this, [this]() {
-        using namespace wireframe;
-        perspective = !perspective;
-        updateModel();
+        throw "TODO";
         });
 
     QMenu *modelMenu = menuBar()->addMenu("Модель");
@@ -185,15 +191,18 @@ void MainWindow::createMenu() {
 }
 
 void MainWindow::fileOpen() {
-    using namespace wireframe;
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getOpenFileName(this);
     if (!filename.isEmpty()) {
-        userData->filename = filename;
-        ExitCode exitCode = processEntry(*userData, Command::fileLoad);
+        UserInput uIn;
+        uIn.filename = filename.toStdString().c_str();
+        UserOutput uOut;
+        Exit exitCode = executeCommand(uOut, uIn, Command::modelLoad);
 
-        if (exitCode != ExitCode::ok) {
-            QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode, userData->fileLineFailed));
+        if (!isOk(exitCode)) {
+            uIn.exitCode = exitCode;
+            exitCode = executeCommand(uOut, uIn, Command::getErrorMessage);
+            QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
         }
         else {
             perspective = false;
@@ -207,41 +216,49 @@ void MainWindow::fileOpen() {
 }
 
 void MainWindow::fileSave() {
-    using namespace wireframe;
-    ExitCode exitCode = processEntry(*userData, Command::fileSave);
+    //Exit exitCode = processEntry(*userData, Command::fileSave);
 
-    if (exitCode != ExitCode::ok) {
-        QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
-    }
+    //if (exitCode != Exit::ok) {
+    //    QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
+    //}
+    throw "TODO";
 }
 
 void MainWindow::fileSaveAs() {
+    /*
     using namespace wireframe;
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getSaveFileName(this);
     if (!filename.isEmpty()) {
         userData->filename = filename;
-        ExitCode exitCode = processEntry(*userData, Command::fileSave);
+        Exit exitCode = processEntry(*userData, Command::fileSave);
 
-        if (exitCode != ExitCode::ok) {
+        if (exitCode != Exit::ok) {
             QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
         }
         else {
             currentFilename = filename;
         }
     }
+    */
+
+    throw "TODO";
 }
 
 void MainWindow::moveModel() {
+    /*
     using namespace wireframe;
     userData->moveVector.setX(spinMoveDx->value());
     userData->moveVector.setY(spinMoveDy->value());
     userData->moveVector.setZ(spinMoveDz->value());
-    ExitCode exitCode = processEntry(*userData, Command::modelMove);
+    Exit exitCode = processEntry(*userData, Command::modelMove);
     updateModel();
+    */
+    throw "TODO";
 }
 
 void MainWindow::scaleModel() {
+    /*
     using namespace wireframe;
     userData->scaleCoeficients.setX(spinScaleKx->value());
     userData->scaleCoeficients.setY(spinScaleKy->value());
@@ -249,11 +266,13 @@ void MainWindow::scaleModel() {
     userData->scalePoint.setX(spinScaleCenterX->value());
     userData->scalePoint.setY(spinScaleCenterY->value());
     userData->scalePoint.setZ(spinScaleCenterZ->value());
-    ExitCode exitCode = processEntry(*userData, Command::modelScale);
+    Exit exitCode = processEntry(*userData, Command::modelScale);
     updateModel();
+    */
 }
 
 void MainWindow::rotateModel() {
+    /*
     using namespace wireframe;
     userData->rotatePoint.setX(spinRotateCenterX->value());
     userData->rotatePoint.setY(spinRotateCenterY->value());
@@ -261,15 +280,18 @@ void MainWindow::rotateModel() {
     userData->rotateAngles.setX(qDegreesToRadians(spinRotateAngleX->value()));
     userData->rotateAngles.setY(qDegreesToRadians(spinRotateAngleY->value()));
     userData->rotateAngles.setZ(qDegreesToRadians(spinRotateAngleZ->value()));
-    ExitCode exitCode = processEntry(*userData, Command::modelRotate);
+    Exit exitCode = processEntry(*userData, Command::modelRotate);
     updateModel();
+    */
+    throw "TODO";
 }
 
 void MainWindow::updateModel() {
-    if (!canvas->setModel(userData->model, perspective)) {
+    /*if (!canvas->setModel(userData->model, perspective)) {
         QMessageBox::warning(this, "Модель", "Координата Z вышла за пределы перспективной камеры. "
             "Режим проекции снова установлен в ортогональный");
         perspective = false;
         canvas->setModel(userData->model, perspective);
-    }
+    }*/
+    throw "TODO";
 }

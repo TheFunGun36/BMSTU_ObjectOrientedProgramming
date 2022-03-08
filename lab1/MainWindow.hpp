@@ -1,10 +1,10 @@
 #pragma once
-#include "canvas.h"
+#include "Canvas.hpp"
 #include <qmainwindow.h>
 #include <qlayout.h>
 #include <qspinbox.h>
-#include "Model3D.h"
-#include "ProcessEntry.h"
+#include "Model3D.hpp"
+#include "ExecuteCmd.hpp"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -14,7 +14,6 @@ public:
     ~MainWindow();
 
 private:
-    wireframe::UserData *userData;
     QString currentFilename;
     bool perspective;
     Canvas *canvas;

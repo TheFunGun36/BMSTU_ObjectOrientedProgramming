@@ -1,4 +1,4 @@
-#include "Canvas.h"
+#include "Canvas.hpp"
 #include <qpainter.h>
 #include <qgraphicsitem.h>
 
@@ -6,38 +6,33 @@ Canvas::Canvas(QWidget *parent)
     : scene(this), QGraphicsView(parent) {
     colorX = {200, 0, 0};
     colorY = {0, 200, 0};
-    colorZ = {0, 0, 200};
+    colorZ = { 0, 0, 200 };
+    colorC = { 100, 0, 200 };
     colorLine = {0, 0, 0};
     colorPoly = {50, 50, 50, 10};
     cameraDistance = 200;
     setScene(&scene);
 }
 
-bool Canvas::setModel(const wireframe::Model3D &model, bool perspective) {
+void Canvas::updateProjection(const Projection &proj) {
     scene.clear();
     scene.update();
 
-    for (const auto &face : model.face) {
+    for (int i = 0; i < proj.polygonAmount; i++) {
         QPolygonF poly;
-        for (auto i : face.vertexIdx) {
-            QPointF p;
-            if (!perspective) {
-                p = QPointF(model.vertex[i].x, -model.vertex[i].y);
-            }
-            else if (!toPerspective(p, model.vertex[i])) {
-                return false;
-            }
-            
-            poly.append(p);
+        for (int j = 0; j < proj.polygonArray[i].amount; j++) {
+            size_t idx = proj.polygonArray[i].vertexIndexArray[j];
+            poly.append(QPointF(proj.pointArray[idx].x, proj.pointArray[idx].y));
         }
 
         scene.addPolygon(poly, QPen(), colorPoly);
     }
 
     QRectF newScene;
-    for (const auto &v : model.vertex) {
-        newScene.setTop(qMin(-v.y, newScene.top()));
-        newScene.setBottom(qMax(-v.y, newScene.bottom()));
+    for (int i = 0; i < proj.pointsAmount; i++) {
+        Point2D &v = proj.pointArray[i];
+        newScene.setTop(qMin(v.y, newScene.top()));
+        newScene.setBottom(qMax(v.y, newScene.bottom()));
         newScene.setLeft(qMin(v.x, newScene.left()));
         newScene.setRight(qMax(v.x, newScene.right()));
     }
@@ -70,20 +65,10 @@ bool Canvas::setModel(const wireframe::Model3D &model, bool perspective) {
     text = scene.addText("Z");
     text->setPos(-16, -2);
     text->setDefaultTextColor(colorZ);
-    return true;
-}
 
-
-bool Canvas::toPerspective(QPointF &p, const wireframe::Vertex3D &v) {
-    bool result = true;
-    if (-v.z > cameraDistance) {
-        result = false;
-    }
-    else {
-        qreal k = cameraDistance / (v.z + cameraDistance);
-        p.setX(v.x * k);
-        p.setY(-v.y * k);
-    }
-
-    return result;
+    const Point2D &c = proj.center;
+    scene.addEllipse(c.x - 3, c.x - 3, 6, 6, colorC, colorC);
+    text = scene.addText("C");
+    text->setPos(c.x, c.y);
+    text->setDefaultTextColor(colorC);
 }
