@@ -67,8 +67,15 @@ void Canvas::updateProjection(const Projection &proj) {
     text->setDefaultTextColor(colorZ);
 
     const Point2D &c = proj.center;
-    scene.addEllipse(c.x - 3, c.x - 3, 6, 6, colorC, colorC);
+    scene.addEllipse(c.x - 3, -c.y - 3, 6, 6, colorC, colorC);
     text = scene.addText("C");
-    text->setPos(c.x, c.y);
+    text->setPos(c.x, -c.y);
     text->setDefaultTextColor(colorC);
+
+    scene.setSceneRect(-2000.0, -2000.0, 4000.0, 4000.0);
+    centerOn(0, 0);
+}
+
+void Canvas::onResize() {
+    centerOn(0, 0);
 }

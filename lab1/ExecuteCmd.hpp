@@ -8,7 +8,6 @@ enum class Command {
     initialize,
     uninitialize,
     modelLoad,
-    modelSave,
     modelProjectPerspective,
     modelProjectOrhogonal,
     modelMove,
@@ -19,7 +18,7 @@ enum class Command {
 };
 
 union UserInput {
-    //modelLoad, modelSave
+    //modelLoad
     const Char *filename;
 
     //modelProjectPerspective
@@ -40,7 +39,7 @@ union UserOutput {
     int lineFailed;
 
     //modelProjectPerspective, modelProjectOrhogonal
-    Projection *projection;
+    Projection projection;
 
     //errorMessage
     const Char *errorMessage;

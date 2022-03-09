@@ -15,8 +15,8 @@ inline Exit allocImpl(T *&ptr) {
 }
 
 template <typename T>
-inline Exit reallocImpl(T *&ptr, size_t newSize) {
-    T *buff = static_cast<T *>(realloc(ptr, sizeof(T)));
+inline Exit reallocImpl(T *&ptr, size_t newLength) {
+    T *buff = static_cast<T *>(realloc(ptr, newLength * sizeof(T)));
     Exit ec = Exit::success;
 
     if (buff)

@@ -12,39 +12,31 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {
-    UserOutput uOut;
-    Exit exitCode = executeCommand(uOut, userInput(), Command::initialize);
     cameraDistance = 400;
 
-    if (exitCode != Exit::success) {
-        showError(exitCode);
-        this->destroy();
-    }
-    else {
-        setCentralWidget(new QWidget(this));
+    setCentralWidget(new QWidget(this));
 
-        canvas = new Canvas(this);
-        canvas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        canvas->setMinimumSize(600, 400);
+    canvas = new Canvas(this);
+    canvas->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    canvas->setMinimumSize(600, 400);
 
-        auto layout = new QHBoxLayout(this);
-        auto leftPanel = new QVBoxLayout(this);
+    auto layout = new QHBoxLayout(this);
+    auto leftPanel = new QVBoxLayout(this);
 
-        centralWidget()->setLayout(layout);
+    centralWidget()->setLayout(layout);
 
-        createMoveSection(leftPanel);
-        leftPanel->addSpacerItem(new QSpacerItem(0, 20));
-        createScaleSection(leftPanel);
-        leftPanel->addSpacerItem(new QSpacerItem(0, 20));
-        createRotateSection(leftPanel);
+    createMoveSection(leftPanel);
+    leftPanel->addSpacerItem(new QSpacerItem(0, 20));
+    createScaleSection(leftPanel);
+    leftPanel->addSpacerItem(new QSpacerItem(0, 20));
+    createRotateSection(leftPanel);
 
-        leftPanel->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    leftPanel->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-        layout->addLayout(leftPanel);
-        layout->addWidget(canvas);
+    layout->addLayout(leftPanel);
+    layout->addWidget(canvas);
 
-        createMenu();
-    }
+    createMenu();
 }
 
 MainWindow::~MainWindow() {
@@ -57,18 +49,18 @@ void MainWindow::createMoveSection(QVBoxLayout *layout) {
     title->setFont(QFont("Calibri", 18));
     layout->addWidget(title);
 
-    spinMoveDx = new QDoubleSpinBox(this);
-    spinMoveDy = new QDoubleSpinBox(this);
-    spinMoveDz = new QDoubleSpinBox(this);
-    spinMoveDx->setRange(-500, 500);
-    spinMoveDy->setRange(-500, 500);
-    spinMoveDz->setRange(-500, 500);
+    spinMoveX = new QDoubleSpinBox(this);
+    spinMoveY = new QDoubleSpinBox(this);
+    spinMoveZ = new QDoubleSpinBox(this);
+    spinMoveX->setRange(-500, 500);
+    spinMoveY->setRange(-500, 500);
+    spinMoveZ->setRange(-500, 500);
 
     layout->addWidget(new QLabel("Вектор смещения:", this));
     auto layoutData = new QHBoxLayout(this);
-    layoutData->addWidget(spinMoveDx);
-    layoutData->addWidget(spinMoveDy);
-    layoutData->addWidget(spinMoveDz);
+    layoutData->addWidget(spinMoveX);
+    layoutData->addWidget(spinMoveY);
+    layoutData->addWidget(spinMoveZ);
 
     layout->addLayout(layoutData);
 
@@ -83,33 +75,20 @@ void MainWindow::createScaleSection(QVBoxLayout *layout) {
     title->setFont(QFont("Calibri", 18));
     layout->addWidget(title);
 
-    spinScaleKx = new QDoubleSpinBox(this);
-    spinScaleKy = new QDoubleSpinBox(this);
-    spinScaleKz = new QDoubleSpinBox(this);
-    spinScaleKx->setRange(-50, 50);
-    spinScaleKy->setRange(-50, 50);
-    spinScaleKz->setRange(-50, 50);
-    spinScaleCenterX = new QDoubleSpinBox(this);
-    spinScaleCenterY = new QDoubleSpinBox(this);
-    spinScaleCenterZ = new QDoubleSpinBox(this);
-    spinScaleCenterX->setRange(-500, 500);
-    spinScaleCenterY->setRange(-500, 500);
-    spinScaleCenterZ->setRange(-500, 500);
+    spinScaleX = new QDoubleSpinBox(this);
+    spinScaleY = new QDoubleSpinBox(this);
+    spinScaleZ = new QDoubleSpinBox(this);
+    spinScaleX->setRange(-50, 50);
+    spinScaleY->setRange(-50, 50);
+    spinScaleZ->setRange(-50, 50);
 
     layout->addWidget(new QLabel("Коэффициенты масштабирования:", this));
     auto layoutData = new QHBoxLayout(this);
-    layoutData->addWidget(spinScaleKx);
-    layoutData->addWidget(spinScaleKy);
-    layoutData->addWidget(spinScaleKz);
+    layoutData->addWidget(spinScaleX);
+    layoutData->addWidget(spinScaleY);
+    layoutData->addWidget(spinScaleZ);
 
     layout->addLayout(layoutData);
-
-    layout->addWidget(new QLabel("Центр масштабирования:", this));
-    auto layoutCenter = new QHBoxLayout(this);
-    layoutCenter->addWidget(spinScaleCenterX);
-    layoutCenter->addWidget(spinScaleCenterY);
-    layoutCenter->addWidget(spinScaleCenterZ);
-    layout->addLayout(layoutCenter);
 
     QPushButton *apply = new QPushButton("Масштабировать", this);
     connect(apply, &QPushButton::clicked, this, &MainWindow::scaleModel);
@@ -128,12 +107,6 @@ void MainWindow::createRotateSection(QVBoxLayout *layout) {
     spinRotateAngleX->setRange(-360, 360);
     spinRotateAngleY->setRange(-360, 360);
     spinRotateAngleZ->setRange(-360, 360);
-    spinRotateCenterX = new QDoubleSpinBox(this);
-    spinRotateCenterY = new QDoubleSpinBox(this);
-    spinRotateCenterZ = new QDoubleSpinBox(this);
-    spinRotateCenterX->setRange(-500, 500);
-    spinRotateCenterY->setRange(-500, 500);
-    spinRotateCenterZ->setRange(-500, 500);
 
     layout->addWidget(new QLabel("Углы вращения относительно осей:", this));
     auto layoutAngles = new QHBoxLayout(this);
@@ -141,13 +114,6 @@ void MainWindow::createRotateSection(QVBoxLayout *layout) {
     layoutAngles->addWidget(spinRotateAngleY);
     layoutAngles->addWidget(spinRotateAngleZ);
     layout->addLayout(layoutAngles);
-
-    layout->addWidget(new QLabel("Центр поворота:", this));
-    auto layoutCenter = new QHBoxLayout(this);
-    layoutCenter->addWidget(spinRotateCenterX);
-    layoutCenter->addWidget(spinRotateCenterY);
-    layoutCenter->addWidget(spinRotateCenterZ);
-    layout->addLayout(layoutCenter);
 
     QPushButton *apply = new QPushButton("Повернуть", this);
     connect(apply, &QPushButton::clicked, this, &MainWindow::rotateModel);
@@ -161,160 +127,140 @@ void MainWindow::createMenu() {
     actionFileOpen->setStatusTip("Открыть файл с 3D моделью");
     connect(actionFileOpen, &QAction::triggered, this, &MainWindow::fileOpen);
 
-    actionFileSave = new QAction("Сохранить", this);
-    actionFileSave->setShortcut(QKeySequence::Save);
-    actionFileSave->setStatusTip("Сохранить изменения");
-    actionFileSave->setDisabled(true);
-    connect(actionFileSave, &QAction::triggered, this, &MainWindow::fileSave);
-
-    actionFileSaveAs = new QAction("Сохранить как...", this);
-    actionFileSaveAs->setShortcut(QKeySequence::SaveAs);
-    actionFileSaveAs->setStatusTip("Сохранить файл с 3D моделью");
-    actionFileSaveAs->setDisabled(true);
-    connect(actionFileSaveAs, &QAction::triggered, this, &MainWindow::fileSaveAs);
-
     QMenu *fileMenu = menuBar()->addMenu("Файл");
     fileMenu->addAction(actionFileOpen);
-    fileMenu->addAction(actionFileSave);
-    fileMenu->addAction(actionFileSaveAs);
 
-    actionModelPerspective = new QAction("Переключить перспективу", this);
+    actionModelPerspective = new QAction("Переключить режим отображения", this);
     actionModelPerspective->setShortcut(QKeySequence::Print);
     actionModelPerspective->setStatusTip("Переключить между перспективным режимом проекции и ортогональным");
     actionModelPerspective->setDisabled(true);
     connect(actionModelPerspective, &QAction::triggered, this, &MainWindow::togglePerspective);
 
+    actionModelUndo = new QAction("Отменить", this);
+    actionModelUndo->setShortcut(QKeySequence::Undo);
+    actionModelUndo->setStatusTip("Отменить последнее действие с моделью");
+    actionModelUndo->setDisabled(true);
+    connect(actionModelUndo, &QAction::triggered, this, &MainWindow::undo);
+
     QMenu *modelMenu = menuBar()->addMenu("Модель");
     modelMenu->addAction(actionModelPerspective);
+    modelMenu->addAction(actionModelUndo);
 }
 
 void MainWindow::showError(Exit exitCode) {
     UserOutput uOut;
     executeCommand(uOut, userInput(exitCode), Command::getErrorMessage);
-    QMessageBox::critical(this, "Ошибка", uOut.errorMessage);
+    QMessageBox::critical(this, QString("Ошибка"), QString::fromWCharArray(uOut.errorMessage));
 }
 
 void MainWindow::fileOpen() {
+    UserOutput uOut;
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getOpenFileName(this);
     if (!filename.isEmpty()) {
-        UserOutput uOut;
-        const std::string &stdFilename = filename.toStdString();
-        UserInput uIn = userInput(stdFilename.c_str());
-        Exit exitCode = executeCommand(uOut, uIn, Command::modelLoad);
+        Exit exitCode = executeCommand(uOut, userInput(), Command::uninitialize);
+        exitCode = executeCommand(uOut, userInput(), Command::initialize);
 
         if (!isOk(exitCode)) {
             showError(exitCode);
         }
         else {
-            bool pSaved = perspective;
+            UserOutput uOut;
+            Char *cstr = new Char[filename.size() + 1];
+            filename.toWCharArray(cstr);
+            cstr[filename.size()] = '\0';
+            UserInput uIn = userInput(cstr);
+            exitCode = executeCommand(uOut, uIn, Command::modelLoad);
+            delete[] cstr;
+        }
+
+        if (isOk(exitCode)) {
             perspective = false;
-
-            if (updateModel()) {
-                currentFilename = filename;
-                actionFileSave->setEnabled(true);
-                actionFileSaveAs->setEnabled(true);
-                actionModelPerspective->setEnabled(true);
-            }
-            else {
-                perspective = pSaved;
-            }
-        }
-    }
-}
-
-void MainWindow::fileSave() {
-    //Exit exitCode = processEntry(*userData, Command::fileSave);
-
-    //if (exitCode != Exit::ok) {
-    //    QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
-    //}
-    throw "TODO";
-}
-
-void MainWindow::fileSaveAs() {
-    /*
-    using namespace wireframe;
-    QFileDialog fileDialog(this);
-    QString filename = fileDialog.getSaveFileName(this);
-    if (!filename.isEmpty()) {
-        userData->filename = filename;
-        Exit exitCode = processEntry(*userData, Command::fileSave);
-
-        if (exitCode != Exit::ok) {
-            QMessageBox::critical(this, "Ошибка", getErrorMessage(exitCode));
-        }
-        else {
+            updateModel();
             currentFilename = filename;
+            actionModelPerspective->setEnabled(true);
+            actionModelUndo->setEnabled(true);
         }
     }
-    */
-
-    throw "TODO";
 }
 
 void MainWindow::moveModel() {
-    /*
-    using namespace wireframe;
-    userData->moveVector.setX(spinMoveDx->value());
-    userData->moveVector.setY(spinMoveDy->value());
-    userData->moveVector.setZ(spinMoveDz->value());
-    Exit exitCode = processEntry(*userData, Command::modelMove);
-    updateModel();
-    */
-    throw "TODO";
+    UserInput uIn;
+    uIn.actionVector.x = spinMoveX->value();
+    uIn.actionVector.y = spinMoveY->value();
+    uIn.actionVector.z = spinMoveZ->value();
+
+    UserOutput uOut;
+    Exit exitCode = executeCommand(uOut, uIn, Command::modelMove);
+    if (!isOk(exitCode))
+        showError(exitCode);
+    else
+        updateModel();
 }
 
 void MainWindow::scaleModel() {
-    /*
-    using namespace wireframe;
-    userData->scaleCoeficients.setX(spinScaleKx->value());
-    userData->scaleCoeficients.setY(spinScaleKy->value());
-    userData->scaleCoeficients.setZ(spinScaleKz->value());
-    userData->scalePoint.setX(spinScaleCenterX->value());
-    userData->scalePoint.setY(spinScaleCenterY->value());
-    userData->scalePoint.setZ(spinScaleCenterZ->value());
-    Exit exitCode = processEntry(*userData, Command::modelScale);
-    updateModel();
-    */
+    UserInput uIn;
+    uIn.actionVector.x = spinScaleX->value();
+    uIn.actionVector.y = spinScaleY->value();
+    uIn.actionVector.z = spinScaleZ->value();
+
+    UserOutput uOut;
+    Exit exitCode = executeCommand(uOut, uIn, Command::modelScale);
+    if (!isOk(exitCode))
+        showError(exitCode);
+    else
+        updateModel();
 }
 
 void MainWindow::rotateModel() {
-    /*
-    using namespace wireframe;
-    userData->rotatePoint.setX(spinRotateCenterX->value());
-    userData->rotatePoint.setY(spinRotateCenterY->value());
-    userData->rotatePoint.setZ(spinRotateCenterZ->value());
-    userData->rotateAngles.setX(qDegreesToRadians(spinRotateAngleX->value()));
-    userData->rotateAngles.setY(qDegreesToRadians(spinRotateAngleY->value()));
-    userData->rotateAngles.setZ(qDegreesToRadians(spinRotateAngleZ->value()));
-    Exit exitCode = processEntry(*userData, Command::modelRotate);
-    updateModel();
-    */
-    throw "TODO";
+    UserInput uIn;
+    uIn.actionVector.x = qDegreesToRadians(spinRotateAngleX->value());
+    uIn.actionVector.y = qDegreesToRadians(spinRotateAngleY->value());
+    uIn.actionVector.z = qDegreesToRadians(spinRotateAngleZ->value());
+
+    UserOutput uOut;
+    Exit exitCode = executeCommand(uOut, uIn, Command::modelRotate);
+    if (!isOk(exitCode))
+        showError(exitCode);
+    else
+        updateModel();
 }
 
-bool MainWindow::updateModel() {
-    bool result = true;
-
+void MainWindow::updateModel() {
     UserOutput uOut;
     Command cmd = perspective ? Command::modelProjectPerspective : Command::modelProjectOrhogonal;
     Exit exitCode = executeCommand(uOut, userInput(cameraDistance), cmd);
 
     if (!isOk(exitCode)) {
         showError(exitCode);
-        result = false;
+
+        if (perspective) {
+            perspective = false;
+            updateModel();
+        }
     }
     else {
-        canvas->updateProjection(*uOut.projection);
-        projectionFree(*uOut.projection);
+        canvas->updateProjection(uOut.projection);
+        projectionFree(uOut.projection);
     }
+}
 
-    return result;
+void MainWindow::resizeEvent(QResizeEvent *e) {
+    canvas->onResize();
 }
 
 void MainWindow::togglePerspective() {
     perspective = !perspective;
-    if (!updateModel())
-        perspective = !perspective;
+    updateModel();
+}
+
+void MainWindow::undo() {
+    UserOutput uOut;
+    Command cmd = Command::modelUndoAction;
+    Exit exitCode = executeCommand(uOut, userInput(), cmd);
+
+    if (!isOk(exitCode))
+        showError(exitCode);
+    else
+        updateModel();
 }

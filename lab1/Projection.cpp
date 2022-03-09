@@ -20,7 +20,7 @@ void polygonFree(Polygon &p) {
 
 void projectionFree(Projection &p) {
     free(p.pointArray);
-    for (int i = 0; i < p.pointsAmount; i++)
+    for (int i = 0; i < p.polygonAmount; i++)
         polygonFree(p.polygonArray[i]);
     free(p.polygonArray);
     zeroMemory(&p);

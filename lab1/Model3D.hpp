@@ -13,10 +13,10 @@ Exit modelAddFace(Model3D *model, Polygon &face);
 Exit modelClear(Model3D *model);
 
 Exit modelMove(Model3D *model, Vector3D moveVector);
-Exit modelRotate(Model3D *model, Vector3D eulerAngles);
+Exit modelRotate(Model3D *model, Vector3D eulerAngles, bool reverse = false);
 Exit modelScale(Model3D *model, Vector3D scaleVector);
 
 void modelFree(Model3D *&model);
 
-Exit modelProjectPerspective(Projection *&projection, const Model3D *model, Real cameraDistance);
-Exit modelProjectOrthogonal(Projection *&projection, const Model3D *model);
+Exit modelProjectPerspective(Projection &projection, const Model3D *model, Real cameraDistance);
+Exit modelProjectOrthogonal(Projection &projection, const Model3D *model);

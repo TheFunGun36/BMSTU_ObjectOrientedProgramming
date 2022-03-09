@@ -2,7 +2,7 @@
 #include "Exit.hpp"
 #include "MemoryImpl.hpp"
 
-const Real vectorArrIncCoef = 2.0;
+const Real vectorArrInc = 4.0;
 
 template<typename T>
 struct Vector {
@@ -40,7 +40,7 @@ inline Exit vectorReserve(Vector<T> &arr, size_t newSize) {
         ec = reallocImpl(arr.arr, newSize);
 
         if (isOk(ec))
-            arr.size = newSize;
+            arr.allocated = newSize;
     }
 
     return ec;
@@ -48,18 +48,18 @@ inline Exit vectorReserve(Vector<T> &arr, size_t newSize) {
 
 template <typename T>
 inline Exit vectorInc(Vector<T> &arr) {
-    size_t newLen = ceil(vectorArrIncCoef * arr.allocated);
+    size_t newLen = ceil(vectorArrInc + arr.allocated);
     Exit ec = vectorReserve(arr, newLen);
-
-    if (isOk(ec))
-        arr.allocated = newLen;
 
     return ec;
 }
 
 template <typename T>
 inline Exit vectorPushBack(Vector<T> &arr, const T &val) {
-    Exit ec = vectorInc(arr);
+    Exit ec = Exit::success;
+
+    if (arr.size >= arr.allocated)
+        vectorInc(arr);
 
     if (isOk(ec)) {
         arr.arr[arr.size] = val;

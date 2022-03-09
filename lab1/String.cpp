@@ -9,31 +9,59 @@ struct String {
     Char *end; // указывает на \0
 };
 
+static inline size_t strlenImpl(const Char *str) {
+#ifdef WCHAR
+    return wcslen(str);
+#else
+    return strlen(str);
+#endif
+}
+
+static inline double strtodImpl(const Char *str, Char **endPtr) {
+#ifdef WCHAR
+    return wcstod(str, endPtr);
+#else
+    return strtod(str, endPtr);
+#endif
+}
+
+static inline long strtolImpl(const Char *str, Char **endPtr, int radix) {
+#ifdef WCHAR
+    return wcstol(str, endPtr, radix);
+#else
+    return strtol(str, endPtr, radix);
+#endif
+}
+
 static inline bool isSpace(Char c) {
-    return strchr(" \t\v\n\r\f", c);
+#ifdef WCHAR
+    return wcschr(TEXT(" \t\v\n\r\f"), c);
+#else
+    return strchr(TEXT(" \t\v\n\r\f"), c);
+#endif
 }
 
 Exit strInitialize(String *&str, const Char *src) {
     Exit ec = str ? Exit::strInitialized : Exit::success;
 
-    size_t sz = 0;
+    size_t length = 0;
     if (!src) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        sz = strlen(src) + 1;
+        length = strlenImpl(src) + 1;
         ec = allocImpl(str);
     }
 
     if (isOk(ec)) {
-        ec = allocImpl(str->memory, sz);
+        ec = allocImpl(str->memory, length);
     }
 
     if (isOk(ec)) {
-        str->allocated = sz;
+        str->allocated = length;
         str->current = str->memory;
-        str->end = str->current + sz - 1;
-        memcpy(str->current, src, sz * sizeof(Char));
+        str->end = str->current + length - 1;
+        memcpy(str->current, src, length * sizeof(Char));
     }
     else {
         free(str);
@@ -54,15 +82,15 @@ Exit strAppend(String *str, const Char *other) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
     Char *oldMemory = nullptr;
-    size_t otherLen = 0;
+    size_t otherLength = 0;
 
     if (!other) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        otherLen = strlen(other);
+        otherLength = strlenImpl(other);
         oldMemory = str->memory;
-        ec = reallocImpl(str->memory, str->allocated + otherLen);
+        ec = reallocImpl(str->memory, str->allocated + otherLength);
     }
 
     if (isOk(ec)) {
@@ -70,10 +98,10 @@ Exit strAppend(String *str, const Char *other) {
         str->current += ptrDiff;
         str->end += ptrDiff;
 
-        str->allocated += otherLen;
-        memcpy(str->end, other, (otherLen + 1) * sizeof(Char));
+        str->allocated += otherLength;
+        memcpy(str->end, other, (otherLength + 1) * sizeof(Char));
 
-        str->end += otherLen;
+        str->end += otherLength;
     }
 
     return ec;
@@ -101,7 +129,7 @@ Exit strIsFirstWord(bool &result, const String *str, const Char *word) {
 
         const Char *p = str->current;
         const Char *w = word;
-        while (p < str->end && *w != '\0') {
+        while (p <= str->end && *w != '\0') {
             result = *p == *w;
 
             p++;
@@ -142,6 +170,8 @@ Exit strNextWord(String *str) {
             p++;
         while (p < str->end && isSpace(*p))
             p++;
+
+        str->current = p;
     }
 
     return ec;
@@ -153,9 +183,9 @@ Exit strTrim(String *str) {
     if(isOk(ec)) {
         while (str->current < str->end && isSpace(*str->current))
             str->current++;
-        while (str->end > str->current && isSpace(*str->end))
+        while (str->end >= str->current && isSpace(*str->end))
             str->end--;
-        *str->end = '\0';
+        *(++str->end) = '\0';
     }
 
     return ec;
@@ -166,7 +196,7 @@ Exit strToNumber(Real &result, const String *str) {
     
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = strtod(str->current, &end);
+        result = strtodImpl(str->current, &end);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 
@@ -178,7 +208,7 @@ Exit strToNumber(int &result, const String *str) {
 
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = strtol(str->current, &end, 10);
+        result = strtolImpl(str->current, &end, 10);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 

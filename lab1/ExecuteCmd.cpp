@@ -9,43 +9,40 @@ static const Char *getErrorMessage(Exit exitCode) {
 
     switch (exitCode) {
         case Exit::success:
-            msg = "Команда выполнена успешно";
+            msg = TEXT("Команда выполнена успешно");
             break;
         case Exit::fileOpenReadFail:
-            msg = "Не удалось считать данные из файла";
-            break;
-        case Exit::fileOpenWriteFail:
-            msg = "Не удалось записать данные в файл";
+            msg = TEXT("Не удалось считать данные из файла");
             break;
         case Exit::modelUnininialized:
-            msg = "Модель не инициализирована";
+            msg = TEXT("Модель не инициализирована");
             break;
         case Exit::modelInitialized:
-            msg = "Модель уже инициализирована";
+            msg = TEXT("Модель уже инициализирована");
             break;
         case Exit::modelScaleZero:
-            msg = "Недопустимо изменение мастшаба модели с коэффициентом 0";
+            msg = TEXT("Недопустимо изменение мастшаба модели с коэффициентом 0");
             break;
         case Exit::noActionToUndo:
-            msg = "Нет действий для отмены";
+            msg = TEXT("Нет действий для отмены");
             break;
         case Exit::inputInvalidFilename:
-            msg = "Файл не найден";
+            msg = TEXT("Файл не найден");
             break;
         case Exit::inputCameraTooClose:
-            msg = "Часть вершин распологаются за пределами камеры";
+            msg = TEXT("Часть вершин распологаются за пределами камеры");
             break;
         case Exit::cmdInvalid:
-            msg = "Команда не распознана";
+            msg = TEXT("Команда не распознана");
             break;
         case Exit::noMemory:
-            msg = "Недостаточно оперативной памяти";
+            msg = TEXT("Недостаточно оперативной памяти");
             break;
         case Exit::nonZeroInputPtr:
-            msg = "Ненулевой входной указатель";
+            msg = TEXT("Ненулевой входной указатель");
             break;
         case Exit::sizeInvalid:
-            msg = "Некорректный размер массива";
+            msg = TEXT("Некорректный размер массива");
             break;
     }
 
@@ -77,9 +74,6 @@ Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd) {
             exitCode = fileModelLoad(model, uOut.lineFailed, uIn.filename);
             if (exitCode == Exit::success)
                 actionListClear(actionList);
-            break;
-        case Command::modelSave:
-            exitCode = fileModelSave(model, uIn.filename);
             break;
         case Command::modelProjectPerspective:
             exitCode = modelProjectPerspective(uOut.projection, model, uIn.cameraDistance);

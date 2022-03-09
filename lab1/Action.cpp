@@ -53,8 +53,7 @@ static void actionPop(Node *&head) {
     }
 }
 
-void actionListInitialize(ActionList *&head) {
-}
+void actionListInitialize(ActionList *&head) {}
 
 void actionListFree(ActionList *&head) {
     actionListClear(head);
@@ -74,8 +73,12 @@ Exit actionRevert(Model3D *model, ActionList *&head) {
         ec = invertAction(a);
     }
 
-    if (isOk(ec))
-        ec = modelApplyAction(model, a);
+    if (isOk(ec)) {
+        if (a.type == a.Rotate)
+            ec = modelRotate(model, a.data, true);
+        else
+            ec = modelApplyAction(model, a);
+    }
 
     if (isOk(ec))
         actionPop(head);
@@ -84,13 +87,24 @@ Exit actionRevert(Model3D *model, ActionList *&head) {
 }
 
 Exit actionApply(Model3D *model, ActionList *&head, const Action &a) {
-    Exit ec = head ? Exit::success : Exit::noActionToUndo;
+    Exit ec = model ? Exit::success : Exit::modelUnininialized;
+
+    Node *n = nullptr;
 
     if (isOk(ec))
-        ec = modelApplyAction(model, head->action);
+        ec = allocImpl(n);
 
     if (isOk(ec))
-        actionPop(head);
+        ec = modelApplyAction(model, a);
+
+    if (!isOk(ec)) {
+        free(n);
+    }
+    else {
+        n->action = a;
+        n->prevAction = head;
+        head = n;
+    }
 
     return ec;
 }

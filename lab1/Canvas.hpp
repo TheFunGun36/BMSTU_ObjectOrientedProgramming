@@ -11,6 +11,9 @@ public:
     Canvas(QWidget *parent = nullptr);
     void updateProjection(const Projection &projection);
 
+public slots:
+    void onResize();
+
 private:
     QColor colorX;
     QColor colorY;

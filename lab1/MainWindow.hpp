@@ -3,6 +3,7 @@
 #include <qmainwindow.h>
 #include <qlayout.h>
 #include <qspinbox.h>
+#include <qevent.h>
 #include "Model3D.hpp"
 #include "ExecuteCmd.hpp"
 
@@ -19,42 +20,36 @@ private:
     Canvas *canvas;
     qreal cameraDistance;
 
-    QDoubleSpinBox *spinMoveDx;
-    QDoubleSpinBox *spinMoveDy;
-    QDoubleSpinBox *spinMoveDz;
+    QDoubleSpinBox *spinMoveX;
+    QDoubleSpinBox *spinMoveY;
+    QDoubleSpinBox *spinMoveZ;
 
-    QDoubleSpinBox *spinScaleKx;
-    QDoubleSpinBox *spinScaleKy;
-    QDoubleSpinBox *spinScaleKz;
-    QDoubleSpinBox *spinScaleCenterX;
-    QDoubleSpinBox *spinScaleCenterY;
-    QDoubleSpinBox *spinScaleCenterZ;
+    QDoubleSpinBox *spinScaleX;
+    QDoubleSpinBox *spinScaleY;
+    QDoubleSpinBox *spinScaleZ;
 
     QDoubleSpinBox *spinRotateAngleX;
     QDoubleSpinBox *spinRotateAngleY;
     QDoubleSpinBox *spinRotateAngleZ;
-    QDoubleSpinBox *spinRotateCenterX;
-    QDoubleSpinBox *spinRotateCenterY;
-    QDoubleSpinBox *spinRotateCenterZ;
 
     QAction *actionFileOpen;
-    QAction *actionFileSave;
-    QAction *actionFileSaveAs;
     QAction *actionModelPerspective;
+    QAction *actionModelUndo;
 
     void createMoveSection(QVBoxLayout *layout);
     void createScaleSection(QVBoxLayout *layout);
     void createRotateSection(QVBoxLayout *layout);
     void createMenu();
     void showError(Exit exitCode);
-    bool updateModel();
+    void updateModel();
+
+    virtual void resizeEvent(QResizeEvent *e) override;
 
 private slots:
     void fileOpen();
-    void fileSave();
-    void fileSaveAs();
     void moveModel();
     void scaleModel();
     void rotateModel();
     void togglePerspective();
+    void undo();
 };

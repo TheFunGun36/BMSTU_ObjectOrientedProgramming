@@ -5,18 +5,34 @@
 
 #define SET_EC_IF_OK(call) if (isOk(ec)) ec = (call)
 
-static const Char prefixVertex[] = "v";
-static const Char prefixFace[] = "f";
+static const Char prefixVertex[] = TEXT("v");
+static const Char prefixFace[] = TEXT("f");
+
+static inline Char *fgetsImpl(Char *buffer, int maxCount, FILE *stream) {
+#ifdef WCHAR
+    return fgetws(buffer, maxCount, stream);
+#else
+    return fgets(buffer, maxCount, stream);
+#endif
+}
+
+static inline FILE *fopenImpl(const Char *fileName, const Char *mode) {
+#ifdef WCHAR
+    return _wfopen(fileName, mode);
+#else
+    return fopen(fileName, mode);
+#endif
+}
 
 static Exit fileReadLine(String *&line, FILE *f) {
     const size_t bufSize = 32;
-    Exit ec = strInitialize(line, "");
+    Exit ec = strInitialize(line, TEXT(""));
     bool endl = false;
 
     while (isOk(ec) && !endl) {
         Char buf[bufSize];
 
-        if (fgets(buf, bufSize, f))
+        if (fgetsImpl(buf, bufSize, f))
             ec = strAppend(line, buf);
         else
             ec = feof(f) ? Exit::fileEOF : Exit::fileOpenReadFail;
@@ -44,7 +60,7 @@ static Exit parsePoint(Point3D &point, const String *line) {
     SET_EC_IF_OK(strNextWord(str));
     SET_EC_IF_OK(strToNumber(point.y, str));
     SET_EC_IF_OK(strNextWord(str));
-    SET_EC_IF_OK(strToNumber(point.y, str));
+    SET_EC_IF_OK(strToNumber(point.z, str));
 
     strFree(str);
 
@@ -62,22 +78,24 @@ static Exit parseFace(Polygon &face, const String *line) {
 
     String *str = nullptr;
     SET_EC_IF_OK(strDuplicate(str, line));
+    SET_EC_IF_OK(strNextWord(str));
 
     bool isEmpty;
     SET_EC_IF_OK(strIsEmpty(isEmpty, str));
 
-    Vector<size_t> vertex;
+    Vector<size_t> vertex = { 0 };
     SET_EC_IF_OK(vectorInitialize(vertex, 3));
-    
-    while (isOk(ec)) {
+
+    while (isOk(ec) && !isEmpty) {
         int number;
-        ec = strNextWord(str);
-        SET_EC_IF_OK(strToNumber(number, str));
+        ec = strToNumber(number, str);
 
         if (isOk(ec) && number < 1)
             ec = Exit::fileOpenReadFail;
 
-        SET_EC_IF_OK(vectorPushBack(vertex, static_cast<size_t>(number)));
+        SET_EC_IF_OK(vectorPushBack(vertex, static_cast<size_t>(number - 1)));
+        SET_EC_IF_OK(strNextWord(str));
+        SET_EC_IF_OK(strIsEmpty(isEmpty, str));
     }
 
     if (isOk(ec) && vertex.size < 3)
@@ -96,12 +114,12 @@ static Exit parseFace(Polygon &face, const String *line) {
     return ec;
 }
 
-Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
+Exit fileModelLoad(Model3D *&model, int &lineFailed, const Char *filename) {
     Exit ec = model ? Exit::success : Exit::modelUnininialized;
 
     FILE *file = nullptr;
     if (isOk(ec)) {
-        file = fopen(filename, "rt");
+        file = fopenImpl(filename, TEXT("rt"));
 
         if (!file)
             ec = Exit::fileOpenReadFail;
@@ -111,17 +129,11 @@ Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
     SET_EC_IF_OK(modelInitialize(modelTmp));
 
     lineFailed = 0;
-    bool eof = false;
-    while (isOk(ec) && !eof) {
+    while (isOk(ec)) {
         lineFailed++;
 
         String *line = nullptr;
         ec = fileReadLine(line, file);
-
-        if (ec == Exit::fileEOF) {
-            eof = true;
-            ec = Exit::success;
-        }
 
         SET_EC_IF_OK(strCutUntil(line, '#'));
         SET_EC_IF_OK(strTrim(line));
@@ -134,11 +146,10 @@ Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
         }
 
         if (ec == Exit::cmdInvalid) {
-            Polygon p;
+            Polygon p = { 0 };
             ec = parseFace(p, line);
 
             SET_EC_IF_OK(modelAddFace(modelTmp, p));
-            polygonFree(p);
         }
 
         // Не будем выбрасывать из-за неизвестных команд,
@@ -148,6 +159,9 @@ Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
 
         strFree(line);
     }
+
+    if (ec == Exit::fileEOF)
+        ec = Exit::success;
 
     if (isOk(ec)) {
         modelFree(model);
@@ -159,9 +173,4 @@ Exit fileModelLoad(Model3D *model, int &lineFailed, const Char *filename) {
     }
 
     return ec;
-}
-
-Exit fileModelSave(const Model3D *model, const Char *filename) {
-    throw "TODO";
-    return Exit();
 }
