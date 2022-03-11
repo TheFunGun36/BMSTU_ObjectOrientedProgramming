@@ -9,36 +9,8 @@ struct String {
     Char *end; // указывает на \0
 };
 
-static inline size_t strlenImpl(const Char *str) {
-#ifdef WCHAR
-    return wcslen(str);
-#else
-    return strlen(str);
-#endif
-}
-
-static inline double strtodImpl(const Char *str, Char **endPtr) {
-#ifdef WCHAR
-    return wcstod(str, endPtr);
-#else
-    return strtod(str, endPtr);
-#endif
-}
-
-static inline long strtolImpl(const Char *str, Char **endPtr, int radix) {
-#ifdef WCHAR
-    return wcstol(str, endPtr, radix);
-#else
-    return strtol(str, endPtr, radix);
-#endif
-}
-
 static inline bool isSpace(Char c) {
-#ifdef WCHAR
     return wcschr(TEXT(" \t\v\n\r\f"), c);
-#else
-    return strchr(TEXT(" \t\v\n\r\f"), c);
-#endif
 }
 
 Exit strInitialize(String *&str, const Char *src) {
@@ -49,7 +21,7 @@ Exit strInitialize(String *&str, const Char *src) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        length = strlenImpl(src) + 1;
+        length = wcslen(src) + 1;
         ec = allocImpl(str);
     }
 
@@ -88,7 +60,7 @@ Exit strAppend(String *str, const Char *other) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        otherLength = strlenImpl(other);
+        otherLength = wcslen(other);
         oldMemory = str->memory;
         ec = reallocImpl(str->memory, str->allocated + otherLength);
     }
@@ -196,7 +168,7 @@ Exit strToNumber(Real &result, const String *str) {
     
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = strtodImpl(str->current, &end);
+        result = wcstod(str->current, &end);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 
@@ -208,7 +180,7 @@ Exit strToNumber(int &result, const String *str) {
 
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = strtolImpl(str->current, &end, 10);
+        result = wcstol(str->current, &end, 10);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 

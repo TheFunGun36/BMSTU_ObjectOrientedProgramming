@@ -8,22 +8,6 @@
 static const Char prefixVertex[] = TEXT("v");
 static const Char prefixFace[] = TEXT("f");
 
-static inline Char *fgetsImpl(Char *buffer, int maxCount, FILE *stream) {
-#ifdef WCHAR
-    return fgetws(buffer, maxCount, stream);
-#else
-    return fgets(buffer, maxCount, stream);
-#endif
-}
-
-static inline FILE *fopenImpl(const Char *fileName, const Char *mode) {
-#ifdef WCHAR
-    return _wfopen(fileName, mode);
-#else
-    return fopen(fileName, mode);
-#endif
-}
-
 static Exit fileReadLine(String *&line, FILE *f) {
     const size_t bufSize = 32;
     Exit ec = strInitialize(line, TEXT(""));
@@ -32,7 +16,7 @@ static Exit fileReadLine(String *&line, FILE *f) {
     while (isOk(ec) && !endl) {
         Char buf[bufSize];
 
-        if (fgetsImpl(buf, bufSize, f))
+        if (fgetws(buf, bufSize, f))
             ec = strAppend(line, buf);
         else
             ec = feof(f) ? Exit::fileEOF : Exit::fileOpenReadFail;
@@ -119,7 +103,7 @@ Exit fileModelLoad(Model3D *&model, int &lineFailed, const Char *filename) {
 
     FILE *file = nullptr;
     if (isOk(ec)) {
-        file = fopenImpl(filename, TEXT("rt"));
+        file = _wfopen(filename, TEXT("rt"));
 
         if (!file)
             ec = Exit::fileOpenReadFail;
