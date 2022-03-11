@@ -33,7 +33,8 @@ Exit strInitialize(String *&str, const Char *src) {
         str->allocated = length;
         str->current = str->memory;
         str->end = str->current + length - 1;
-        memcpy(str->current, src, length * sizeof(Char));
+        for (int i = 0; i < length; i++)
+            str->current[i] = src[i];
     }
     else {
         free(str);
@@ -71,7 +72,8 @@ Exit strAppend(String *str, const Char *other) {
         str->end += ptrDiff;
 
         str->allocated += otherLength;
-        memcpy(str->end, other, (otherLength + 1) * sizeof(Char));
+        for (int i = 0; i < otherLength + 1; i++)
+            str->end[i] = other[i];
 
         str->end += otherLength;
     }

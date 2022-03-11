@@ -89,7 +89,8 @@ static Exit parseFace(Polygon &face, const String *line) {
 
     if (isOk(ec)) {
         face.amount = vertex.size;
-        memcpy(face.vertexIndexArray, vertex.arr, vertex.size * sizeof(size_t));
+        for (int i = 0; i < vertex.size; i++)
+            face.vertexIndexArray[i] = vertex.arr[i];
     }
 
     vectorFree(vertex);

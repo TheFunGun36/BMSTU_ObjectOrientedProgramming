@@ -241,7 +241,6 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
             }
         }
         else {
-            // memcpy нельзя, из-за дополнительной координаты у модели
             for (int i = 0; i < pointsAmount; i++) {
                 projection.pointArray[i].x = model->points.arr[i].x;
                 projection.pointArray[i].y = -model->points.arr[i].y;
@@ -251,9 +250,8 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
             projection.polygonAmount = facesAmount;
 
             for (int i = 0; i < facesAmount; i++) {
-                memcpy(projection.polygonArray[i].vertexIndexArray,
-                    model->faces.arr[i].vertexIndexArray,
-                    model->faces.arr[i].amount * sizeof(size_t));
+                for (int j = 0; j < model->faces.arr[i].amount; j++)
+                    projection.polygonArray[i].vertexIndexArray[j] = model->faces.arr[i].vertexIndexArray[j];
                 projection.polygonArray[i].amount = model->faces.arr[i].amount;
             }
 
