@@ -1,7 +1,6 @@
 #include "ExecuteCmd.hpp"
 #include "Model3D.hpp"
 #include "ModelFile.hpp"
-#include "Action.hpp"
 #include "MemoryImpl.hpp"
 
 static const Char *getErrorMessage(Exit exitCode) {
@@ -49,31 +48,19 @@ static const Char *getErrorMessage(Exit exitCode) {
     return msg;
 }
 
-static inline Action::Type actionTypeByCommand(Command cmd) {
-    return (Action::Type)((int)cmd - (int)Command::modelMove);
-}
-
 Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd) {
     Exit exitCode = Exit::success;
     static Model3D *model = nullptr;
-    static ActionList *actionList = nullptr;
 
     switch (cmd) {
         case Command::initialize:
             exitCode = modelInitialize(model);
-            if (exitCode == Exit::success)
-                actionListInitialize(actionList);
-            else
-                modelFree(model);
             break;
         case Command::uninitialize:
             modelFree(model);
-            actionListFree(actionList);
             break;
         case Command::modelLoad:
             exitCode = fileModelLoad(model, uOut.lineFailed, uIn.filename);
-            if (exitCode == Exit::success)
-                actionListClear(actionList);
             break;
         case Command::modelProjectPerspective:
             exitCode = modelProjectPerspective(uOut.projection, model, uIn.cameraDistance);
@@ -81,17 +68,14 @@ Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd) {
         case Command::modelProjectOrhogonal:
             exitCode = modelProjectOrthogonal(uOut.projection, model);
             break;
-        case Command::modelMove: [[fallthrough]];
-        case Command::modelScale: [[fallthrough]];
-        case Command::modelRotate: {
-            Action action;
-            action.type = actionTypeByCommand(cmd);
-            action.data = uIn.actionVector;
-            exitCode = actionApply(model, actionList, action);
+        case Command::modelMove:
+            exitCode = modelMove(model, uIn.actionVector);
             break;
-        }
-        case Command::modelUndoAction:
-            exitCode = actionRevert(model, actionList);
+        case Command::modelScale:
+            exitCode = modelScale(model, uIn.actionVector);
+            break;
+        case Command::modelRotate: 
+            exitCode = modelRotate(model, uIn.actionVector);
             break;
         case Command::getErrorMessage:
             uOut.errorMessage = getErrorMessage(uIn.exitCode);

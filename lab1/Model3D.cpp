@@ -108,6 +108,45 @@ Exit modelMove(Model3D *model, Vector3D moveVector) {
     return ec;
 }
 
+static void modelRotateX(Model3D &model, Real angle) {
+    Real sinx = sin(angle);
+    Real cosx = cos(angle);
+    for (int i = 0; i < model.points.size; i++) {
+        Point3D &p = model.points.arr[i];
+        Point3D &c = model.center;
+        Real dy = p.y - c.y;
+        Real dz = p.z - c.z;
+        p.y = c.y + dy * cosx + dz * sinx;
+        p.z = c.z - dy * sinx + dz * cosx;
+    }
+}
+
+static void modelRotateY(Model3D &model, Real angle) {
+    Real siny = sin(angle);
+    Real cosy = cos(angle);
+    for (int i = 0; i < model.points.size; i++) {
+        Point3D &p = model.points.arr[i];
+        Point3D &c = model.center;
+        Real dx = p.x - c.x;
+        Real dz = p.z - c.z;
+        p.x = c.x + dx * cosy + dz * siny;
+        p.z = c.z - dx * siny + dz * cosy;
+    }
+}
+
+static void modelRotateZ(Model3D &model, Real angle) {
+    Real sinz = sin(angle);
+    Real cosz = cos(angle);
+    for (int i = 0; i < model.points.size; i++) {
+        Point3D &p = model.points.arr[i];
+        Point3D &c = model.center;
+        Real dx = p.x - c.x;
+        Real dy = p.y - c.y;
+        p.x = c.x + dx * cosz + dy * sinz;
+        p.y = c.y - dx * sinz + dy * cosz;
+    }
+}
+
 Exit modelRotate(Model3D *model, Vector3D eulerAngles, bool reverse) {
     Exit ec = Exit::success;
 
@@ -115,67 +154,15 @@ Exit modelRotate(Model3D *model, Vector3D eulerAngles, bool reverse) {
         ec = Exit::modelUnininialized;
     }
     else {
-        Real sinx = sin(eulerAngles.x);
-        Real cosx = cos(eulerAngles.x);
-        Real siny = sin(eulerAngles.y);
-        Real cosy = cos(eulerAngles.y);
-        Real sinz = sin(eulerAngles.z);
-        Real cosz = cos(eulerAngles.z);
-
         if (reverse) {
-            // ROTATE Z
-            for (int i = 0; i < model->points.size; i++) {
-                Point3D &p = model->points.arr[i];
-                Point3D &c = model->center;
-                Real dx = p.x - c.x;
-                Real dy = p.y - c.y;
-                p.x = c.x + dx * cosz + dy * sinz;
-                p.y = c.y - dx * sinz + dy * cosz;
-            }
+            modelRotateZ(*model, eulerAngles.z);
+            modelRotateY(*model, eulerAngles.y);
+            modelRotateX(*model, eulerAngles.x);
         }
         else {
-            // ROTATE X
-            for (int i = 0; i < model->points.size; i++) {
-                Point3D &p = model->points.arr[i];
-                Point3D &c = model->center;
-                Real dy = p.y - c.y;
-                Real dz = p.z - c.z;
-                p.y = c.y + dy * cosx + dz * sinx;
-                p.z = c.z - dy * sinx + dz * cosx;
-            }
-        }
-
-        // ROTATE Y
-        for (int i = 0; i < model->points.size; i++) {
-            Point3D &p = model->points.arr[i];
-            Point3D &c = model->center;
-            Real dx = p.x - c.x;
-            Real dz = p.z - c.z;
-            p.x = c.x + dx * cosy + dz * siny;
-            p.z = c.z - dx * siny + dz * cosy;
-        }
-
-        if (reverse) {
-            // ROTATE X
-            for (int i = 0; i < model->points.size; i++) {
-                Point3D &p = model->points.arr[i];
-                Point3D &c = model->center;
-                Real dy = p.y - c.y;
-                Real dz = p.z - c.z;
-                p.y = c.y + dy * cosx + dz * sinx;
-                p.z = c.z - dy * sinx + dz * cosx;
-            }
-        }
-        else {
-            //ROTATE Z
-            for (int i = 0; i < model->points.size; i++) {
-                Point3D &p = model->points.arr[i];
-                Point3D &c = model->center;
-                Real dx = p.x - c.x;
-                Real dy = p.y - c.y;
-                p.x = c.x + dx * cosz + dy * sinz;
-                p.y = c.y - dx * sinz + dy * cosz;
-            }
+            modelRotateX(*model, eulerAngles.x);
+            modelRotateY(*model, eulerAngles.y);
+            modelRotateZ(*model, eulerAngles.z);
         }
     }
 
@@ -213,6 +200,46 @@ void modelFree(Model3D *&model) {
     }
 }
 
+static Exit projectionAllocFaces(Projection &projection, const Model3D &model) {
+    size_t facesAmount = model.faces.size;
+    Exit ec = Exit::success;
+
+    int i = 0;
+    while (isOk(ec) && i < facesAmount) {
+        Polygon *dst = projection.polygonArray + i;
+        Polygon *src = model.faces.arr + i;
+
+        ec = allocImpl(dst->vertexIndexArray, src->amount);
+        i++;
+    }
+
+    if (!isOk(ec)) {
+        i -= 2;
+        while (i > 0) {
+            free(projection.polygonArray[i].vertexIndexArray);
+            i--;
+        }
+    }
+
+    return ec;
+}
+
+static void projectionCopyPoints(Projection &projection, const Vector<Point3D> points) {
+    size_t pointsAmount = points.size;
+    for (int i = 0; i < pointsAmount; i++) {
+        projection.pointArray[i].x = points.arr[i].x;
+        projection.pointArray[i].y = -points.arr[i].y;
+    }
+}
+
+static void projectionCopyVerticies(Projection &projection, const Vector<Polygon> faces) {
+    for (int i = 0; i < projection.polygonAmount; i++) {
+        for (int j = 0; j < faces.arr[i].amount; j++)
+            projection.polygonArray[i].vertexIndexArray[j] = faces.arr[i].vertexIndexArray[j];
+        projection.polygonArray[i].amount = faces.arr[i].amount;
+    }
+}
+
 Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
     Exit ec = model ? Exit::success : Exit::modelUnininialized;
 
@@ -222,42 +249,19 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
         ec = allocImpl(projection.polygonArray, model->faces.size);
 
     if (isOk(ec)) {
-        size_t pointsAmount = model->points.size;
-        size_t facesAmount = model->faces.size;
         int i = 0;
-        while (isOk(ec) && i < facesAmount) {
-            Polygon *dst = projection.polygonArray + i;
-            Polygon *src = model->faces.arr + i;
+        ec = projectionAllocFaces(projection, *model);
+    }
 
-            ec = allocImpl(dst->vertexIndexArray, src->amount);
-            i++;
-        }
+    if (isOk(ec)) {
+        projection.pointsAmount = model->points.size;
+        projection.polygonAmount = model->faces.size;
 
-        if (!isOk(ec)) {
-            i -= 2;
-            while (i > 0) {
-                free(projection.polygonArray[i].vertexIndexArray);
-                i--;
-            }
-        }
-        else {
-            for (int i = 0; i < pointsAmount; i++) {
-                projection.pointArray[i].x = model->points.arr[i].x;
-                projection.pointArray[i].y = -model->points.arr[i].y;
-            }
+        projection.center.x = model->center.x;
+        projection.center.y = model->center.y;
 
-            projection.pointsAmount = pointsAmount;
-            projection.polygonAmount = facesAmount;
-
-            for (int i = 0; i < facesAmount; i++) {
-                for (int j = 0; j < model->faces.arr[i].amount; j++)
-                    projection.polygonArray[i].vertexIndexArray[j] = model->faces.arr[i].vertexIndexArray[j];
-                projection.polygonArray[i].amount = model->faces.arr[i].amount;
-            }
-
-            projection.center.x = model->center.x;
-            projection.center.y = model->center.y;
-        }
+        projectionCopyPoints(projection, model->points);
+        projectionCopyVerticies(projection, model->faces);
     }
 
     if (!isOk(ec))

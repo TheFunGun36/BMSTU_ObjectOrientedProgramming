@@ -85,7 +85,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Action.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Model3D.cpp" />
     <ClCompile Include="ModelFile.cpp" />
@@ -102,7 +101,6 @@
     <QtMoc Include="Canvas.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Action.hpp" />
     <ClInclude Include="Exit.hpp" />
     <ClInclude Include="MemoryImpl.hpp" />
     <ClInclude Include="String.hpp" />
