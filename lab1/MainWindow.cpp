@@ -158,21 +158,13 @@ void MainWindow::fileOpen() {
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getOpenFileName(this);
     if (!filename.isEmpty()) {
-        Exit exitCode = executeCommand(uOut, userInput(), Command::uninitialize);
-        exitCode = executeCommand(uOut, userInput(), Command::initialize);
-
-        if (!isOk(exitCode)) {
-            showError(exitCode);
-        }
-        else {
-            UserOutput uOut;
-            Char *cstr = new Char[filename.size() + 1];
-            filename.toWCharArray(cstr);
-            cstr[filename.size()] = '\0';
-            UserInput uIn = userInput(cstr);
-            exitCode = executeCommand(uOut, uIn, Command::modelLoad);
-            delete[] cstr;
-        }
+        UserOutput uOut;
+        Char *cstr = new Char[filename.size() + 1];
+        filename.toWCharArray(cstr);
+        cstr[filename.size()] = '\0';
+        UserInput uIn = userInput(cstr);
+        Exit exitCode = executeCommand(uOut, uIn, Command::modelLoad);
+        delete[] cstr;
 
         if (isOk(exitCode)) {
             perspective = false;

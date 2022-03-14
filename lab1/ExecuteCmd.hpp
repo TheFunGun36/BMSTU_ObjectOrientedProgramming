@@ -5,7 +5,6 @@
 #include "Projection.hpp"
 
 enum class Command {
-    initialize,
     uninitialize,
     modelLoad,
     modelProjectPerspective,

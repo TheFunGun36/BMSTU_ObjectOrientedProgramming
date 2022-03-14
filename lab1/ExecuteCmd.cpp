@@ -49,14 +49,11 @@ static const Char *getErrorMessage(Exit exitCode) {
 
 Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd) {
     Exit exitCode = Exit::success;
-    static Model3D *model = nullptr;
+    static Model3D model = modelEmpty();
 
     switch (cmd) {
-        case Command::initialize:
-            exitCode = modelInitialize(model);
-            break;
         case Command::uninitialize:
-            modelFree(model);
+            modelClear(model);
             break;
         case Command::modelLoad:
             exitCode = fileModelLoad(model, uIn.filename);

@@ -3,7 +3,6 @@
 enum class Exit {
     success,
     fileOpenReadFail,
-    fileOpenWriteFail,
 
     fileEOF,
 

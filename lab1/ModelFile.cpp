@@ -112,8 +112,8 @@ static Exit fileOpen(FILE *&file, const Char *filename) {
     return ec;
 }
 
-static Exit fileParseLine(FILE *file, Model3D *model) {
-    Exit ec = (file && model) ? Exit::success : Exit::modelUnininialized;
+static Exit fileParseLine(FILE *file, Model3D &model) {
+    Exit ec = file ? Exit::success : Exit::fileOpenReadFail;
 
     String *line = nullptr;
     if (isOk(ec)) {
@@ -138,14 +138,13 @@ static Exit fileParseLine(FILE *file, Model3D *model) {
     return ec;
 }
 
-Exit fileModelLoad(Model3D *&model, const Char *filename) {
-    Exit ec = model ? Exit::success : Exit::modelUnininialized;
+Exit fileModelLoad(Model3D &model, const Char *filename) {
+    Exit ec = filename ? Exit::success : Exit::fileOpenReadFail;
 
     FILE *file = nullptr;
     SET_EC_IF_OK(fileOpen(file, filename));
 
-    Model3D *modelTmp = nullptr;
-    SET_EC_IF_OK(modelInitialize(modelTmp));
+    Model3D modelTmp = modelEmpty();
 
     while (isOk(ec)) {
         ec = fileParseLine(file, modelTmp);
@@ -160,10 +159,10 @@ Exit fileModelLoad(Model3D *&model, const Char *filename) {
         ec = Exit::success;
 
     if (!isOk(ec)) {
-        modelFree(modelTmp);
+        modelClear(modelTmp);
     }
     else {
-        modelFree(model);
+        modelClear(model);
         model = modelTmp;
     }
 
