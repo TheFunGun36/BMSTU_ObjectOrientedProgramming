@@ -1,7 +1,6 @@
 #include "ExecuteCmd.hpp"
 #include "Model3D.hpp"
 #include "ModelFile.hpp"
-#include "MemoryImpl.hpp"
 
 static const Char *getErrorMessage(Exit exitCode) {
     const Char *msg = nullptr;

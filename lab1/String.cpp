@@ -22,11 +22,13 @@ Exit strInitialize(String *&str, const Char *src) {
     }
     else if (isOk(ec)) {
         length = wcslen(src) + 1;
-        ec = allocImpl(str);
+        str = (String *)malloc(sizeof(String));
+        ec = str ? Exit::success : Exit::noMemory;
     }
 
     if (isOk(ec)) {
-        ec = allocImpl(str->memory, length);
+        str->memory = (Char *)malloc(length * sizeof(Char));
+        ec = str->memory ? Exit::success : Exit::noMemory;
     }
 
     if (isOk(ec)) {
@@ -63,7 +65,11 @@ Exit strAppend(String *str, const Char *other) {
     else if (isOk(ec)) {
         otherLength = wcslen(other);
         oldMemory = str->memory;
-        ec = reallocImpl(str->memory, str->allocated + otherLength);
+        Char *buf = (Char *)realloc(str->memory, (str->allocated + otherLength) * sizeof(Char));
+        if (buf)
+            str->memory = buf;
+        else
+            ec = Exit::noMemory;
     }
 
     if (isOk(ec)) {

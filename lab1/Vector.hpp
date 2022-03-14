@@ -1,6 +1,5 @@
 #pragma once
 #include "Exit.hpp"
-#include "MemoryImpl.hpp"
 #include "Point.hpp"
 #include "Projection.hpp"
 

@@ -1,11 +1,12 @@
 #include "Projection.hpp"
-#include "MemoryImpl.hpp"
 
 Exit polygonCreate(Polygon &p, size_t size) {
     Exit ec = size > 0 ? Exit::success : Exit::sizeInvalid;
     
-    if (isOk(ec))
-        ec = allocImpl(p.vertexIndexArray, size);
+    if (isOk(ec)) {
+        p.vertexIndexArray = (size_t *)malloc(size * sizeof(Polygon));
+        ec = p.vertexIndexArray ? Exit::success : Exit::noMemory;
+    }
 
     if (isOk(ec))
         p.amount = size;
@@ -23,5 +24,5 @@ void projectionFree(Projection &p) {
     for (int i = 0; i < p.polygonAmount; i++)
         polygonFree(p.polygonArray[i]);
     free(p.polygonArray);
-    zeroMemory(&p);
+    memset(&p, 0, sizeof(Projection));
 }

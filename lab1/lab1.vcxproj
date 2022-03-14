@@ -103,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exit.hpp" />
-    <ClInclude Include="MemoryImpl.hpp" />
     <ClInclude Include="String.hpp" />
     <ClInclude Include="Types.hpp" />
     <ClInclude Include="Vector.hpp" />

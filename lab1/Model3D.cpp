@@ -2,7 +2,6 @@
 #include <cassert>
 #include <cmath>
 #include "Vector.hpp"
-#include "MemoryImpl.hpp"
 
 struct Model3D {
     VectorPoint3D points;
@@ -13,13 +12,16 @@ struct Model3D {
 Exit modelInitialize(Model3D *&model) {
     Exit ec = Exit::success;
 
-    if (model)
+    if (model) {
         ec = Exit::modelInitialized;
-    else
-        ec = allocImpl(model);
+    }
+    else {
+        model = (Model3D *)malloc(sizeof(Model3D));
+        ec = model ? Exit::success : Exit::noMemory;
+    }
 
     if (isOk(ec))
-        zeroMemory(model);
+        memset(model, 0, sizeof(Model3D));
 
     return ec;
 }
@@ -66,7 +68,7 @@ Exit modelAddFace(Model3D *model, Polygon &face) {
         ec = vectorPushBack(model->faces, face);
 
     if (isOk(ec))
-        zeroMemory(&face);
+        memset(&face, 0, sizeof(Polygon));
 
     return ec;
 }
@@ -209,7 +211,8 @@ static Exit projectionAllocFaces(Projection &projection, const Model3D &model) {
         Polygon *dst = projection.polygonArray + i;
         Polygon *src = model.faces.arr + i;
 
-        ec = allocImpl(dst->vertexIndexArray, src->amount);
+        dst->vertexIndexArray = (size_t *)malloc(src->amount * sizeof(size_t));
+        ec = dst->vertexIndexArray ? Exit::success : Exit::noMemory;
         i++;
     }
 
@@ -243,10 +246,14 @@ static void projectionCopyVerticies(Projection &projection, const VectorPolygon 
 Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
     Exit ec = model ? Exit::success : Exit::modelUnininialized;
 
-    if (isOk(ec))
-        ec = allocImpl(projection.pointArray, model->points.size);
-    if (isOk(ec))
-        ec = allocImpl(projection.polygonArray, model->faces.size);
+    if (isOk(ec)) {
+        projection.pointArray = (Point2D *)malloc(model->points.size * sizeof(Point2D));
+        ec = projection.pointArray ? Exit::success : Exit::noMemory;
+    }
+    if (isOk(ec)) {
+        projection.polygonArray = (Polygon *)malloc(model->faces.size * sizeof(Polygon));
+        ec = projection.polygonArray ? Exit::success : Exit::noMemory;
+    }
 
     if (isOk(ec)) {
         int i = 0;
@@ -264,8 +271,10 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D *model) {
         projectionCopyVerticies(projection, model->faces);
     }
 
-    if (!isOk(ec))
+    if (!isOk(ec)) {
         projectionFree(projection);
+        memset(&projection, 0, sizeof(Projection));
+    }
 
     return ec;
 }
