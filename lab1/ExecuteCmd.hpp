@@ -35,9 +35,6 @@ union UserInput {
 };
 
 union UserOutput {
-    //modelLoad
-    int lineFailed;
-
     //modelProjectPerspective, modelProjectOrhogonal
     Projection projection;
 

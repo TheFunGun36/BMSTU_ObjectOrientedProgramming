@@ -60,7 +60,7 @@ Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd) {
             modelFree(model);
             break;
         case Command::modelLoad:
-            exitCode = fileModelLoad(model, uOut.lineFailed, uIn.filename);
+            exitCode = fileModelLoad(model, uIn.filename);
             break;
         case Command::modelProjectPerspective:
             exitCode = modelProjectPerspective(uOut.projection, model, uIn.cameraDistance);

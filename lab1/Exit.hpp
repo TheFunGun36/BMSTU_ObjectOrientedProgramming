@@ -24,8 +24,6 @@ enum class Exit {
     strNoEndl,
     strNAN,
 
-    actionUnknown,
-
     size
 };
 

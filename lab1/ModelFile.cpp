@@ -30,7 +30,7 @@ static Exit fileReadLine(String *&line, FILE *f) {
 static Exit parsePoint(Point3D &point, const String *line) {
     Exit ec = line ? Exit::success : Exit::strUninitialized;
 
-    bool isValidCmd;
+    bool isValidCmd = false;
     SET_EC_IF_OK(strIsFirstWord(isValidCmd, line, prefixVertex));
 
     if (isOk(ec) && !isValidCmd)
@@ -60,7 +60,7 @@ static void vectorToPolygon(Polygon &polygon, const Vector<size_t> &vector) {
 static Exit parseFace(Polygon &face, const String *line) {
     Exit ec = line ? Exit::success : Exit::strUninitialized;
 
-    bool isValidCmd;
+    bool isValidCmd = false;
     SET_EC_IF_OK(strIsFirstWord(isValidCmd, line, prefixFace));
 
     if (isOk(ec) && !isValidCmd)
@@ -68,24 +68,25 @@ static Exit parseFace(Polygon &face, const String *line) {
 
     String *str = nullptr;
     SET_EC_IF_OK(strDuplicate(str, line));
-    SET_EC_IF_OK(strNextWord(str));
 
-    bool isEmpty;
-    SET_EC_IF_OK(strIsEmpty(isEmpty, str));
+    bool isEmpty = false;
 
     Vector<size_t> vertex = { 0 };
     SET_EC_IF_OK(vectorInitialize(vertex, 3));
 
     while (isOk(ec) && !isEmpty) {
-        int number;
-        ec = strToNumber(number, str);
-
-        if (isOk(ec) && number < 1)
-            ec = Exit::fileOpenReadFail;
-
-        SET_EC_IF_OK(vectorPushBack(vertex, static_cast<size_t>(number - 1)));
+        int number = 0;
         SET_EC_IF_OK(strNextWord(str));
         SET_EC_IF_OK(strIsEmpty(isEmpty, str));
+
+        if (!isEmpty) {
+            SET_EC_IF_OK(strToNumber(number, str));
+
+            if (isOk(ec) && number < 1)
+                ec = Exit::fileOpenReadFail;
+
+            SET_EC_IF_OK(vectorPushBack(vertex, size_t(number - 1)));
+        }
     }
 
     if (isOk(ec) && vertex.size < 3)
@@ -138,18 +139,16 @@ static Exit fileParseLine(FILE *file, Model3D *model) {
     return ec;
 }
 
-Exit fileModelLoad(Model3D *&model, int &lineFailed, const Char *filename) {
+Exit fileModelLoad(Model3D *&model, const Char *filename) {
     Exit ec = model ? Exit::success : Exit::modelUnininialized;
 
-    FILE *file;
+    FILE *file = nullptr;
     SET_EC_IF_OK(fileOpen(file, filename));
 
     Model3D *modelTmp = nullptr;
     SET_EC_IF_OK(modelInitialize(modelTmp));
 
-    lineFailed = 0;
     while (isOk(ec)) {
-        lineFailed++;
         ec = fileParseLine(file, modelTmp);
 
         // Не будем выбрасывать из-за неизвестных команд,
@@ -167,7 +166,6 @@ Exit fileModelLoad(Model3D *&model, int &lineFailed, const Char *filename) {
     else {
         modelFree(model);
         model = modelTmp;
-        lineFailed = -1;
     }
 
     return ec;
