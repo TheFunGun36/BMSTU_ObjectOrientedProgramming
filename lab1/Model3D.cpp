@@ -5,8 +5,8 @@
 #include "MemoryImpl.hpp"
 
 struct Model3D {
-    Vector<Point3D> points;
-    Vector<Polygon> faces;
+    VectorPoint3D points;
+    VectorPolygon faces;
     Point3D center;
 };
 
@@ -224,7 +224,7 @@ static Exit projectionAllocFaces(Projection &projection, const Model3D &model) {
     return ec;
 }
 
-static void projectionCopyPoints(Projection &projection, const Vector<Point3D> points) {
+static void projectionCopyPoints(Projection &projection, const VectorPoint3D points) {
     size_t pointsAmount = points.size;
     for (int i = 0; i < pointsAmount; i++) {
         projection.pointArray[i].x = points.arr[i].x;
@@ -232,7 +232,7 @@ static void projectionCopyPoints(Projection &projection, const Vector<Point3D> p
     }
 }
 
-static void projectionCopyVerticies(Projection &projection, const Vector<Polygon> faces) {
+static void projectionCopyVerticies(Projection &projection, const VectorPolygon faces) {
     for (int i = 0; i < projection.polygonAmount; i++) {
         for (int j = 0; j < faces.arr[i].amount; j++)
             projection.polygonArray[i].vertexIndexArray[j] = faces.arr[i].vertexIndexArray[j];

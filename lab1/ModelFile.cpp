@@ -51,7 +51,7 @@ static Exit parsePoint(Point3D &point, const String *line) {
     return ec;
 }
 
-static void vectorToPolygon(Polygon &polygon, const Vector<size_t> &vector) {
+static void vectorToPolygon(Polygon &polygon, const VectorInt &vector) {
     polygon.amount = vector.size;
     for (int i = 0; i < vector.size; i++)
         polygon.vertexIndexArray[i] = vector.arr[i];
@@ -71,8 +71,7 @@ static Exit parseFace(Polygon &face, const String *line) {
 
     bool isEmpty = false;
 
-    Vector<size_t> vertex = { 0 };
-    SET_EC_IF_OK(vectorInitialize(vertex, 3));
+    VectorInt vertex = { 0 };
 
     while (isOk(ec) && !isEmpty) {
         int number = 0;
@@ -85,7 +84,7 @@ static Exit parseFace(Polygon &face, const String *line) {
             if (isOk(ec) && number < 1)
                 ec = Exit::fileOpenReadFail;
 
-            SET_EC_IF_OK(vectorPushBack(vertex, size_t(number - 1)));
+            SET_EC_IF_OK(vectorPushBack(vertex, number - 1));
         }
     }
 

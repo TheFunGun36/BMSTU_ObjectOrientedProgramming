@@ -90,6 +90,7 @@
     <ClCompile Include="ModelFile.cpp" />
     <ClCompile Include="Projection.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="Vector.cpp" />
     <QtRcc Include="MainWindow.qrc" />
     <QtMoc Include="MainWindow.hpp" />
     <ClCompile Include="ExecuteCmd.cpp" />

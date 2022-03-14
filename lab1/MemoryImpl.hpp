@@ -4,19 +4,19 @@
 
 template <typename T>
 inline Exit allocImpl(T *&ptr, size_t amount) {
-    ptr = static_cast<T *>(malloc(amount * sizeof(T)));
+    ptr = (T *)malloc(amount * sizeof(T));
     return ptr ? Exit::success : Exit::noMemory;
 }
 
 template <typename T>
 inline Exit allocImpl(T *&ptr) {
-    ptr = static_cast<T *>(malloc(sizeof(T)));
+    ptr = (T *)malloc(sizeof(T));
     return ptr ? Exit::success : Exit::noMemory;
 }
 
 template <typename T>
 inline Exit reallocImpl(T *&ptr, size_t newLength) {
-    T *buff = static_cast<T *>(realloc(ptr, newLength * sizeof(T)));
+    T *buff = (T *)realloc(ptr, newLength * sizeof(T));
     Exit ec = Exit::success;
 
     if (buff)
