@@ -1,9 +1,9 @@
 #pragma once
-#include "Point.hpp"
-#include "Exit.hpp"
+#include "Point.h"
+#include "Exit.h"
 
 struct Polygon {
-    size_t amount;
+    size_t verticiesAmount;
     size_t *vertexIndexArray;
 };
 
@@ -17,5 +17,6 @@ struct Projection {
 };
 
 Exit polygonCreate(Polygon &p, size_t size);
+Exit polygonCopy(Polygon &dst, const Polygon &src);
 void polygonFree(Polygon &p);
 void projectionFree(Projection &p);

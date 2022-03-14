@@ -1,7 +1,16 @@
-#include "Model3D.hpp"
+#include "Model3D.h"
 #include <cassert>
 #include <cmath>
-#include "Vector.hpp"
+#include "Vector.h"
+
+struct CalculatedAngles {
+    Real sinx;
+    Real cosx;
+    Real siny;
+    Real cosy;
+    Real sinz;
+    Real cosz;
+};
 
 Exit modelReserveVertex(Model3D &model, size_t amount) {
     return vectorReserve(model.points, amount);
@@ -21,139 +30,143 @@ Exit modelAddFace(Model3D &model, Polygon &face) {
     return ec;
 }
 
+static void clearFaces(VectorPolygon &faces) {
+    for (int i = 0; i < faces.size; i++)
+        polygonFree(faces.arr[i]);
+    vectorFree(faces);
+}
+
 void modelClear(Model3D &model) {
     vectorFree(model.points);
-    for (int i = 0; i < model.faces.size; i++)
-        polygonFree(model.faces.arr[i]);
-    vectorFree(model.faces);
+    clearFaces(model.faces);
+}
+
+static Exit moveEveryPoint(VectorPoint3D &points, Vector3D moveVector) {
+    Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
+
+    if (isOk(ec)) {
+        for (int i = 0; i < points.size; i++)
+            points.arr[i] = vector3DAdd(points.arr[i], moveVector);
+    }
+
+    return ec;
 }
 
 Exit modelMove(Model3D &model, Vector3D moveVector) {
-    Exit ec = Exit::success;
-
-    if (!model.points.arr) {
-        ec = Exit::modelUnininialized;
-    }
-    else {
-        for (int i = 0; i < model.points.size; i++) {
-            model.points.arr[i].x += moveVector.x;
-            model.points.arr[i].y += moveVector.y;
-            model.points.arr[i].z += moveVector.z;
-        }
-
-        model.center.x += moveVector.x;
-        model.center.y += moveVector.y;
-        model.center.z += moveVector.z;
-    }
-
+    Exit ec = moveEveryPoint(model.points, moveVector);
+    if (isOk(ec)) vector3DAdd(model.center, moveVector);
     return ec;
 }
 
-static void modelRotateX(Model3D &model, Real angle) {
-    assert(model.points.arr);
-    Real sinx = sin(angle);
-    Real cosx = cos(angle);
-    for (int i = 0; i < model.points.size; i++) {
-        Point3D &p = model.points.arr[i];
-        Point3D &c = model.center;
-        Real dy = p.y - c.y;
-        Real dz = p.z - c.z;
-        p.y = c.y + dy * cosx + dz * sinx;
-        p.z = c.z - dy * sinx + dz * cosx;
-    }
+static inline Point3D rotatePointX(Point3D point, Real sinx, Real cosx) {
+    Point3D result;
+    result.x = point.x;
+    result.y = +point.y * cosx + point.z * sinx;
+    result.z = -point.y * sinx + point.z * cosx;
+    return result;
 }
 
-static void modelRotateY(Model3D &model, Real angle) {
-    assert(model.points.arr);
-    Real siny = sin(angle);
-    Real cosy = cos(angle);
-    for (int i = 0; i < model.points.size; i++) {
-        Point3D &p = model.points.arr[i];
-        Point3D &c = model.center;
-        Real dx = p.x - c.x;
-        Real dz = p.z - c.z;
-        p.x = c.x + dx * cosy + dz * siny;
-        p.z = c.z - dx * siny + dz * cosy;
-    }
+static inline Point3D rotatePointY(Point3D point, Real siny, Real cosy) {
+    Point3D result;
+    result.x = +point.x * cosy + point.z * siny;
+    result.y = point.y;
+    result.z = -point.x * siny + point.z * cosy;
+    return result;
 }
 
-static void modelRotateZ(Model3D &model, Real angle) {
-    assert(model.points.arr);
-    Real sinz = sin(angle);
-    Real cosz = cos(angle);
-    for (int i = 0; i < model.points.size; i++) {
-        Point3D &p = model.points.arr[i];
-        Point3D &c = model.center;
-        Real dx = p.x - c.x;
-        Real dy = p.y - c.y;
-        p.x = c.x + dx * cosz + dy * sinz;
-        p.y = c.y - dx * sinz + dy * cosz;
+static inline Point3D rotatePointZ(Point3D point, Real sinz, Real cosz) {
+    Point3D result;
+    result.x = +point.x * cosz + point.y * sinz;
+    result.y = -point.x * sinz + point.y * cosz;
+    result.z = point.z;
+    return result;
+}
+
+static void rotatePoint(Point3D &point, Point3D center, const CalculatedAngles &angles) {
+    vector3DSub(point, center);
+    
+    point = rotatePointX(point, angles.sinx, angles.cosx);
+    point = rotatePointY(point, angles.siny, angles.cosy);
+    point = rotatePointZ(point, angles.sinz, angles.cosz);
+
+    vector3DAdd(point, center);
+}
+
+static void calculateAngles(CalculatedAngles &angles, Vector3D eulerAngles) {
+    angles.sinx = sin(eulerAngles.x);
+    angles.cosx = cos(eulerAngles.x);
+    angles.siny = sin(eulerAngles.y);
+    angles.cosy = cos(eulerAngles.y);
+    angles.sinz = sin(eulerAngles.z);
+    angles.cosz = cos(eulerAngles.z);
+}
+
+static Exit rotateEveryPoint(VectorPoint3D &points, Point3D center, Vector3D eulerAngles) {
+    Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
+
+    if (isOk(ec)) {
+        CalculatedAngles angles;
+        calculateAngles(angles, eulerAngles);
+
+        for (int i = 0; i < points.size; i++)
+            rotatePoint(points.arr[i], center, angles);
     }
+
+    return ec;
 }
 
 Exit modelRotate(Model3D &model, Vector3D eulerAngles, bool reverse) {
-    Exit ec = Exit::success;
-
-    if (!model.faces.arr || !model.points.arr) {
-        ec = Exit::modelUnininialized;
-    }
-    else {
-        if (reverse) {
-            modelRotateZ(model, eulerAngles.z);
-            modelRotateY(model, eulerAngles.y);
-            modelRotateX(model, eulerAngles.x);
-        }
-        else {
-            modelRotateX(model, eulerAngles.x);
-            modelRotateY(model, eulerAngles.y);
-            modelRotateZ(model, eulerAngles.z);
-        }
-    }
-
-    return ec;
+    return rotateEveryPoint(model.points, model.center, eulerAngles);
 }
 
-Exit modelScale(Model3D &model, Vector3D scaleVector) {
+static void scalePoint(Point3D &point, Point3D center, Vector3D scaleVector) {
+    vector3DSub(point, center);
+
+    point.x = center.x + (point.x - center.x) * scaleVector.x;
+    point.y = center.y + (point.y - center.y) * scaleVector.y;
+    point.z = center.z + (point.z - center.z) * scaleVector.z;
+
+    vector3DAdd(point, center);
+}
+
+static Exit scaleEveryPoint(VectorPoint3D &points, Point3D center, Vector3D scaleVector) {
     Exit ec = Exit::success;
 
-    if (!model.faces.arr || !model.points.arr) {
+    if (!points.arr) {
         ec = Exit::modelUnininialized;
     }
     else if (isZero(scaleVector.x) || isZero(scaleVector.y) || isZero(scaleVector.z)) {
         ec = Exit::modelScaleZero;
     }
     else {
-        for (int i = 0; i < model.points.size; i++) {
-            Point3D &p = model.points.arr[i];
-            Point3D &c = model.center;
-
-            p.x = c.x + (p.x - c.x) * scaleVector.x;
-            p.y = c.y + (p.y - c.y) * scaleVector.y;
-            p.z = c.z + (p.z - c.z) * scaleVector.z;
-        }
+        for (int i = 0; i < points.size; i++)
+            scalePoint(points.arr[i], center, scaleVector);
     }
 
     return ec;
 }
 
-static Exit projectionAllocFaces(Projection &projection, const Model3D &model) {
-    size_t facesAmount = model.faces.size;
-    Exit ec = Exit::success;
+Exit modelScale(Model3D &model, Vector3D scaleVector) {
+    return scaleEveryPoint(model.points, model.center, scaleVector);
+}
+
+
+static Exit projectionCopyFaces(Projection &projection, const VectorPolygon& faces) {
+    Exit ec = faces.arr ? Exit::success : Exit::modelUnininialized;
 
     int i = 0;
-    while (isOk(ec) && i < facesAmount) {
-        Polygon *dst = projection.polygonArray + i;
-        Polygon *src = model.faces.arr + i;
-
-        dst->vertexIndexArray = (size_t *)malloc(src->amount * sizeof(size_t));
-        ec = dst->vertexIndexArray ? Exit::success : Exit::noMemory;
+    while (isOk(ec) && i < faces.size) {
+        ec = polygonCopy(projection.polygonArray[i], faces.arr[i]);
         i++;
     }
 
-    if (!isOk(ec)) {
+    if (isOk(ec)) {
+        projection.polygonAmount = faces.size;
+    }
+    else {
         i -= 2;
         while (i > 0) {
-            free(projection.polygonArray[i].vertexIndexArray);
+            polygonFree(projection.polygonArray[i]);
             i--;
         }
     }
@@ -161,51 +174,43 @@ static Exit projectionAllocFaces(Projection &projection, const Model3D &model) {
     return ec;
 }
 
-static void projectionCopyPoints(Projection &projection, const VectorPoint3D points) {
-    size_t pointsAmount = points.size;
-    for (int i = 0; i < pointsAmount; i++) {
-        projection.pointArray[i].x = points.arr[i].x;
-        projection.pointArray[i].y = -points.arr[i].y;
-    }
-}
+static Exit projectionCopyPoints(Projection &projection, const VectorPoint3D points) {
+    Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
 
-static void projectionCopyVerticies(Projection &projection, const VectorPolygon faces) {
-    for (int i = 0; i < projection.polygonAmount; i++) {
-        for (int j = 0; j < faces.arr[i].amount; j++)
-            projection.polygonArray[i].vertexIndexArray[j] = faces.arr[i].vertexIndexArray[j];
-        projection.polygonArray[i].amount = faces.arr[i].amount;
+    if (isOk(ec)) {
+        projection.pointArray = (Point2D *)malloc(points.size * sizeof(Point2D));
+        ec = projection.pointArray ? Exit::success : Exit::noMemory;
     }
+
+    if (isOk(ec)) {
+        size_t pointsAmount = points.size;
+        for (int i = 0; i < pointsAmount; i++) {
+            projection.pointArray[i] = point2DFrom3D(points.arr[i]);
+            pointToScreenCoords(projection.pointArray[i]);
+        }
+    }
+
+    return ec;
 }
 
 Exit modelProjectOrthogonal(Projection &projection, const Model3D &model) {
-    Exit ec = model.faces.arr && model.points.arr ? Exit::success : Exit::modelUnininialized;
-
-    if (isOk(ec)) {
-        projection.pointArray = (Point2D *)malloc(model.points.size * sizeof(Point2D));
-        ec = projection.pointArray ? Exit::success : Exit::noMemory;
-    }
+    Exit ec = Exit::success;
+    
     if (isOk(ec)) {
         projection.polygonArray = (Polygon *)malloc(model.faces.size * sizeof(Polygon));
         ec = projection.polygonArray ? Exit::success : Exit::noMemory;
     }
 
-    if (isOk(ec)) {
-        int i = 0;
-        ec = projectionAllocFaces(projection, model);
-    }
+    if (isOk(ec))
+        ec = projectionCopyFaces(projection, model.faces);
+
+    if (isOk(ec))
+        ec = projectionCopyPoints(projection, model.points);
 
     if (isOk(ec)) {
-        projection.pointsAmount = model.points.size;
-        projection.polygonAmount = model.faces.size;
-
-        projection.center.x = model.center.x;
-        projection.center.y = model.center.y;
-
-        projectionCopyPoints(projection, model.points);
-        projectionCopyVerticies(projection, model.faces);
+        projection.center = point2DFrom3D(model.center);
     }
-
-    if (!isOk(ec)) {
+    else {
         projectionFree(projection);
         memset(&projection, 0, sizeof(Projection));
     }
@@ -231,9 +236,7 @@ static inline bool isCameraDistanceValid(const Model3D &model, Real cameraDistan
 Exit modelProjectPerspective(Projection &projection, const Model3D &model, Real cameraDistance) {
     Exit ec = Exit::success;
 
-    if (!model.points.arr || !model.points.arr)
-        ec = Exit::modelUnininialized;
-    else if (!isCameraDistanceValid(model, cameraDistance))
+    if (!isCameraDistanceValid(model, cameraDistance))
         ec = Exit::inputCameraTooClose;
     else
         ec = modelProjectOrthogonal(projection, model);

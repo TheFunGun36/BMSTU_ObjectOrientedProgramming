@@ -2,7 +2,7 @@
 #include <qgraphicsview.h>
 #include <qcolor.h>
 #include <qlist.h>
-#include "Projection.hpp"
+#include "Projection.h"
 
 class Canvas : public QGraphicsView {
     Q_OBJECT

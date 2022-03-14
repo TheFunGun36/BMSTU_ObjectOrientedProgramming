@@ -1,7 +1,7 @@
 #pragma once
-#include "Exit.hpp"
-#include "Point.hpp"
-#include "Projection.hpp"
+#include "Exit.h"
+#include "Point.h"
+#include "Projection.h"
 
 struct VectorPoint3D {
     size_t allocated;

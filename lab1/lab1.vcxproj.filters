@@ -36,7 +36,7 @@
     <ClCompile Include="MainWindow.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="ExecuteCmd.hpp">
+    <ClCompile Include="ExecuteCmd.h">
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="ExecuteCmd.cpp">
@@ -64,28 +64,28 @@
     </QtRcc>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point.hpp">
+    <ClInclude Include="Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Model3D.hpp">
+    <ClInclude Include="Model3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Exit.hpp">
+    <ClInclude Include="Exit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Projection.hpp">
+    <ClInclude Include="Projection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModelFile.hpp">
+    <ClInclude Include="ModelFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vector.hpp">
+    <ClInclude Include="Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="String.hpp">
+    <ClInclude Include="String.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Types.hpp">
+    <ClInclude Include="Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,8 +1,8 @@
 #pragma once
-#include "Types.hpp"
-#include "Point.hpp"
-#include "Exit.hpp"
-#include "Projection.hpp"
+#include "Types.h"
+#include "Point.h"
+#include "Exit.h"
+#include "Projection.h"
 
 enum class Command {
     uninitialize,

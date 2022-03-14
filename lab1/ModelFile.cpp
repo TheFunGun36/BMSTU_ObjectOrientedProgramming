@@ -1,7 +1,7 @@
-#include "ModelFile.hpp"
-#include "Vector.hpp"
-#include "String.hpp"
-#include "Point.hpp"
+#include "ModelFile.h"
+#include "Vector.h"
+#include "String.h"
+#include "Point.h"
 
 #define SET_EC_IF_OK(call) if (isOk(ec)) ec = (call)
 
@@ -52,7 +52,7 @@ static Exit parsePoint(Point3D &point, const String *line) {
 }
 
 static void vectorToPolygon(Polygon &polygon, const VectorInt &vector) {
-    polygon.amount = vector.size;
+    polygon.verticiesAmount = vector.size;
     for (int i = 0; i < vector.size; i++)
         polygon.vertexIndexArray[i] = vector.arr[i];
 }

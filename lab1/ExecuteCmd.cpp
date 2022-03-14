@@ -1,6 +1,6 @@
-#include "ExecuteCmd.hpp"
-#include "Model3D.hpp"
-#include "ModelFile.hpp"
+#include "ExecuteCmd.h"
+#include "Model3D.h"
+#include "ModelFile.h"
 
 static const Char *getErrorMessage(Exit exitCode) {
     const Char *msg = nullptr;
@@ -42,6 +42,8 @@ static const Char *getErrorMessage(Exit exitCode) {
         case Exit::sizeInvalid:
             msg = TEXT("Некорректный размер массива");
             break;
+        default:
+            msg = TEXT("Неизвестная ошибка");
     }
 
     return msg;

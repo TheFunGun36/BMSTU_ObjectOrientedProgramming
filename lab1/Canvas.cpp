@@ -20,7 +20,7 @@ void Canvas::updateProjection(const Projection &proj) {
 
     for (int i = 0; i < proj.polygonAmount; i++) {
         QPolygonF poly;
-        for (int j = 0; j < proj.polygonArray[i].amount; j++) {
+        for (int j = 0; j < proj.polygonArray[i].verticiesAmount; j++) {
             size_t idx = proj.polygonArray[i].vertexIndexArray[j];
             poly.append(QPointF(proj.pointArray[idx].x, proj.pointArray[idx].y));
         }
