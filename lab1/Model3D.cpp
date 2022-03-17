@@ -54,7 +54,8 @@ static Exit moveEveryPoint(VectorPoint3D &points, Vector3D moveVector) {
 
 Exit modelMove(Model3D &model, Vector3D moveVector) {
     Exit ec = moveEveryPoint(model.points, moveVector);
-    if (isOk(ec)) vector3DAdd(model.center, moveVector);
+    if (isOk(ec))
+        model.center = vector3DAdd(model.center, moveVector);
     return ec;
 }
 
@@ -83,13 +84,13 @@ static inline Point3D rotatePointZ(Point3D point, Real sinz, Real cosz) {
 }
 
 static void rotatePoint(Point3D &point, Point3D center, const CalculatedAngles &angles) {
-    vector3DSub(point, center);
+    point = vector3DSub(point, center);
     
     point = rotatePointX(point, angles.sinx, angles.cosx);
     point = rotatePointY(point, angles.siny, angles.cosy);
     point = rotatePointZ(point, angles.sinz, angles.cosz);
 
-    vector3DAdd(point, center);
+    point = vector3DAdd(point, center);
 }
 
 static void calculateAngles(CalculatedAngles &angles, Vector3D eulerAngles) {
@@ -154,6 +155,11 @@ Exit modelScale(Model3D &model, Vector3D scaleVector) {
 static Exit projectionCopyFaces(Projection &projection, const VectorPolygon& faces) {
     Exit ec = faces.arr ? Exit::success : Exit::modelUnininialized;
 
+    if (isOk(ec)) {
+        projection.polygonArray = (Polygon *)malloc(faces.size * sizeof(Polygon));
+        ec = projection.polygonArray ? Exit::success : Exit::noMemory;
+    }
+
     int i = 0;
     while (isOk(ec) && i < faces.size) {
         ec = polygonCopy(projection.polygonArray[i], faces.arr[i]);
@@ -165,7 +171,7 @@ static Exit projectionCopyFaces(Projection &projection, const VectorPolygon& fac
     }
     else {
         i -= 2;
-        while (i > 0) {
+        while (i >= 0) {
             polygonFree(projection.polygonArray[i]);
             i--;
         }
@@ -183,8 +189,8 @@ static Exit projectionCopyPoints(Projection &projection, const VectorPoint3D poi
     }
 
     if (isOk(ec)) {
-        size_t pointsAmount = points.size;
-        for (int i = 0; i < pointsAmount; i++) {
+        projection.pointsAmount = points.size;
+        for (int i = 0; i < points.size; i++) {
             projection.pointArray[i] = point2DFrom3D(points.arr[i]);
             pointToScreenCoords(projection.pointArray[i]);
         }
@@ -195,11 +201,6 @@ static Exit projectionCopyPoints(Projection &projection, const VectorPoint3D poi
 
 Exit modelProjectOrthogonal(Projection &projection, const Model3D &model) {
     Exit ec = Exit::success;
-    
-    if (isOk(ec)) {
-        projection.polygonArray = (Polygon *)malloc(model.faces.size * sizeof(Polygon));
-        ec = projection.polygonArray ? Exit::success : Exit::noMemory;
-    }
 
     if (isOk(ec))
         ec = projectionCopyFaces(projection, model.faces);
