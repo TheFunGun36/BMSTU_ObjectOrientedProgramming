@@ -1,7 +1,7 @@
-#include "ModelFile.h"
-#include "Vector.h"
-#include "String.h"
-#include "Point.h"
+#include "ModelFile.hpp"
+#include "Vector.hpp"
+#include "String.hpp"
+#include "Point.hpp"
 
 #define SET_EC_IF_OK(call) if (isOk(ec)) ec = (call)
 

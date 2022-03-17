@@ -8,7 +8,7 @@
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 
-#include "ExecuteCmd.h"
+#include "ExecuteCmd.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent) {

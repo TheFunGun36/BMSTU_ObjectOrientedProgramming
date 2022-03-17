@@ -4,8 +4,8 @@
 #include <qlayout.h>
 #include <qspinbox.h>
 #include <qevent.h>
-#include "Model3D.h"
-#include "ExecuteCmd.h"
+#include "Model3D.hpp"
+#include "ExecuteCmd.hpp"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

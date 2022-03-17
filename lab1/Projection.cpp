@@ -1,4 +1,4 @@
-#include "Projection.h"
+#include "Projection.hpp"
 
 Exit polygonCreate(Polygon &p, size_t verticiesAmount) {
     Exit ec = verticiesAmount > 0 ? Exit::success : Exit::sizeInvalid;

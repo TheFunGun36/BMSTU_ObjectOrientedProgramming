@@ -1,6 +1,6 @@
-#include "ExecuteCmd.h"
-#include "Model3D.h"
-#include "ModelFile.h"
+#include "ExecuteCmd.hpp"
+#include "Model3D.hpp"
+#include "ModelFile.hpp"
 
 static const Char *getErrorMessage(Exit exitCode) {
     const Char *msg = nullptr;

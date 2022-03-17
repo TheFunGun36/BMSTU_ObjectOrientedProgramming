@@ -1,7 +1,7 @@
-#include "Model3D.h"
+#include "Model3D.hpp"
 #include <cassert>
 #include <cmath>
-#include "Vector.h"
+#include "Vector.hpp"
 
 struct CalculatedAngles {
     Real sinx;

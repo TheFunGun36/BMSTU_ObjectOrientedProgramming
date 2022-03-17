@@ -1,6 +1,6 @@
 #pragma once
-#include "Point.h"
-#include "Exit.h"
+#include "Point.hpp"
+#include "Exit.hpp"
 
 struct Polygon {
     size_t verticiesAmount;

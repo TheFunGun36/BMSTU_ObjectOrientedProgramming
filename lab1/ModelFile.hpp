@@ -1,6 +1,6 @@
 #pragma once
-#include "Types.h"
-#include "Exit.h"
-#include "Model3D.h"
+#include "Types.hpp"
+#include "Exit.hpp"
+#include "Model3D.hpp"
 
 Exit fileModelLoad(Model3D &model, const Char *filename);

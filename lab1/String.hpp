@@ -1,7 +1,7 @@
 #pragma once
-#include "Types.h"
-#include "Exit.h"
-#include "Vector.h"
+#include "Types.hpp"
+#include "Exit.hpp"
+#include "Vector.hpp"
 
 struct String;
 

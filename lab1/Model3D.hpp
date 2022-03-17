@@ -1,8 +1,8 @@
 #pragma once
-#include "Point.h"
-#include "Projection.h"
-#include "Exit.h"
-#include "Vector.h"
+#include "Point.hpp"
+#include "Projection.hpp"
+#include "Exit.hpp"
+#include "Vector.hpp"
 
 struct Model3D {
     VectorPoint3D points;

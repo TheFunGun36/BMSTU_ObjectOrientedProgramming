@@ -94,7 +94,7 @@
     <QtRcc Include="MainWindow.qrc" />
     <QtMoc Include="MainWindow.hpp" />
     <ClCompile Include="ExecuteCmd.cpp" />
-    <ClCompile Include="ExecuteCmd.h" />
+    <ClCompile Include="ExecuteCmd.hpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -102,14 +102,14 @@
     <QtMoc Include="Canvas.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Exit.h" />
-    <ClInclude Include="String.h" />
-    <ClInclude Include="Types.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Model3D.h" />
-    <ClInclude Include="ModelFile.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Projection.h" />
+    <ClInclude Include="Exit.hpp" />
+    <ClInclude Include="String.hpp" />
+    <ClInclude Include="Types.hpp" />
+    <ClInclude Include="Vector.hpp" />
+    <ClInclude Include="Model3D.hpp" />
+    <ClInclude Include="ModelFile.hpp" />
+    <ClInclude Include="Point.hpp" />
+    <ClInclude Include="Projection.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
