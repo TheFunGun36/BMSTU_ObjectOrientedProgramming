@@ -46,3 +46,9 @@ inline Point2D point2DFrom3D(Point3D point) {
 inline void pointToScreenCoords(Point2D &point) {
     point.y = -point.y;
 }
+
+inline Point2D point2DMultiply(Point2D point, Real k) {
+    point.x *= k;
+    point.y *= k;
+    return point;
+}

@@ -219,40 +219,67 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D &model) {
     return ec;
 }
 
-static inline bool isCameraDistanceValid(const Model3D &model, Real cameraDistance) {
-    bool valid = true;
+static inline bool isValidPoint(const Point3D &p, Real cameraDistance) {
     static const Real cameraPointBufferDistance = 30;
+    return p.z < cameraDistance - cameraPointBufferDistance;
+}
 
-    Point3D *p = model.points.arr;
-    while (valid && p < model.points.arr + model.points.size) {
-        valid = p->z < cameraDistance - cameraPointBufferDistance;
-        p++;
+static inline Exit isPointsValid(bool &valid, const VectorPoint3D &points, Real cameraDistance) {
+    Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
+
+    if (isOk(ec)) {
+        valid = true;
+        for (int i = 0; valid && i < points.size; i++)
+            valid = isValidPoint(points.arr[i], cameraDistance);
     }
 
-    valid = valid && model.center.z < cameraDistance - cameraPointBufferDistance;
+    return ec;
+}
 
-    return valid;
+static inline Exit isCameraDistanceValid(bool &valid, const Model3D &model, Real cameraDistance) {
+    Exit ec = isPointsValid(valid, model.points, cameraDistance);
+
+    if (isOk(ec) && valid) {
+        valid = valid && isValidPoint(model.center, cameraDistance);
+    }
+
+    return ec;
+}
+
+static inline Point2D pointToPerspective(Point3D point, Real cameraDistance) {
+    Real k = cameraDistance / (-point.z + cameraDistance);
+    Point2D result = point2DFrom3D(point);
+    result = point2DMultiply(result, k);
+    return result;
+}
+
+static inline Exit pointsToPerspective(Projection &projection, const VectorPoint3D &points, Real cameraDistance) {
+    Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
+
+    if (isOk(ec)) {
+        for (int i = 0; i < points.size; i++)
+            projection.pointArray[i] = pointToPerspective(points.arr[i], cameraDistance);
+    }
+
+    return ec;
 }
 
 Exit modelProjectPerspective(Projection &projection, const Model3D &model, Real cameraDistance) {
-    Exit ec = Exit::success;
-
-    if (!isCameraDistanceValid(model, cameraDistance))
-        ec = Exit::inputCameraTooClose;
-    else
-        ec = modelProjectOrthogonal(projection, model);
+    bool valid;
+    Exit ec = isCameraDistanceValid(valid, model, cameraDistance);
 
     if (isOk(ec)) {
-        Real k = cameraDistance / (-model.center.z + cameraDistance);
-        projection.center.x *= k;
-        projection.center.y *= k;
-
-        for (int i = 0; i < projection.pointsAmount; i++) {
-            k = cameraDistance / (-model.points.arr[i].z + cameraDistance);
-            projection.pointArray[i].x *= k;
-            projection.pointArray[i].y *= k;
-        }
+        if (!valid)
+            ec = Exit::inputCameraTooClose;
+        else
+            ec = modelProjectOrthogonal(projection, model);
     }
+
+    if (isOk(ec))
+        ec = pointsToPerspective(projection, model.points, cameraDistance);
+
+    if (isOk(ec))
+        projection.center = pointToPerspective(model.center, cameraDistance);
 
     return ec;
 }
