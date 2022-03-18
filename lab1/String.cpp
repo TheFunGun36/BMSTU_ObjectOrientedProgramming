@@ -140,6 +140,30 @@ Exit strCutUntil(String *str, Char until) {
     return ec;
 }
 
+Exit strNextNumber(String *str, Real &number) {
+    Exit ec = str ? Exit::success : Exit::strUninitialized;
+
+    if (isOk(ec))
+        ec = strNextWord(str);
+
+    if (isOk(ec))
+        ec = strToNumber(number, str);
+
+    return ec;
+}
+
+Exit strNextNumber(String *str, int &number) {
+    Exit ec = str ? Exit::success : Exit::strUninitialized;
+
+    if (isOk(ec))
+        ec = strNextWord(str);
+
+    if (isOk(ec))
+        ec = strToNumber(number, str);
+
+    return ec;
+}
+
 Exit strNextWord(String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
 
@@ -174,6 +198,13 @@ Exit strTrim(String *str) {
 Exit strToNumber(Real &result, const String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
     
+    bool empty;
+    if (isOk(ec))
+        ec = strIsEmpty(empty, str);
+
+    if (isOk(ec) && empty)
+        ec = Exit::strEmpty;
+
     if (isOk(ec)) {
         Char *end = nullptr;
         result = wcstod(str->current, &end);
@@ -185,6 +216,13 @@ Exit strToNumber(Real &result, const String *str) {
 
 Exit strToNumber(int &result, const String *str) {
     Exit ec = str ? Exit::success : Exit::strUninitialized;
+
+    bool empty;
+    if (isOk(ec))
+        ec = strIsEmpty(empty, str);
+
+    if (isOk(ec) && empty)
+        ec = Exit::strEmpty;
 
     if (isOk(ec)) {
         Char *end = nullptr;

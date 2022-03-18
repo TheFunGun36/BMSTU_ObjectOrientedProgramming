@@ -16,5 +16,7 @@ Exit strNextWord(String *str);
 Exit strTrim(String *str);
 Exit strToNumber(Real &result, const String *str);
 Exit strToNumber(int &result, const String *str);
+Exit strNextNumber(String *str, Real &number);
+Exit strNextNumber(String *str, int &number);
 Exit strDuplicate(String *&newStr, const String *src);
 Exit strIsEmpty(bool &empty, const String *str);

@@ -3,8 +3,6 @@
 #include "String.hpp"
 #include "Point.hpp"
 
-#define SET_EC_IF_OK(call) if (isOk(ec)) ec = (call)
-
 static const Char prefixVertex[] = TEXT("v");
 static const Char prefixFace[] = TEXT("f");
 
@@ -21,7 +19,8 @@ static Exit fileReadLine(String *&line, FILE *f) {
         else
             ec = feof(f) ? Exit::fileEOF : Exit::fileOpenReadFail;
 
-        SET_EC_IF_OK(strIsEndl(endl, line));
+        if (isOk(ec))
+            ec = strIsEndl(endl, line);
     }
 
     return ec;
@@ -31,20 +30,17 @@ static Exit parsePoint(Point3D &point, const String *line) {
     Exit ec = line ? Exit::success : Exit::strUninitialized;
 
     bool isValidCmd = false;
-    SET_EC_IF_OK(strIsFirstWord(isValidCmd, line, prefixVertex));
+    if (isOk(ec)) ec =
+        strIsFirstWord(isValidCmd, line, prefixVertex);
 
     if (isOk(ec) && !isValidCmd)
         ec = Exit::cmdInvalid;
 
     String *str = nullptr;
-    SET_EC_IF_OK(strDuplicate(str, line));
-
-    SET_EC_IF_OK(strNextWord(str));
-    SET_EC_IF_OK(strToNumber(point.x, str));
-    SET_EC_IF_OK(strNextWord(str));
-    SET_EC_IF_OK(strToNumber(point.y, str));
-    SET_EC_IF_OK(strNextWord(str));
-    SET_EC_IF_OK(strToNumber(point.z, str));
+    if (isOk(ec)) ec = strDuplicate(str, line);
+    if (isOk(ec)) ec = strNextNumber(str, point.x);
+    if (isOk(ec)) ec = strNextNumber(str, point.y);
+    if (isOk(ec)) ec = strNextNumber(str, point.z);
 
     strFree(str);
 
@@ -61,40 +57,38 @@ static Exit parseFace(Polygon &face, const String *line) {
     Exit ec = line ? Exit::success : Exit::strUninitialized;
 
     bool isValidCmd = false;
-    SET_EC_IF_OK(strIsFirstWord(isValidCmd, line, prefixFace));
+    if (isOk(ec))
+        ec = strIsFirstWord(isValidCmd, line, prefixFace);
 
     if (isOk(ec) && !isValidCmd)
         ec = Exit::cmdInvalid;
 
     String *str = nullptr;
-    SET_EC_IF_OK(strDuplicate(str, line));
-
-    bool isEmpty = false;
+    if (isOk(ec))
+        ec = strDuplicate(str, line);
 
     VectorInt vertex = { 0 };
 
-    while (isOk(ec) && !isEmpty) {
+    while (isOk(ec)) {
         int number = 0;
-        SET_EC_IF_OK(strNextWord(str));
-        SET_EC_IF_OK(strIsEmpty(isEmpty, str));
+        if (isOk(ec))
+            ec = strNextNumber(str, number);
 
-        if (!isEmpty) {
-            SET_EC_IF_OK(strToNumber(number, str));
+        if (isOk(ec) && number < 1)
+            ec = Exit::fileOpenReadFail;
 
-            if (isOk(ec) && number < 1)
-                ec = Exit::fileOpenReadFail;
-
-            SET_EC_IF_OK(vectorPushBack(vertex, number - 1));
-        }
+        if (isOk(ec))
+            ec = vectorPushBack(vertex, number - 1);
     }
+
+    if (ec == Exit::strEmpty)
+        ec = Exit::success;
 
     if (isOk(ec) && vertex.size < 3)
         ec = Exit::fileOpenReadFail;
 
-    SET_EC_IF_OK(polygonCreate(face, vertex.size));
-
-    if (isOk(ec))
-        vectorToPolygon(face, vertex);
+    if (isOk(ec)) ec = polygonCreate(face, vertex.size);
+    if (isOk(ec)) vectorToPolygon(face, vertex);
 
     vectorFree(vertex);
     strFree(str);
@@ -112,29 +106,42 @@ static Exit fileOpen(FILE *&file, const Char *filename) {
     return ec;
 }
 
-static Exit fileParseLine(FILE *file, Model3D &model) {
+static Exit modelLoad(Model3D &model, FILE *file) {
     Exit ec = file ? Exit::success : Exit::fileOpenReadFail;
 
-    String *line = nullptr;
-    if (isOk(ec)) {
-        ec = fileReadLine(line, file);
-        SET_EC_IF_OK(strCutUntil(line, '#'));
-        SET_EC_IF_OK(strTrim(line));
+    while (isOk(ec)) {
+        String *line = nullptr;
+        if (isOk(ec)) {
+            ec = fileReadLine(line, file);
+            if (isOk(ec)) ec = strCutUntil(line, '#');
+            if (isOk(ec)) ec = strTrim(line);
+        }
+
+        if (isOk(ec)) {
+            Point3D p;
+            ec = parsePoint(p, line);
+            if (isOk(ec)) ec = modelAddVertex(model, p);
+        }
+
+        if (ec == Exit::cmdInvalid) {
+            Polygon p = { 0 };
+            ec = parseFace(p, line);
+            if (isOk(ec)) ec = modelAddFace(model, p);
+        }
+
+        // Не будем выбрасывать из-за неизвестных команд,
+        // дабы максимизировать совместимость
+        if (ec == Exit::cmdInvalid)
+            ec = Exit::success;
+
+        strFree(line);
     }
 
-    if (isOk(ec)) {
-        Point3D p;
-        ec = parsePoint(p, line);
-        SET_EC_IF_OK(modelAddVertex(model, p));
-    }
+    if (ec == Exit::fileEOF)
+        ec = Exit::success;
+    else if (!isOk(ec))
+        modelClear(model);
 
-    if (ec == Exit::cmdInvalid) {
-        Polygon p = { 0 };
-        ec = parseFace(p, line);
-        SET_EC_IF_OK(modelAddFace(model, p));
-    }
-
-    strFree(line);
     return ec;
 }
 
@@ -142,26 +149,18 @@ Exit fileModelLoad(Model3D &model, const Char *filename) {
     Exit ec = filename ? Exit::success : Exit::fileOpenReadFail;
 
     FILE *file = nullptr;
-    SET_EC_IF_OK(fileOpen(file, filename));
+    if (isOk(ec))
+        ec = fileOpen(file, filename);
 
     Model3D modelTmp = modelEmpty();
 
-    while (isOk(ec)) {
-        ec = fileParseLine(file, modelTmp);
-
-        // Не будем выбрасывать из-за неизвестных команд,
-        // дабы максимизировать совместимость
-        if (ec == Exit::cmdInvalid)
-            ec = Exit::success;
-    }
+    if (isOk(ec))
+        ec = modelLoad(modelTmp, file);
 
     if (ec == Exit::fileEOF)
         ec = Exit::success;
 
-    if (!isOk(ec)) {
-        modelClear(modelTmp);
-    }
-    else {
+    if (isOk(ec)) {
         modelClear(model);
         model = modelTmp;
     }
