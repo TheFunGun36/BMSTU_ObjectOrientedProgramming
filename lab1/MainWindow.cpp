@@ -1,4 +1,5 @@
 #include "MainWindow.hpp"
+#include <qmath.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
@@ -150,21 +151,16 @@ void MainWindow::createMenu() {
 void MainWindow::showError(Exit exitCode) {
     UserOutput uOut;
     executeCommand(uOut, userInput(exitCode), Command::getErrorMessage);
-    QMessageBox::critical(this, QString("Ошибка"), QString::fromWCharArray(uOut.errorMessage));
+    QMessageBox::critical(this, "Ошибка", QString::fromLocal8Bit(uOut.errorMessage));
 }
 
 void MainWindow::fileOpen() {
-    UserOutput uOut;
     QFileDialog fileDialog(this);
     QString filename = fileDialog.getOpenFileName(this);
     if (!filename.isEmpty()) {
         UserOutput uOut;
-        Char *cstr = new Char[filename.size() + 1];
-        filename.toWCharArray(cstr);
-        cstr[filename.size()] = '\0';
-        UserInput uIn = userInput(cstr);
+        UserInput uIn = userInput(filename.toLocal8Bit().data());
         Exit exitCode = executeCommand(uOut, uIn, Command::modelLoad);
-        delete[] cstr;
 
         if (isOk(exitCode)) {
             perspective = false;
@@ -238,6 +234,7 @@ void MainWindow::updateModel() {
 }
 
 void MainWindow::resizeEvent(QResizeEvent *e) {
+    Q_UNUSED(e);
     canvas->onResize();
 }
 

@@ -26,6 +26,6 @@ private:
     qreal cameraDistance;
 
     QGraphicsScene scene;
-    int сellSize;
+    int cellSize;
 };
 

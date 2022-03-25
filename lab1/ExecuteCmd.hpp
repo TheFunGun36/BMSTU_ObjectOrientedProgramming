@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring>
 #include "Types.hpp"
 #include "Point.hpp"
 #include "Exit.hpp"

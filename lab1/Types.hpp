@@ -1,4 +1,4 @@
 #pragma once
 typedef double Real;
-typedef wchar_t Char;
-#define TEXT(v) (L##v)
+typedef char Char;
+#define TEXT(v) (v)

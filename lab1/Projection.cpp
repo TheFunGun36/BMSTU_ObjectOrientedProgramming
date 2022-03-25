@@ -1,4 +1,5 @@
 #include "Projection.hpp"
+#include <cstring>
 
 Exit polygonCreate(Polygon &p, size_t verticiesAmount) {
     Exit ec = verticiesAmount > 0 ? Exit::success : Exit::sizeInvalid;
@@ -32,7 +33,7 @@ Exit polygonCopy(Polygon &dst, const Polygon &src) {
 
 void projectionFree(Projection &p) {
     free(p.pointArray);
-    for (int i = 0; i < p.polygonAmount; i++)
+    for (size_t i = 0; i < p.polygonAmount; i++)
         polygonFree(p.polygonArray[i]);
     free(p.polygonArray);
     memset(&p, 0, sizeof(Projection));

@@ -1,4 +1,5 @@
 #pragma once
+#include <cstring>
 #include "Point.hpp"
 #include "Projection.hpp"
 #include "Exit.hpp"
@@ -23,7 +24,7 @@ Exit modelAddFace(Model3D &model, Polygon &face);
 void modelClear(Model3D &model);
 
 Exit modelMove(Model3D &model, Vector3D moveVector);
-Exit modelRotate(Model3D &model, Vector3D eulerAngles, bool reverse = false);
+Exit modelRotate(Model3D &model, Vector3D eulerAngles);
 Exit modelScale(Model3D &model, Vector3D scaleVector);
 
 Exit modelProjectPerspective(Projection &projection, const Model3D &model, Real cameraDistance);

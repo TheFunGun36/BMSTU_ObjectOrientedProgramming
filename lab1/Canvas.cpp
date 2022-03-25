@@ -3,7 +3,7 @@
 #include <qgraphicsitem.h>
 
 Canvas::Canvas(QWidget *parent)
-    : scene(this), QGraphicsView(parent) {
+    : QGraphicsView(parent), scene(this) {
     colorX = {200, 0, 0};
     colorY = {0, 200, 0};
     colorZ = { 0, 0, 200 };
@@ -18,9 +18,9 @@ void Canvas::updateProjection(const Projection &proj) {
     scene.clear();
     scene.update();
 
-    for (int i = 0; i < proj.polygonAmount; i++) {
+    for (size_t i = 0; i < proj.polygonAmount; i++) {
         QPolygonF poly;
-        for (int j = 0; j < proj.polygonArray[i].verticiesAmount; j++) {
+        for (size_t j = 0; j < proj.polygonArray[i].verticiesAmount; j++) {
             size_t idx = proj.polygonArray[i].vertexIndexArray[j];
             poly.append(QPointF(proj.pointArray[idx].x, proj.pointArray[idx].y));
         }
@@ -29,7 +29,7 @@ void Canvas::updateProjection(const Projection &proj) {
     }
 
     QRectF newScene;
-    for (int i = 0; i < proj.pointsAmount; i++) {
+    for (size_t i = 0; i < proj.pointsAmount; i++) {
         Point2D &v = proj.pointArray[i];
         newScene.setTop(qMin(v.y, newScene.top()));
         newScene.setBottom(qMax(v.y, newScene.bottom()));

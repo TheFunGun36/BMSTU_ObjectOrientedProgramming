@@ -10,7 +10,7 @@ struct String {
 };
 
 static inline bool isSpace(Char c) {
-    return wcschr(TEXT(" \t\v\n\r\f"), c);
+    return strchr(TEXT(" \t\v\n\r\f"), c);
 }
 
 Exit strInitialize(String *&str, const Char *src) {
@@ -21,7 +21,7 @@ Exit strInitialize(String *&str, const Char *src) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        length = wcslen(src) + 1;
+        length = strlen(src) + 1;
         str = (String *)malloc(sizeof(String));
         ec = str ? Exit::success : Exit::noMemory;
     }
@@ -35,7 +35,7 @@ Exit strInitialize(String *&str, const Char *src) {
         str->allocated = length;
         str->current = str->memory;
         str->end = str->current + length - 1;
-        for (int i = 0; i < length; i++)
+        for (size_t i = 0; i < length; i++)
             str->current[i] = src[i];
     }
     else {
@@ -63,7 +63,7 @@ Exit strAppend(String *str, const Char *other) {
         ec = Exit::strEmpty;
     }
     else if (isOk(ec)) {
-        otherLength = wcslen(other);
+        otherLength = strlen(other);
         oldMemory = str->memory;
         Char *buf = (Char *)realloc(str->memory, (str->allocated + otherLength) * sizeof(Char));
         if (buf)
@@ -78,7 +78,7 @@ Exit strAppend(String *str, const Char *other) {
         str->end += ptrDiff;
 
         str->allocated += otherLength;
-        for (int i = 0; i < otherLength + 1; i++)
+        for (size_t i = 0; i < otherLength + 1; i++)
             str->end[i] = other[i];
 
         str->end += otherLength;
@@ -207,7 +207,7 @@ Exit strToNumber(Real &result, const String *str) {
 
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = wcstod(str->current, &end);
+        result = strtod(str->current, &end);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 
@@ -226,7 +226,7 @@ Exit strToNumber(int &result, const String *str) {
 
     if (isOk(ec)) {
         Char *end = nullptr;
-        result = wcstol(str->current, &end, 10);
+        result = strtol(str->current, &end, 10);
         ec = (end == str->current) ? Exit::strNAN : Exit::success;
     }
 

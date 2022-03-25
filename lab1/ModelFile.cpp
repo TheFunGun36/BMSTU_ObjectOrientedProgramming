@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "ModelFile.hpp"
 #include "Vector.hpp"
 #include "String.hpp"
@@ -14,7 +15,7 @@ static Exit fileReadLine(String *&line, FILE *f) {
     while (isOk(ec) && !endl) {
         Char buf[bufSize];
 
-        if (fgetws(buf, bufSize, f))
+        if (fgets(buf, bufSize, f))
             ec = strAppend(line, buf);
         else
             ec = feof(f) ? Exit::fileEOF : Exit::fileOpenReadFail;
@@ -49,7 +50,7 @@ static Exit parsePoint(Point3D &point, const String *line) {
 
 static void vectorToPolygon(Polygon &polygon, const VectorInt &vector) {
     polygon.verticiesAmount = vector.size;
-    for (int i = 0; i < vector.size; i++)
+    for (size_t i = 0; i < vector.size; i++)
         polygon.vertexIndexArray[i] = vector.arr[i];
 }
 
@@ -67,7 +68,7 @@ static Exit parseFace(Polygon &face, const String *line) {
     if (isOk(ec))
         ec = strDuplicate(str, line);
 
-    VectorInt vertex = { 0 };
+    VectorInt vertex = { 0, 0, nullptr };
 
     while (isOk(ec)) {
         int number = 0;
@@ -98,7 +99,7 @@ static Exit parseFace(Polygon &face, const String *line) {
 
 static Exit fileOpen(FILE *&file, const Char *filename) {
     Exit ec = Exit::success;
-    file = _wfopen(filename, TEXT("rt"));
+    file = fopen(filename, TEXT("rt"));
 
     if (!file)
         ec = Exit::fileOpenReadFail;
@@ -124,7 +125,7 @@ static Exit modelLoad(Model3D &model, FILE *file) {
         }
 
         if (ec == Exit::cmdInvalid) {
-            Polygon p = { 0 };
+            Polygon p = { 0, nullptr };
             ec = parseFace(p, line);
             if (isOk(ec)) ec = modelAddFace(model, p);
         }

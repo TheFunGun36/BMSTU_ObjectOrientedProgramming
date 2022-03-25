@@ -31,7 +31,7 @@ Exit modelAddFace(Model3D &model, Polygon &face) {
 }
 
 static void clearFaces(VectorPolygon &faces) {
-    for (int i = 0; i < faces.size; i++)
+    for (size_t i = 0; i < faces.size; i++)
         polygonFree(faces.arr[i]);
     vectorFree(faces);
 }
@@ -45,7 +45,7 @@ static Exit moveEveryPoint(VectorPoint3D &points, Vector3D moveVector) {
     Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
 
     if (isOk(ec)) {
-        for (int i = 0; i < points.size; i++)
+        for (size_t i = 0; i < points.size; i++)
             points.arr[i] = vector3DAdd(points.arr[i], moveVector);
     }
 
@@ -109,14 +109,14 @@ static Exit rotateEveryPoint(VectorPoint3D &points, Point3D center, Vector3D eul
         CalculatedAngles angles;
         calculateAngles(angles, eulerAngles);
 
-        for (int i = 0; i < points.size; i++)
+        for (size_t i = 0; i < points.size; i++)
             rotatePoint(points.arr[i], center, angles);
     }
 
     return ec;
 }
 
-Exit modelRotate(Model3D &model, Vector3D eulerAngles, bool reverse) {
+Exit modelRotate(Model3D &model, Vector3D eulerAngles) {
     return rotateEveryPoint(model.points, model.center, eulerAngles);
 }
 
@@ -140,7 +140,7 @@ static Exit scaleEveryPoint(VectorPoint3D &points, Point3D center, Vector3D scal
         ec = Exit::modelScaleZero;
     }
     else {
-        for (int i = 0; i < points.size; i++)
+        for (size_t i = 0; i < points.size; i++)
             scalePoint(points.arr[i], center, scaleVector);
     }
 
@@ -161,7 +161,7 @@ static Exit projectionCopyFaces(Projection &projection, const VectorPolygon& fac
     }
 
     int i = 0;
-    while (isOk(ec) && i < faces.size) {
+    while (isOk(ec) && i < int(faces.size)) {
         ec = polygonCopy(projection.polygonArray[i], faces.arr[i]);
         i++;
     }
@@ -190,7 +190,7 @@ static Exit projectionCopyPoints(Projection &projection, const VectorPoint3D poi
 
     if (isOk(ec)) {
         projection.pointsAmount = points.size;
-        for (int i = 0; i < points.size; i++) {
+        for (size_t i = 0; i < points.size; i++) {
             projection.pointArray[i] = point2DFrom3D(points.arr[i]);
             pointToScreenCoords(projection.pointArray[i]);
         }
@@ -229,7 +229,7 @@ static inline Exit isPointsValid(bool &valid, const VectorPoint3D &points, Real 
 
     if (isOk(ec)) {
         valid = true;
-        for (int i = 0; valid && i < points.size; i++)
+        for (size_t i = 0; valid && i < points.size; i++)
             valid = isValidPoint(points.arr[i], cameraDistance);
     }
 
@@ -257,7 +257,7 @@ static inline Exit pointsToPerspective(Projection &projection, const VectorPoint
     Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
 
     if (isOk(ec)) {
-        for (int i = 0; i < points.size; i++)
+        for (size_t i = 0; i < points.size; i++)
             projection.pointArray[i] = pointToPerspective(points.arr[i], cameraDistance);
     }
 
