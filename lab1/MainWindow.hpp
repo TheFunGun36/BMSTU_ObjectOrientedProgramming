@@ -34,7 +34,6 @@ private:
 
     QAction *actionFileOpen;
     QAction *actionModelPerspective;
-    QAction *actionModelUndo;
 
     void createMoveSection(QVBoxLayout *layout);
     void createScaleSection(QVBoxLayout *layout);

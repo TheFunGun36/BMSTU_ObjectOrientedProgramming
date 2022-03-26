@@ -20,3 +20,4 @@ Exit polygonCreate(Polygon &p, size_t size);
 Exit polygonCopy(Polygon &dst, const Polygon &src);
 void polygonFree(Polygon &p);
 void projectionFree(Projection &p);
+Projection projectionEmpty();

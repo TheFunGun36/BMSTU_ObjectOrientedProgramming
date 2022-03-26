@@ -38,3 +38,9 @@ void projectionFree(Projection &p) {
     free(p.polygonArray);
     memset(&p, 0, sizeof(Projection));
 }
+
+Projection projectionEmpty() {
+    Projection p;
+    memset(&p, 0, sizeof(Projection));
+    return p;
+}

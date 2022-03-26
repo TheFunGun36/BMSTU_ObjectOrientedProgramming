@@ -26,6 +26,7 @@ void modelClear(Model3D &model);
 Exit modelMove(Model3D &model, Vector3D moveVector);
 Exit modelRotate(Model3D &model, Vector3D eulerAngles);
 Exit modelScale(Model3D &model, Vector3D scaleVector);
+Exit modelValidate(const Model3D &model);
 
 Exit modelProjectPerspective(Projection &projection, const Model3D &model, Real cameraDistance);
 Exit modelProjectOrthogonal(Projection &projection, const Model3D &model);

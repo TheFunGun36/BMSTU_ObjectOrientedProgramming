@@ -3,9 +3,16 @@
 #include "Vector.hpp"
 #include "String.hpp"
 #include "Point.hpp"
+#include <qdebug.h>
 
 static const Char prefixVertex[] = TEXT("v");
 static const Char prefixFace[] = TEXT("f");
+
+enum class Command {
+    vertex,
+    face,
+    unknown
+};
 
 static Exit fileReadLine(String *&line, FILE *f) {
     const size_t bufSize = 32;
@@ -58,6 +65,8 @@ static Exit parseFace(Polygon &face, const String *line) {
     Exit ec = line ? Exit::success : Exit::strUninitialized;
 
     bool isValidCmd = false;
+    face = { 0 };
+
     if (isOk(ec))
         ec = strIsFirstWord(isValidCmd, line, prefixFace);
 
@@ -76,7 +85,7 @@ static Exit parseFace(Polygon &face, const String *line) {
             ec = strNextNumber(str, number);
 
         if (isOk(ec) && number < 1)
-            ec = Exit::fileOpenReadFail;
+            ec = Exit::modelInvalidVertexId;
 
         if (isOk(ec))
             ec = vectorPushBack(vertex, number - 1);
@@ -107,40 +116,93 @@ static Exit fileOpen(FILE *&file, const Char *filename) {
     return ec;
 }
 
+static inline Exit fileReadCommand(String *&line, FILE *file) {
+    Exit ec = fileReadLine(line, file);
+
+    if (isOk(ec))
+        ec = strCutUntil(line, '#');
+
+    if (isOk(ec)) {
+        ec = strTrim(line);
+    }
+    else {
+        strFree(line);
+        line = nullptr;
+    }
+
+    return ec;
+}
+
+static Exit determineCmd(Command &cmd, String *line) {
+    Exit ec = line ? Exit::success : Exit::strUninitialized;
+
+    bool match = false;
+    if (isOk(ec)) {
+        ec = strIsFirstWord(match, line, "v");
+        if (match) cmd = Command::vertex;
+    }
+
+    if (isOk(ec) && !match) {
+        ec = strIsFirstWord(match, line, "f");
+        if (match) cmd = Command::face;
+    }
+
+    if (isOk(ec) && !match)
+        cmd = Command::unknown;
+
+    return ec;
+}
+
+static Exit appendModelElement(Model3D &model, String *element, Command cmd) {
+    Exit ec = element ? Exit::success : Exit::strUninitialized;
+    
+    if (!isOk(ec))
+        return ec;
+
+    switch (cmd) {
+        case Command::vertex: {
+            Point3D p;
+            ec = parsePoint(p, element);
+            if (isOk(ec)) ec = modelAddVertex(model, p);
+            break;
+        }
+        case Command::face: {
+            Polygon p;
+            ec = parseFace(p, element);
+            if (isOk(ec)) ec = modelAddFace(model, p);
+            break;
+        }
+        default:
+            ec = Exit::success;
+    }
+
+    return ec;
+}
+
 static Exit modelLoad(Model3D &model, FILE *file) {
     Exit ec = file ? Exit::success : Exit::fileOpenReadFail;
 
-    while (isOk(ec)) {
+    bool eofReached = false;
+    while (isOk(ec) && !eofReached) {
         String *line = nullptr;
-        if (isOk(ec)) {
-            ec = fileReadLine(line, file);
-            if (isOk(ec)) ec = strCutUntil(line, '#');
-            if (isOk(ec)) ec = strTrim(line);
-        }
+        ec = fileReadCommand(line, file);
 
-        if (isOk(ec)) {
-            Point3D p;
-            ec = parsePoint(p, line);
-            if (isOk(ec)) ec = modelAddVertex(model, p);
-        }
+        Command cmd;
+        if (isOk(ec))
+            ec = determineCmd(cmd, line);
 
-        if (ec == Exit::cmdInvalid) {
-            Polygon p = { 0, nullptr };
-            ec = parseFace(p, line);
-            if (isOk(ec)) ec = modelAddFace(model, p);
-        }
-
-        // Не будем выбрасывать из-за неизвестных команд,
-        // дабы максимизировать совместимость
-        if (ec == Exit::cmdInvalid)
-            ec = Exit::success;
+        if (isOk(ec))
+            ec = appendModelElement(model, line, cmd); //TODO!
 
         strFree(line);
-    }
 
-    if (ec == Exit::fileEOF)
-        ec = Exit::success;
-    else if (!isOk(ec))
+        if (ec == Exit::fileEOF) {
+            eofReached = true;
+            ec = Exit::success;
+        }
+    }
+    
+    if (!isOk(ec))
         modelClear(model);
 
     return ec;
@@ -158,8 +220,11 @@ Exit fileModelLoad(Model3D &model, const Char *filename) {
     if (isOk(ec))
         ec = modelLoad(modelTmp, file);
 
-    if (ec == Exit::fileEOF)
-        ec = Exit::success;
+    if (isOk(ec)) {
+        ec = modelValidate(modelTmp);
+        if (!isOk(ec))
+            modelClear(modelTmp);
+    }
 
     if (isOk(ec)) {
         modelClear(model);

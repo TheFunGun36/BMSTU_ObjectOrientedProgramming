@@ -42,6 +42,9 @@ static const Char *getErrorMessage(Exit exitCode) {
         case Exit::sizeInvalid:
             msg = TEXT("Некорректный размер массива");
             break;
+        case Exit::modelInvalidVertexId:
+            msg = TEXT("В исходном файле задан некорректный индекс вершины");
+            break;
         default:
             msg = TEXT("Неизвестная ошибка");
     }

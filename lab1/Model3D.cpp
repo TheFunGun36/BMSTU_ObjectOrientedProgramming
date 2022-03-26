@@ -3,6 +3,8 @@
 #include <cmath>
 #include "Vector.hpp"
 
+#include <qdebug.h>
+
 struct CalculatedAngles {
     Real sinx;
     Real cosx;
@@ -151,6 +153,30 @@ Exit modelScale(Model3D &model, Vector3D scaleVector) {
     return scaleEveryPoint(model.points, model.center, scaleVector);
 }
 
+Exit validatePoint(size_t vertexAmount, const Polygon polygon) {
+    Exit ec = polygon.vertexIndexArray ? Exit::success : Exit::modelUnininialized;
+
+    for (size_t i = 0; isOk(ec) && i < polygon.verticiesAmount; i++) {
+        const size_t& idx = polygon.vertexIndexArray[i];
+        ec = idx < vertexAmount ? Exit::success : Exit::modelInvalidVertexId;
+    }
+
+    return ec;
+}
+
+static Exit facesArrayValidate(const VectorPoint3D &points, const VectorPolygon &faces) {
+    Exit ec = (points.arr && faces.arr) ? Exit::success : Exit::modelUnininialized;
+
+    for (size_t i = 0; isOk(ec) && i < faces.size; i++) {
+        ec = validatePoint(points.size, faces.arr[i]);
+    }
+
+    return ec;
+}
+
+Exit modelValidate(const Model3D &model) {
+    return facesArrayValidate(model.points, model.faces);
+}
 
 static Exit projectionCopyFaces(Projection &projection, const VectorPolygon& faces) {
     Exit ec = faces.arr ? Exit::success : Exit::modelUnininialized;
@@ -201,6 +227,8 @@ static Exit projectionCopyPoints(Projection &projection, const VectorPoint3D poi
 
 Exit modelProjectOrthogonal(Projection &projection, const Model3D &model) {
     Exit ec = Exit::success;
+
+    projection = projectionEmpty();
 
     if (isOk(ec))
         ec = projectionCopyFaces(projection, model.faces);

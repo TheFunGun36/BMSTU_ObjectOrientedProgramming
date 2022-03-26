@@ -1,5 +1,6 @@
 #include "MainWindow.hpp"
 #include <qmath.h>
+#include <qdebug.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qvalidator.h>
@@ -134,18 +135,10 @@ void MainWindow::createMenu() {
     actionModelPerspective = new QAction("Переключить режим отображения", this);
     actionModelPerspective->setShortcut(QKeySequence::Print);
     actionModelPerspective->setStatusTip("Переключить между перспективным режимом проекции и ортогональным");
-    actionModelPerspective->setDisabled(true);
     connect(actionModelPerspective, &QAction::triggered, this, &MainWindow::togglePerspective);
-
-    actionModelUndo = new QAction("Отменить", this);
-    actionModelUndo->setShortcut(QKeySequence::Undo);
-    actionModelUndo->setStatusTip("Отменить последнее действие с моделью");
-    actionModelUndo->setDisabled(true);
-    connect(actionModelUndo, &QAction::triggered, this, &MainWindow::undo);
 
     QMenu *modelMenu = menuBar()->addMenu("Модель");
     modelMenu->addAction(actionModelPerspective);
-    modelMenu->addAction(actionModelUndo);
 }
 
 void MainWindow::showError(Exit exitCode) {
@@ -167,7 +160,9 @@ void MainWindow::fileOpen() {
             updateModel();
             currentFilename = filename;
             actionModelPerspective->setEnabled(true);
-            actionModelUndo->setEnabled(true);
+        }
+        else {
+            showError(exitCode);
         }
     }
 }
@@ -224,7 +219,8 @@ void MainWindow::updateModel() {
 
         if (perspective) {
             perspective = false;
-            updateModel();
+            if (exitCode != Exit::modelUnininialized)
+                updateModel();
         }
     }
     else {

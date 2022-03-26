@@ -9,6 +9,8 @@ enum class Exit {
     modelUnininialized,
     modelInitialized,
     modelScaleZero,
+    modelInvalidVertexId,
+
     noActionToUndo,
     inputInvalidFilename,
     inputCameraTooClose,
