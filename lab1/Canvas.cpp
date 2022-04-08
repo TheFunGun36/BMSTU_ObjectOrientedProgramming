@@ -8,7 +8,7 @@ Canvas::Canvas(QWidget *parent)
     colorY = {0, 200, 0};
     colorZ = { 0, 0, 200 };
     colorC = { 100, 0, 200 };
-    colorLine = {0, 0, 0};
+    colorLine = {255, 255, 255};
     colorPoly = {50, 50, 50, 10};
     cameraDistance = 200;
     setScene(&scene);
@@ -25,7 +25,7 @@ void Canvas::updateProjection(const Projection &proj) {
             poly.append(QPointF(proj.pointArray[idx].x, proj.pointArray[idx].y));
         }
 
-        scene.addPolygon(poly, QPen(), colorPoly);
+        scene.addPolygon(poly, colorLine, colorPoly);
     }
 
     QRectF newScene;

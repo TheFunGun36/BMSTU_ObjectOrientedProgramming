@@ -2,51 +2,51 @@
 #include "Model3D.hpp"
 #include "ModelFile.hpp"
 
-static const Char *getErrorMessage(Exit exitCode) {
-    const Char *msg = nullptr;
+static const char *getErrorMessage(Exit exitCode) {
+    const char *msg = nullptr;
 
     switch (exitCode) {
         case Exit::success:
-            msg = TEXT("Команда выполнена успешно");
+            msg = "Команда выполнена успешно";
             break;
         case Exit::fileOpenReadFail:
-            msg = TEXT("Не удалось считать данные из файла");
+            msg = "Не удалось считать данные из файла";
             break;
         case Exit::modelUnininialized:
-            msg = TEXT("Модель не инициализирована");
+            msg = "Модель не инициализирована";
             break;
         case Exit::modelInitialized:
-            msg = TEXT("Модель уже инициализирована");
+            msg = "Модель уже инициализирована";
             break;
         case Exit::modelScaleZero:
-            msg = TEXT("Недопустимо изменение мастшаба модели с коэффициентом 0");
+            msg = "Недопустимо изменение мастшаба модели с коэффициентом 0";
             break;
         case Exit::noActionToUndo:
-            msg = TEXT("Нет действий для отмены");
+            msg = "Нет действий для отмены";
             break;
         case Exit::inputInvalidFilename:
-            msg = TEXT("Файл не найден");
+            msg = "Файл не найден";
             break;
         case Exit::inputCameraTooClose:
-            msg = TEXT("Часть вершин распологаются за пределами камеры");
+            msg = "Часть вершин распологаются за пределами камеры";
             break;
         case Exit::cmdInvalid:
-            msg = TEXT("Команда не распознана");
+            msg = "Команда не распознана";
             break;
         case Exit::noMemory:
-            msg = TEXT("Недостаточно оперативной памяти");
+            msg = "Недостаточно оперативной памяти";
             break;
         case Exit::nonZeroInputPtr:
-            msg = TEXT("Ненулевой входной указатель");
+            msg = "Ненулевой входной указатель";
             break;
         case Exit::sizeInvalid:
-            msg = TEXT("Некорректный размер массива");
+            msg = "Некорректный размер массива";
             break;
         case Exit::modelInvalidVertexId:
-            msg = TEXT("В исходном файле задан некорректный индекс вершины");
+            msg = "В исходном файле задан некорректный индекс вершины";
             break;
         default:
-            msg = TEXT("Неизвестная ошибка");
+            msg = "Неизвестная ошибка";
     }
 
     return msg;

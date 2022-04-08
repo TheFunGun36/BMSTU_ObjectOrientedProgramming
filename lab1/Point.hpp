@@ -1,24 +1,24 @@
 #pragma once
-#include "Types.hpp"
 #include <cmath>
 #include <algorithm>
+#include <cstring>
 
 struct Point3D {
-    Real x;
-    Real y;
-    Real z;
+    double x;
+    double y;
+    double z;
 };
 
 struct Point2D {
-    Real x;
-    Real y;
+    double x;
+    double y;
 };
 
 typedef Point3D Vector3D;
 typedef Point2D Vector2D;
 
-inline bool isZero(Real v) {
-    return abs(v) <= 0;
+inline bool isZero(double v) {
+    return abs(v) <= 1e-10;
 }
 
 inline Vector3D vector3DAdd(Vector3D a, Vector3D b) {
@@ -47,8 +47,14 @@ inline void pointToScreenCoords(Point2D &point) {
     point.y = -point.y;
 }
 
-inline Point2D point2DMultiply(Point2D point, Real k) {
+inline Point2D point2DMultiply(Point2D point, double k) {
     point.x *= k;
     point.y *= k;
+    return point;
+}
+
+inline Point3D point3DEmpty() {
+    Point3D point;
+    memset(&point, 0, sizeof(Point3D));
     return point;
 }

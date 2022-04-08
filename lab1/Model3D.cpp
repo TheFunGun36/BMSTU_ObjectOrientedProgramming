@@ -6,29 +6,40 @@
 #include <qdebug.h>
 
 struct CalculatedAngles {
-    Real sinx;
-    Real cosx;
-    Real siny;
-    Real cosy;
-    Real sinz;
-    Real cosz;
+    double sinx;
+    double cosx;
+    double siny;
+    double cosy;
+    double sinz;
+    double cosz;
 };
 
-Exit modelReserveVertex(Model3D &model, size_t amount) {
-    return vectorReserve(model.points, amount);
+Exit modelReserveVertex(VectorPoint3D &points, size_t amount) {
+    return vectorReserve(points, amount);
 }
 
-Exit modelReserveFace(Model3D &model, size_t amount) {
-    return vectorReserve(model.faces, amount);
+Exit modelReserveFace(VectorPolygon &faces, size_t amount) {
+    return vectorReserve(faces, amount);
 }
 
-Exit modelAddVertex(Model3D &model, Point3D vertex) {
-    return vectorPushBack(model.points, vertex);
+Exit modelAddVertex(VectorPoint3D &points, Point3D vertex) {
+    return vectorPushBack(points, vertex);
 }
 
-Exit modelAddFace(Model3D &model, Polygon &face) {
-    Exit ec = vectorPushBack(model.faces, face);
+Exit modelAddFace(VectorPolygon &faces, Polygon &face) {
+    Exit ec = vectorPushBack(faces, face);
     if (isOk(ec)) memset(&face, 0, sizeof(Polygon));
+    return ec;
+}
+
+Exit modelAddElement(VAR Model3D &model, VAR ModelElement &element) {
+    Exit ec = Exit::success;
+
+    if (element.type == ModelElementType::face)
+        ec = modelAddFace(model.faces, element.data.polygon);
+    else if (element.type == ModelElementType::vertex)
+        ec = modelAddVertex(model.points, element.data.vertex);
+
     return ec;
 }
 
@@ -61,7 +72,7 @@ Exit modelMove(Model3D &model, Vector3D moveVector) {
     return ec;
 }
 
-static inline Point3D rotatePointX(Point3D point, Real sinx, Real cosx) {
+static inline Point3D rotatePointX(Point3D point, double sinx, double cosx) {
     Point3D result;
     result.x = point.x;
     result.y = +point.y * cosx + point.z * sinx;
@@ -69,7 +80,7 @@ static inline Point3D rotatePointX(Point3D point, Real sinx, Real cosx) {
     return result;
 }
 
-static inline Point3D rotatePointY(Point3D point, Real siny, Real cosy) {
+static inline Point3D rotatePointY(Point3D point, double siny, double cosy) {
     Point3D result;
     result.x = +point.x * cosy + point.z * siny;
     result.y = point.y;
@@ -77,7 +88,7 @@ static inline Point3D rotatePointY(Point3D point, Real siny, Real cosy) {
     return result;
 }
 
-static inline Point3D rotatePointZ(Point3D point, Real sinz, Real cosz) {
+static inline Point3D rotatePointZ(Point3D point, double sinz, double cosz) {
     Point3D result;
     result.x = +point.x * cosz + point.y * sinz;
     result.y = -point.x * sinz + point.y * cosz;
@@ -157,8 +168,8 @@ Exit validatePoint(size_t vertexAmount, const Polygon polygon) {
     Exit ec = polygon.vertexIndexArray ? Exit::success : Exit::modelUnininialized;
 
     for (size_t i = 0; isOk(ec) && i < polygon.verticiesAmount; i++) {
-        const size_t& idx = polygon.vertexIndexArray[i];
-        ec = idx < vertexAmount ? Exit::success : Exit::modelInvalidVertexId;
+        const int& idx = polygon.vertexIndexArray[i];
+        ec = idx < int(vertexAmount) && idx >= 0 ? Exit::success : Exit::modelInvalidVertexId;
     }
 
     return ec;
@@ -247,12 +258,12 @@ Exit modelProjectOrthogonal(Projection &projection, const Model3D &model) {
     return ec;
 }
 
-static inline bool isValidPoint(const Point3D &p, Real cameraDistance) {
-    static const Real cameraPointBufferDistance = 30;
+static inline bool isValidPoint(const Point3D &p, double cameraDistance) {
+    static const double cameraPointBufferDistance = 30;
     return p.z < cameraDistance - cameraPointBufferDistance;
 }
 
-static inline Exit isPointsValid(bool &valid, const VectorPoint3D &points, Real cameraDistance) {
+static inline Exit isPointsValid(bool &valid, const VectorPoint3D &points, double cameraDistance) {
     Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
 
     if (isOk(ec)) {
@@ -264,7 +275,7 @@ static inline Exit isPointsValid(bool &valid, const VectorPoint3D &points, Real 
     return ec;
 }
 
-static inline Exit isCameraDistanceValid(bool &valid, const Model3D &model, Real cameraDistance) {
+static inline Exit isCameraDistanceValid(bool &valid, const Model3D &model, double cameraDistance) {
     Exit ec = isPointsValid(valid, model.points, cameraDistance);
 
     if (isOk(ec) && valid) {
@@ -274,14 +285,14 @@ static inline Exit isCameraDistanceValid(bool &valid, const Model3D &model, Real
     return ec;
 }
 
-static inline Point2D pointToPerspective(Point3D point, Real cameraDistance) {
-    Real k = cameraDistance / (-point.z + cameraDistance);
+static inline Point2D pointToPerspective(Point3D point, double cameraDistance) {
+    double k = cameraDistance / (-point.z + cameraDistance);
     Point2D result = point2DFrom3D(point);
     result = point2DMultiply(result, k);
     return result;
 }
 
-static inline Exit pointsToPerspective(Projection &projection, const VectorPoint3D &points, Real cameraDistance) {
+static inline Exit pointsToPerspective(Projection &projection, const VectorPoint3D &points, double cameraDistance) {
     Exit ec = points.arr ? Exit::success : Exit::modelUnininialized;
 
     if (isOk(ec)) {
@@ -292,7 +303,7 @@ static inline Exit pointsToPerspective(Projection &projection, const VectorPoint
     return ec;
 }
 
-Exit modelProjectPerspective(Projection &projection, const Model3D &model, Real cameraDistance) {
+Exit modelProjectPerspective(Projection &projection, const Model3D &model, double cameraDistance) {
     bool valid;
     Exit ec = isCameraDistanceValid(valid, model, cameraDistance);
 

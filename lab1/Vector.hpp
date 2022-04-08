@@ -31,3 +31,5 @@ void vectorFree(VectorPolygon &arr);
 
 Exit vectorPushBack(VectorInt &arr, const int &val);
 void vectorFree(VectorInt &arr);
+
+VectorInt vectorIntEmpty();

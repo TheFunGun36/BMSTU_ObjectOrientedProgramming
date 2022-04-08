@@ -114,3 +114,9 @@ Exit vectorPushBack(VectorInt &arr, const int &val) {
     }
     return ec;
 }
+
+VectorInt vectorIntEmpty() {
+    VectorInt v;
+    memset(&v, 0, sizeof(VectorInt));
+    return v;
+}

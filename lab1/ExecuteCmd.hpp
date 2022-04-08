@@ -1,6 +1,5 @@
 #pragma once
 #include <cstring>
-#include "Types.hpp"
 #include "Point.hpp"
 #include "Exit.hpp"
 #include "Projection.hpp"
@@ -19,10 +18,10 @@ enum class Command {
 
 union UserInput {
     //modelLoad
-    const Char *filename;
+    const char *filename;
 
     //modelProjectPerspective
-    Real cameraDistance;
+    double cameraDistance;
 
     //modelMove, modelScale, modelRotate
     Vector3D actionVector;
@@ -39,7 +38,7 @@ union UserOutput {
     Projection projection;
 
     //errorMessage
-    const Char *errorMessage;
+    const char *errorMessage;
 };
 
 Exit executeCommand(UserOutput &uOut, const UserInput &uIn, Command cmd);
@@ -48,11 +47,11 @@ inline UserInput userInput() {
     UserInput ui; memset(&ui, 0, sizeof(ui));
     return ui;
 }
-inline UserInput userInput(const Char *filename) {
+inline UserInput userInput(const char *filename) {
     UserInput ui; ui.filename = filename;
     return ui;
 }
-inline UserInput userInput(Real cameraDistance) {
+inline UserInput userInput(double cameraDistance) {
     UserInput ui; ui.cameraDistance = cameraDistance;
     return ui;
 }

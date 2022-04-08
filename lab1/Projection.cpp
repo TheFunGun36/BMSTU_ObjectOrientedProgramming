@@ -1,11 +1,17 @@
 #include "Projection.hpp"
 #include <cstring>
 
+Polygon polygonEmpty() {
+    Polygon p;
+    memset(&p, 0, sizeof(Polygon));
+    return p;
+}
+
 Exit polygonCreate(Polygon &p, size_t verticiesAmount) {
     Exit ec = verticiesAmount > 0 ? Exit::success : Exit::sizeInvalid;
 
     if (isOk(ec)) {
-        p.vertexIndexArray = (size_t *)malloc(verticiesAmount * sizeof(Polygon));
+        p.vertexIndexArray = (int *)malloc(verticiesAmount * sizeof(Polygon));
         ec = p.vertexIndexArray ? Exit::success : Exit::noMemory;
     }
 

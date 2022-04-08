@@ -6,6 +6,10 @@ TEMPLATE = app
 TARGET = lab1
 INCLUDEPATH += .
 
+unix {
+    INCLUDEPATH += /usr/lib/gcc/x86_64-linux-gnu/9/include
+}
+
 # The following define makes your compiler warn you if you use any
 # feature of Qt which has been marked as deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -26,10 +30,9 @@ HEADERS += Canvas.hpp \
            MainWindow.hpp \
            Model3D.hpp \
            ModelFile.hpp \
+           ParamTypes.hpp \
            Point.hpp \
            Projection.hpp \
-           String.hpp \
-           Types.hpp \
            Vector.hpp
 SOURCES += Canvas.cpp \
            ExecuteCmd.cpp \
@@ -38,6 +41,5 @@ SOURCES += Canvas.cpp \
            Model3D.cpp \
            ModelFile.cpp \
            Projection.cpp \
-           String.cpp \
            Vector.cpp
 RESOURCES += MainWindow.qrc
