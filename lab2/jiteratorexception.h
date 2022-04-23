@@ -2,8 +2,15 @@
 #include "jexception.h"
 
 namespace jora {
-    class IteratorExpiredException : public Exception {
+    class IteratorException : public Exception {
+    public:
+        IteratorException(const char *message, const char *file, const char *function, int line)
+            : Exception(message, file, function, line) {}
+    };
+
+    class IteratorExpiredException : public IteratorException {
+    public:
         IteratorExpiredException(const char *file, const char *function, int line)
-            : Exception("tried to access expired (or uninitialized) iterator", file, function, line) {}
+            : IteratorException("tried to access expired (or uninitialized) iterator", file, function, line) {}
     };
 }
