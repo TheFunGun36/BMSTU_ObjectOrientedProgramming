@@ -12,7 +12,10 @@ namespace jora {
         virtual inline operator bool() const noexcept;
 
     protected:
-        Iterator() = default;
+        inline Iterator() noexcept;
+        inline Iterator(const Iterator& other) noexcept;
+        inline Iterator(const std::weak_ptr<Type>& ptr) noexcept;
+        inline Iterator(const std::shared_ptr<Type>& ptr) noexcept;
 
         virtual inline std::weak_ptr<Type> ptr() const;
         virtual inline void setPtr(const std::weak_ptr<Type>& ptr) noexcept;
@@ -20,11 +23,23 @@ namespace jora {
         virtual inline bool atEnd() const;
 
     private:
-        std::weak_ptr<Type> _ptr = std::weak_ptr<Type>();
+        std::weak_ptr<Type> _ptr;
     };
 
 
     /********** IMPLEMENTATION **********/
+    template<typename Type>
+    inline Iterator<Type>::Iterator() noexcept
+        : _ptr() {}
+    template<typename Type>
+    inline Iterator<Type>::Iterator(const Iterator& other) noexcept
+        : _ptr(other._ptr) {}
+    template<typename Type>
+    inline Iterator<Type>::Iterator(const std::weak_ptr<Type>& ptr) noexcept
+        : _ptr(ptr) {}
+    template<typename Type>
+    inline Iterator<Type>::Iterator(const std::shared_ptr<Type>& ptr) noexcept
+        : _ptr(ptr) {}
     template<typename Type>
     inline bool Iterator<Type>::operator==(const Iterator& other) const {
         return !_ptr.owner_before(other._ptr) && !other._ptr.owner_before(_ptr);
@@ -37,6 +52,7 @@ namespace jora {
     inline Iterator<Type>::operator bool() const noexcept {
         return _ptr.expired();
     }
+    
     template<typename Type>
     inline std::weak_ptr<Type> Iterator<Type>::ptr() const {
         return _ptr;
