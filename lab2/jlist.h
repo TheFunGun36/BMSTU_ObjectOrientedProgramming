@@ -12,65 +12,65 @@ namespace jora {
         using iterator = ListIterator<Type>;
         using const_iterator = ListIterator<const Type>;
 
-        List() = default;
-        inline List(List&& other) noexcept;
-        inline explicit List(const List& other);
+        List() noexcept;
+        inline List(List<Type>&& other) noexcept;
+        inline explicit List(const List<Type>& other);
         inline List(std::initializer_list<Type> initList);
         inline List(std::list<Type>& stdList);
         inline List(const Type* cArray, size_t length);
-        inline List(const const_iterator& begin, const const_iterator& end);
+        inline List(ListIterator<const Type> begin, ListIterator<const Type> end);
         ~List() = default;
 
-        inline List& operator=(List&& other) noexcept;
-        inline List& operator=(const List& other);
-        inline List& operator=(std::initializer_list<Type> initList);
-        inline List& operator=(const std::list<Type>& stdList);
+        inline List<Type>& operator=(List<Type>&& other) noexcept;
+        inline List<Type>& operator=(const List<Type>& other);
+        inline List<Type>& operator=(std::initializer_list<Type> initList);
+        inline List<Type>& operator=(const std::list<Type>& stdList);
 
-        inline List& operator+=(List&& other) noexcept;
-        inline List& operator+=(const List& other);
-        inline List& operator+=(std::initializer_list<Type> initList);
-        inline List& operator+=(const std::list<Type>& stdList);
-        inline List& operator+=(Type&& value);
-        inline List& operator+=(const Type& value);
+        inline List<Type>& operator+=(List<Type>&& other) noexcept;
+        inline List<Type>& operator+=(const List<Type>& other);
+        inline List<Type>& operator+=(std::initializer_list<Type> initList);
+        inline List<Type>& operator+=(const std::list<Type>& stdList);
+        inline List<Type>& operator+=(Type&& value);
+        inline List<Type>& operator+=(const Type& value);
 
-        inline List&& operator+(List&& other) const noexcept;
-        inline List&& operator+(const List& other) const;
-        inline List&& operator+(const std::initializer_list<Type>& stdList) const;
-        inline List&& operator+(Type&& value) const;
-        inline List&& operator+(const Type& value) const;
+        inline List<Type>&& operator+(List<Type>&& other) const;
+        inline List<Type>&& operator+(const List<Type>& other) const;
+        inline List<Type>&& operator+(const std::initializer_list<Type>& stdList) const;
+        inline List<Type>&& operator+(Type&& value) const;
+        inline List<Type>&& operator+(const Type& value) const;
 
-        friend std::ostream& operator<<(std::ostream& stream, const List& list);
+        friend std::ostream& operator<<(std::ostream& stream, const List<Type>& list);
 
-        inline bool operator==(const List& other) const noexcept;
-        inline bool operator!=(const List& other) const noexcept;
+        inline bool operator==(const List<Type>& other) const noexcept;
+        inline bool operator!=(const List<Type>& other) const noexcept;
 
-        inline iterator begin();
-        inline iterator end();
-        inline const_iterator begin() const;
-        inline const_iterator end() const;
-        inline const_iterator cbegin() const;
-        inline const_iterator cend() const;
+        inline ListIterator<Type> begin();
+        inline ListIterator<Type> end();
+        inline ListIterator<const Type> begin() const;
+        inline ListIterator<const Type> end() const;
+        inline ListIterator<const Type> cbegin() const;
+        inline ListIterator<const Type> cend() const;
 
-        inline List& append(List&& other) noexcept;
-        inline List& append(const List& other);
-        inline List& append(std::initializer_list<Type> initList);
-        inline List& append(const std::list<Type>& stdList);
-        inline List& append(const const_iterator& begin, const const_iterator& end);
-        inline List& append(Type&& value);
-        inline List& append(const Type& value);
-        inline List& append(const Type* cArray, size_t length);
+        inline List<Type>& append(List<Type>&& other) noexcept;
+        inline List<Type>& append(const List<Type>& other);
+        inline List<Type>& append(std::initializer_list<Type> initList);
+        inline List<Type>& append(const std::list<Type>& stdList);
+        inline List<Type>& append(ListIterator<const Type> begin, ListIterator<const Type> end);
+        inline List<Type>& append(Type&& value);
+        inline List<Type>& append(const Type& value);
+        inline List<Type>& append(const Type* cArray, size_t length);
 
-        inline List& insertAfter(iterator element, List&& other);
-        inline List& insertAfter(iterator element, const List& other);
-        inline List& insertAfter(iterator element, std::initializer_list<Type> initList);
-        inline List& insertAfter(iterator element, const std::list<Type>& stdList);
-        inline List& insertAfter(iterator element, const const_iterator& begin, const const_iterator& end);
-        inline List& insertAfter(iterator element, Type&& value);
-        inline List& insertAfter(iterator element, const Type& value);
-        inline List& insertAfter(iterator element, const Type* cArray, size_t length);
+        inline List<Type>& insertAfter(ListIterator<Type> element, List<Type>&& other);
+        inline List<Type>& insertAfter(ListIterator<Type> element, const List<Type>& other);
+        inline List<Type>& insertAfter(ListIterator<Type> element, std::initializer_list<Type> initList);
+        inline List<Type>& insertAfter(ListIterator<Type> element, const std::list<Type>& stdList);
+        inline List<Type>& insertAfter(ListIterator<Type> element, ListIterator<const Type> begin, ListIterator<const Type> end);
+        inline List<Type>& insertAfter(ListIterator<Type> element, Type&& value);
+        inline List<Type>& insertAfter(ListIterator<Type> element, const Type& value);
+        inline List<Type>& insertAfter(ListIterator<Type> element, const Type* cArray, size_t length);
 
-        virtual size_t remove(iterator element, size_t amount = 1) noexcept;
-        virtual size_t cutAfter(iterator element) noexcept;
+        virtual size_t remove(ListIterator<Type> element, size_t amount = 1) noexcept;
+        virtual size_t cutAfter(ListIterator<Type> element) noexcept;
 
         virtual bool pushBack(Type&& value) noexcept;
         virtual bool pushBack(const Type& value) noexcept;
@@ -80,13 +80,13 @@ namespace jora {
         virtual const Type& peekBack() const;
         virtual const Type& peekFront() const;
 
-        virtual iterator find(const Type& value);
-        virtual const_iterator find(const Type& value) const;
+        virtual ListIterator<Type> find(const Type& value);
+        virtual ListIterator<const Type> find(const Type& value) const;
 
         virtual Type* toCArray() noexcept;
 
-        virtual const_iterator iteratorFromIndex(size_t index) const;
-        virtual iterator iteratorFromIndex(size_t index);
+        virtual ListIterator<const Type> iteratorFromIndex(size_t index) const;
+        virtual ListIterator<Type> iteratorFromIndex(size_t index);
 
         virtual void clear() override;
 
@@ -99,85 +99,86 @@ namespace jora {
         std::weak_ptr<Node<Type>> _tail = std::weak_ptr<Node<Type>>();
     };
 
+
+    /********** IMPLEMENTATION **********/
     template<typename Type>
-    inline List<Type>::List(List&& other) {
+    inline List<Type>::List() noexcept {
+        _head = nullptr;
+        _tail = _head;
+    }
+    template<typename Type>
+    inline List<Type>::List(List<Type>&& other) noexcept
+        : List() {
         _head = other._head;
         _tail = other._tail;
     }
-
     template<typename Type>
-    inline List<Type>::List(const List<Type>& other) {
+    inline List<Type>::List(const List<Type>& other)
+        : List() {
         append(other.begin(), other.end());
     }
-
     template<typename Type>
-    inline List<Type>::List(std::initializer_list<Type> initList) {
+    inline List<Type>::List(std::initializer_list<Type> initList)
+        : List() {
         append(initList.begin(), initList.size());
     }
-
     template<typename Type>
-    inline List<Type>::List(std::list<Type>& stdList) {
+    inline List<Type>::List(std::list<Type>& stdList)
+        : List() {
         append(stdList);
     }
-
     template<typename Type>
-    inline List<Type>::List(const Type* cArray, size_t length) {
+    inline List<Type>::List(const Type* cArray, size_t length)
+        : List() {
         append(cArray, length);
     }
-
     template<typename Type>
-    inline List<Type>::List(const const_iterator& begin, const const_iterator& end) {
+    inline List<Type>::List(ListIterator<const Type> begin, ListIterator<const Type> end)
+        : List() {
         append(begin, end);
     }
-
     template<typename Type>
-    inline List<Type>& List<Type>::append(List<Type>&& other) {
-        if (_head) {
-            auto tail = _tail.lock();
+    inline List<Type>& List<Type>::append(List<Type>&& other) noexcept {
+        if (!other)
+            return *this;
+
+        std::shared_ptr<Node<Type>> tail = _tail.lock();
+        if (tail) {
             tail->setNext(other._head);
             _tail = other._tail;
+            setSize(size() + other.size());
         }
         else {
             _head = other._head;
             _tail = other._tail;
+            setSize(other.size());
         }
-
-        setSize(size() + other.size());
-
         return *this;
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(const List<Type>& other) {
         return append(other.begin(), other.end());
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(std::initializer_list<Type> initList) {
         return append(initList.begin(), initList.size());
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(const std::list<Type>& stdList) {
         for (const auto& el : stdList)
             append(el);
-
         return *this;
     }
-
     template<typename Type>
-    inline List<Type>& List<Type>::append(const const_iterator& begin, const const_iterator& end) {
-        for (const_iterator it = begin; it != end; it++)
-            append(*it);
-
+    inline List<Type>& List<Type>::append(ListIterator<const Type> begin, ListIterator<const Type> end) {
+        while (begin != end)
+            append(*begin++);
         return *this;
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(Type&& value) {
         return append(value);
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(const Type& value) {
         try {
@@ -190,293 +191,307 @@ namespace jora {
                 tail->setNext(Node<Type>::create(value));
                 _tail = tail->next();
             }
-
             setSize(size() + 1);
         }
-        catch (const NodeBadAllocException& e) {
+        catch (const NodeBadAllocException&) {
             throw ListBadAllocException(__FILE__, __FUNCTION__, __LINE__);
         }
-
         return *this;
     }
-
     template<typename Type>
     inline List<Type>& List<Type>::append(const Type* cArray, size_t length) {
         if (!cArray)
             throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
-
         for (const Type* ptr = cArray; ptr < cArray + length; ptr++)
             append(*ptr);
-
         return *this;
     }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator=(List<Type>&& other) {
-        _head = other._head;
-        _tail = other._tail;
-        setSize(other.size());
-        return *this;
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator=(const List<Type>& other) {
-        _head = nullptr;
-        return append(other);
-    }
-    
-    template<typename Type>
-    inline List<Type>& List<Type>::operator=(std::initializer_list<Type> initList) {
-        _head = nullptr;
-        return append(initList);
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator=(const std::list<Type>& stdList) {
-        _head = nullptr;
-        return append(stdList);
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(List<Type>&& other) {
-        return append(std::move(other));
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(const List<Type>& other) {
-        return append(other);
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(std::initializer_list<Type> initList) {
-        return append(initList);
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(const std::list<Type>& stdList) {
-        return append(stdList);
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(Type&& value) {
-        return append(std::move(value));
-    }
-
-    template<typename Type>
-    inline List<Type>& List<Type>::operator+=(const Type& value) {
-        return append(value);
-    }
-
-    template<typename Type>
-    inline List<Type>&& List<Type>::operator+(List<Type>&& other) const {
-        List<Type> copy(*this);
-        copy.append(std::move(other));
-        return std::move(copy);
-    }
-
-    template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const List<Type>& other) const {
-        List<Type> copy(*this);
-        copy.append(other);
-        return std::move(copy);
-    }
-
-    template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const std::initializer_list<Type>& stdList) const {
-        List<Type> copy(*this);
-        copy.append(stdList);
-        return std::move(copy);
-    }
-
-    template<typename Type>
-    inline List<Type>&& List<Type>::operator+(Type&& value) const {
-        List<Type> copy(*this);
-        copy.append(std::move(value));
-        return std::move(copy);
-    }
-
-    template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const Type& value) const {
-        List<Type> copy(*this);
-        copy.append(value);
-        return std::move(copy);
-    }
-
-    template<typename Type>
-    std::ostream& operator<<(std::ostream& stream, const List<Type>& list) {
-        return stream << "[list, size " << list->size() << "]";
-    }
-    
-    template<typename Type>
-    inline bool List<Type>::operator==(const List& other) const noexcept {
-        if (size() != other.size())
-            return false;
-
-        const_iterator it1 = begin();
-        const_iterator it2 = other.begin();
-        bool eq = true;
-
-        while (eq && it1 != end())
-            eq = *it1++ == *it2++;
-
-        return eq;
-    }
-
-    template<typename Type>
-    inline bool List<Type>::operator!=(const List& other) const noexcept {
-        return !(*this == other);
-    }
-
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, List&& other) {
         if (other.size()) {
             std::shared_ptr<Node<Type>> node = element.node();
             std::shared_ptr<Node<Type>> otherTail = other.tail();
             std::shared_ptr<Node<Type>> saved_next = node->next();
-
             node->setNext(other._head);
             otherTail->setNext(saved_next);
             setSize(size() + other.size());
         }
         return *this;
     }
-
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const List& other) {
         for (const Type& el : other)
             insertAfter(element++, el);
         return *this;
     }
-
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, std::initializer_list<Type> initList) {
         for (const Type& el : initList)
             insertAfter(element++, el);
         return *this;
     }
-
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const std::list<Type>& stdList) {
         for (const Type& el : stdList)
             insertAfter(element++, el);
         return *this;
     }
-
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const const_iterator& begin, const const_iterator& end) {
+    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, ListIterator<const Type> begin, ListIterator<const Type> end) {
         for (auto it = begin; it != end; it++)
             insertAfter(element++, *it);
         return *this;
     }
-
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, Type&& value) {
         return insertAfter(element, value);
     }
-
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(iterator element, const Type& value) {
+    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const Type& value) {
         std::shared_ptr<Node<Type>> nodeCur = element.node();
         std::shared_ptr<Node<Type>> nodeNew = Node<Type>::create(value, nodeCur->next());
         nodeCur->setNext(nodeNew);
         setSize(size() + 1);
         return *this;
     }
-
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(iterator element, const Type* cArray, size_t length) {
+    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const Type* cArray, size_t length) {
         if (!cArray)
             throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
-
         for (int i = 0; i < length; i++)
             insertAfter(element++, cArray[i]);
         return *this;
     }
-
+    template<typename Type>
+    inline List<Type>& List<Type>::operator=(List<Type>&& other) noexcept {
+        _head = other._head;
+        _tail = other._tail;
+        setSize(other.size());
+        return *this;
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator=(const List<Type>& other) {
+        _head = nullptr;
+        return append(other);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator=(std::initializer_list<Type> initList) {
+        _head = nullptr;
+        return append(initList);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator=(const std::list<Type>& stdList) {
+        _head = nullptr;
+        return append(stdList);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(List<Type>&& other) noexcept {
+        return append(std::move(other));
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(const List<Type>& other) {
+        return append(other);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(std::initializer_list<Type> initList) {
+        return append(initList);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(const std::list<Type>& stdList) {
+        return append(stdList);
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(Type&& value) {
+        return append(std::move(value));
+    }
+    template<typename Type>
+    inline List<Type>& List<Type>::operator+=(const Type& value) {
+        return append(value);
+    }
+    template<typename Type>
+    inline List<Type>&& List<Type>::operator+(List<Type>&& other) const {
+        List<Type> copy(*this);
+        copy.append(std::move(other));
+        return std::move(copy);
+    }
+    template<typename Type>
+    inline List<Type>&& List<Type>::operator+(const List<Type>& other) const {
+        List<Type> copy(*this);
+        copy.append(other);
+        return std::move(copy);
+    }
+    template<typename Type>
+    inline List<Type>&& List<Type>::operator+(const std::initializer_list<Type>& stdList) const {
+        List<Type> copy(*this);
+        copy.append(stdList);
+        return std::move(copy);
+    }
+    template<typename Type>
+    inline List<Type>&& List<Type>::operator+(Type&& value) const {
+        List<Type> copy(*this);
+        copy.append(std::move(value));
+        return std::move(copy);
+    }
+    template<typename Type>
+    inline List<Type>&& List<Type>::operator+(const Type& value) const {
+        List<Type> copy(*this);
+        copy.append(value);
+        return std::move(copy);
+    }
+    template<typename Type>
+    std::ostream& operator<<(std::ostream& stream, const List<Type>& list) {
+        return stream << "[list, size " << list->size() << "]";
+    }
+    template<typename Type>
+    inline bool List<Type>::operator==(const List<Type>& other) const noexcept {
+        if (size() != other.size())
+            return false;
+        ListIterator<const Type> it1 = begin();
+        ListIterator<const Type> it2 = other.begin();
+        bool eq = true;
+        while (eq && it1 != end())
+            eq = *it1++ == *it2++;
+        return eq;
+    }
+    template<typename Type>
+    inline bool List<Type>::operator!=(const List& other) const noexcept {
+        return !(*this == other);
+    }
+    template<typename Type>
+    inline ListIterator<Type> List<Type>::begin() {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<Type>();
+    }
+    template<typename Type>
+    inline ListIterator<Type> List<Type>::end() {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<Type>();
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::begin() const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::end() const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::cbegin() const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::cend() const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
     template <typename Type>
     inline void List<Type>::clear() {
         _head = nullptr;
         _tail = _head;
         setSize(0);
     }
-
+    template<typename Type>
+    inline std::shared_ptr<Node<Type>> List<Type>::tail() {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return std::shared_ptr<Node<Type>>();
+    }
+    template<typename Type>
+    inline std::shared_ptr<const Node<Type>> List<Type>::tail() const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return std::shared_ptr<const Node<Type>>();
+    }
     template <typename Type>
-    inline size_t List<Type>::remove(iterator element, size_t amount) noexcept {
+    inline size_t List<Type>::remove(ListIterator<Type> element, size_t amount) noexcept {
         size_t count = 0;
         std::shared_ptr<Node<Type>> node = element.node();
-
         while (amount && element) {
             count++;
             element++;
             amount--;
         }
-
         if (element)
             node->setNext(element.node());
         setSize(size() - count);
         return count;
     }
-
     template <typename Type>
-    inline size_t List<Type>::cutAfter(iterator element) noexcept {
+    inline size_t List<Type>::cutAfter(ListIterator<Type> element) noexcept {
         return remove(element, size());
     }
-
     template <typename Type>
     inline bool List<Type>::pushBack(Type&& value) noexcept {
         return pushBack(value);
     }
-
     template <typename Type>
     inline bool List<Type>::pushBack(const Type& value) noexcept {
         bool result = true;
         try {
             append(value);
         }
-        catch (const ListException& e) {
+        catch (const ListException&) {
             result = false;
         }
-
         return result;
     }
-
     template <typename Type>
     inline bool List<Type>::pushFront(Type&& value) noexcept {
+        return pushFront(value);
     }
-
     template <typename Type>
     inline bool List<Type>::pushFront(const Type& value) noexcept {
         bool result = true;
         try {
             _head = Node<Type>::create(value, _head);
         }
-        catch (const NodeException& e) {
+        catch (const NodeException&) {
             result = false;
         }
-
         return result;
     }
-
     template <typename Type>
     inline Type&& List<Type>::popFront() {
         if (!_head)
             throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
-
         Type value = std::move(_head->value());
         _head = _head->next();
         return std::move(value);
     }
-
     template <typename Type>
     inline const Type& List<Type>::peekBack() const {
         return tail()->value();
     }
-
     template <typename Type>
     inline const Type& List<Type>::peekFront() const {
         if (!_head)
             throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
-
         return _head->value();
+    }
+    template<typename Type>
+    inline ListIterator<Type> List<Type>::find(const Type& value) {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<Type>();
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::find(const Type& value) const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
+    template<typename Type>
+    inline Type* List<Type>::toCArray() noexcept {
+        //throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return nullptr;
+    }
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::iteratorFromIndex(size_t index) const {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<const Type>();
+    }
+    template<typename Type>
+    inline ListIterator<Type> List<Type>::iteratorFromIndex(size_t index) {
+        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
+        return ListIterator<Type>();
     }
 }

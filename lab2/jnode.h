@@ -11,7 +11,7 @@ namespace jora {
             this->operator=(other);
         };
         Node(Node&& other) noexcept = default;
-        Node(const Type& value, std::shared_ptr<Node>& next = std::shared_ptr<Node>()) noexcept
+        Node(const Type& value, const std::shared_ptr<Node>& next = std::shared_ptr<Node>()) noexcept
             : _value(value), _next(next) {}
         ~Node() = default;
 
@@ -30,17 +30,17 @@ namespace jora {
         inline void setNext(const std::shared_ptr<Node>& next) noexcept { _next = next; }
         inline void setNext(const Node& next) { _next = Node::create(next); }
 
-        static std::shared_ptr<Node<Type>> create(const Type &val = Type(), const std::shared_ptr<Node<Type>> &next = nullptr) {
+        static std::shared_ptr<Node<Type>> create(const Type& val = Type(), const std::shared_ptr<Node<Type>>& next = nullptr) {
             std::shared_ptr<Node<Type>> result;
             try {
                 result = std::make_shared<Node<Type>>(val, next);
             }
-            catch (const std::bad_alloc &e) {
+            catch (const std::bad_alloc&) {
                 throw NodeBadAllocException(__FILE__, __FUNCTION__, __LINE__);
             }
             return result;
         }
-        static std::shared_ptr<Node<Type>> create(const Node &node) {
+        static std::shared_ptr<Node<Type>> create(const Node& node) {
             std::shared_ptr<Node<Type>> result;
             try {
                 result = std::make_shared<Node<Type>>(node);

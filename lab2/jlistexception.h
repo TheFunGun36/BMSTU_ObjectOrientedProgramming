@@ -1,3 +1,4 @@
+#pragma once
 #include "jexception.h"
 
 namespace jora {
@@ -23,5 +24,11 @@ namespace jora {
     public:
         ListEmptyException(const char* file, const char* function, int line)
             : ListException("tried to access element of an empty list", file, function, line) {}
+    };
+
+    class ListNotImplementedException : public ListException {
+    public:
+        ListNotImplementedException(const char* file, const char* function, int line)
+            : ListException("not implemented", file, function, line) {}
     };
 }

@@ -1,3 +1,4 @@
+#pragma once
 #include "jexception.h"
 
 namespace jora {
