@@ -143,6 +143,11 @@
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jiterator.h" />
     <ClInclude Include="jiteratorexception.h" />
+    <ClInclude Include="jlist.h" />
+    <ClInclude Include="jlistexception.h" />
+    <ClInclude Include="jlistiterator.h" />
+    <ClInclude Include="jnode.h" />
+    <ClInclude Include="jnodeexception.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />

@@ -10,9 +10,9 @@ namespace jora {
         inline Container(Container &&other) = delete;
         ~Container() = default;
 
-        virtual inline operator bool() { return _size == 0; }
-
-        virtual inline size_t size() { return _size; }
+        virtual inline size_t size() const noexcept { return _size; }
+        virtual inline operator bool() const noexcept { return size(); }
+        virtual inline void clear() = 0;
 
     protected:
         virtual inline void setSize(size_t size) noexcept { _size = size; };
