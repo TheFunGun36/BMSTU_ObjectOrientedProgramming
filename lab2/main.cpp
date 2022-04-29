@@ -10,30 +10,39 @@ struct SampleStruct {
         : a(a), b(b), c(c) {}
 };
 
+template <typename Type>
+void printListContent(const jora::List<Type>& list, bool endl = true) {
+    std::cout << list << ": ";
+    for (const auto& i : list)
+        std::cout << i << ' ';
+    if (endl)
+        std::cout << std::endl;
+}
+
 bool test1() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     jora::List<int> list = { 1, 2, 3, 4 };
 
     auto it = list.begin();
-
     std::cout << list << ": ";
     while (it)
         std::cout << *it++ << ' ';
     std::cout << std::endl;
-    return false;
+
+    return list;
 }
 
 bool test2() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     std::list<double> stdList({ 1.4, 26.72, 26.55 });
     jora::List<double> list(stdList);
 
-    std::cout << list << ": ";
-    for (const auto& i : list)
-        std::cout << i << ' ';
-    std::cout << std::endl;
+    printListContent(list);
     return false;
 }
 
 bool test3() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     jora::List<SampleStruct> list(2);
     SampleStruct arr[5];
     for (int i = 0; i < 5; i++)
@@ -49,39 +58,40 @@ bool test3() {
 }
 
 bool test4() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     bool result = true;
     jora::List<int> list;
-
+    auto it = list.begin();
     try {
-        auto it = list.begin();
         *it;
     }
     catch (const jora::IteratorExpiredException&) {
-        result = false;
+        try {
+            ++it;
+        }
+        catch (const jora::IteratorExpiredException&) {
+            result = false;
+        }
     }
-
     return result;
 }
 
 bool test5() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     jora::List<int> list({ 1, 2, 4, 5 });
     auto it = list.begin();
     ++it;
     list.insertAfter(it, 3);
-
-    std::cout << list << ": ";
-    for (const int& s : list)
-        std::cout << ' ' << s;
-    std::cout << std::endl;
-
+    printListContent(list);
     return false;
 }
 
 bool test6() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     jora::List<int> list({ 1, 1, 1, 1 });
     auto it = list.begin();
     ++it;
-    list.insertAfter(it, {0, 0, 0});
+    list.insertAfter(it, { 0, 0, 0 });
 
     std::cout << list << ": ";
     for (const int& s : list)
@@ -92,11 +102,13 @@ bool test6() {
 }
 
 bool test7() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
     jora::List<int> list({ -1, 1 });
-    
+
     std::cout << list << " front: " << list.front() << "; back: " << list.back() << std::endl;
     int value = list.popFront();
-    std::cout << "pop front: " << value << "; " << list;
+    std::cout << "pop front: " << value << " -> ";
+    printListContent(list);
 
     return false;
 }
