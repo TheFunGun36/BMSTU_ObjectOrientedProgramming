@@ -10,7 +10,7 @@ namespace jora {
     class List : public Container {
     public:
         using iterator = ListIterator<Type>;
-        using const_iterator = ListIterator<const Type>;
+        using const_iterator = ConstListIterator<Type>;
 
         List() noexcept;
         List(List<Type>&& other) noexcept;
@@ -18,63 +18,60 @@ namespace jora {
         List(std::initializer_list<Type> initList);
         explicit List(std::list<Type>& stdList);
         explicit List(const Type* cArray, size_t length);
-        explicit List(ListIterator<const Type> begin, ListIterator<const Type> end);
+        explicit List(ConstListIterator<Type> begin, ConstListIterator<Type> end);
         explicit List(size_t count, const Type& value = 13);
         explicit List(size_t count, Type&& value);
         ~List() = default;
 
-        List<Type>& operator=(List<Type>&& other) noexcept;
-        List<Type>& operator=(const List<Type>& other);
-        List<Type>& operator=(std::initializer_list<Type> initList);
-        List<Type>& operator=(const std::list<Type>& stdList);
+        virtual List<Type>& operator=(List<Type>&& other) noexcept;
+        virtual List<Type>& operator=(const List<Type>& other);
+        virtual List<Type>& operator=(std::initializer_list<Type> initList);
+        virtual List<Type>& operator=(const std::list<Type>& stdList);
 
-        List<Type>& operator+=(List<Type>&& other) noexcept;
-        List<Type>& operator+=(const List<Type>& other);
-        List<Type>& operator+=(std::initializer_list<Type> initList);
-        List<Type>& operator+=(const std::list<Type>& stdList);
-        List<Type>& operator+=(Type&& value);
-        List<Type>& operator+=(const Type& value);
+        virtual List<Type>& operator+=(List<Type>&& other) noexcept;
+        virtual List<Type>& operator+=(const List<Type>& other);
+        virtual List<Type>& operator+=(std::initializer_list<Type> initList);
+        virtual List<Type>& operator+=(const std::list<Type>& stdList);
+        virtual List<Type>& operator+=(Type&& value);
+        virtual List<Type>& operator+=(const Type& value);
 
-        List<Type>&& operator+(List<Type>&& other) const;
-        List<Type>&& operator+(const List<Type>& other) const;
-        List<Type>&& operator+(const std::initializer_list<Type>& stdList) const;
-        List<Type>&& operator+(Type&& value) const;
-        List<Type>&& operator+(const Type& value) const;
+        virtual List<Type>&& operator+(List<Type>&& other) const;
+        virtual List<Type>&& operator+(const List<Type>& other) const;
+        virtual List<Type>&& operator+(const std::initializer_list<Type>& stdList) const;
+        virtual List<Type>&& operator+(Type&& value) const;
+        virtual List<Type>&& operator+(const Type& value) const;
 
-        bool operator==(const List<Type>& other) const noexcept;
-        bool operator!=(const List<Type>& other) const noexcept;
+        virtual ListIterator<Type> begin();
+        virtual ListIterator<Type> end();
+        virtual ConstListIterator<Type> begin() const;
+        virtual ConstListIterator<Type> end() const;
+        virtual ConstListIterator<Type> cbegin() const;
+        virtual ConstListIterator<Type> cend() const;
 
-        ListIterator<Type> begin();
-        ListIterator<Type> end();
-        ListIterator<const Type> begin() const;
-        ListIterator<const Type> end() const;
-        ListIterator<const Type> cbegin() const;
-        ListIterator<const Type> cend() const;
+        virtual ListIterator<Type> last();
+        virtual ConstListIterator<Type> last() const;
+        virtual Type& front();
+        virtual const Type& front() const;
+        virtual Type& back();
+        virtual const Type& back() const;
 
-        ListIterator<Type> last();
-        ListIterator<const Type> last() const;
-        Type& front();
-        const Type& front() const;
-        Type& back();
-        const Type& back() const;
+        virtual List<Type>& append(List<Type>&& other) noexcept;
+        virtual List<Type>& append(const List<Type>& other);
+        virtual List<Type>& append(std::initializer_list<Type> initList);
+        virtual List<Type>& append(const std::list<Type>& stdList);
+        virtual List<Type>& append(ConstListIterator<Type> begin, ConstListIterator<Type> end);
+        virtual List<Type>& append(Type&& value);
+        virtual List<Type>& append(const Type& value);
+        virtual List<Type>& append(const Type* cArray, size_t length);
 
-        List<Type>& append(List<Type>&& other) noexcept;
-        List<Type>& append(const List<Type>& other);
-        List<Type>& append(std::initializer_list<Type> initList);
-        List<Type>& append(const std::list<Type>& stdList);
-        List<Type>& append(ListIterator<const Type> begin, ListIterator<const Type> end);
-        List<Type>& append(Type&& value);
-        List<Type>& append(const Type& value);
-        List<Type>& append(const Type* cArray, size_t length);
-
-        List<Type>& insertAfter(ListIterator<Type> element, List<Type>&& other);
-        List<Type>& insertAfter(ListIterator<Type> element, const List<Type>& other);
-        List<Type>& insertAfter(ListIterator<Type> element, std::initializer_list<Type> initList);
-        List<Type>& insertAfter(ListIterator<Type> element, const std::list<Type>& stdList);
-        List<Type>& insertAfter(ListIterator<Type> element, ListIterator<const Type> begin, ListIterator<const Type> end);
-        List<Type>& insertAfter(ListIterator<Type> element, Type&& value);
-        List<Type>& insertAfter(ListIterator<Type> element, const Type& value);
-        List<Type>& insertAfter(ListIterator<Type> element, const Type* cArray, size_t length);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, List<Type>&& other);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, const List<Type>& other);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, std::initializer_list<Type> initList);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, const std::list<Type>& stdList);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, ConstListIterator<Type> begin, ConstListIterator<Type> end);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, Type&& value);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, const Type& value);
+        virtual List<Type>& insertAfter(ConstListIterator<Type> element, const Type* cArray, size_t length);
 
         virtual size_t remove(ListIterator<Type> element, size_t amount = 1) noexcept;
         virtual size_t cutAfter(ListIterator<Type> element) noexcept;
@@ -88,11 +85,11 @@ namespace jora {
         virtual const Type& peekFront() const;
 
         virtual ListIterator<Type> find(const Type& value);
-        virtual ListIterator<const Type> find(const Type& value) const;
+        virtual ConstListIterator<Type> find(const Type& value) const;
 
         virtual Type* toCArray() noexcept;
 
-        virtual ListIterator<const Type> iteratorFromIndex(size_t index) const;
+        virtual ConstListIterator<Type> iteratorFromIndex(size_t index) const;
         virtual ListIterator<Type> iteratorFromIndex(size_t index);
 
         virtual void clear() override;
@@ -101,8 +98,8 @@ namespace jora {
         virtual std::shared_ptr<Node<Type>> head() const noexcept;
         virtual std::weak_ptr<Node<Type>> tail() const noexcept;
 
-        virtual std::shared_ptr<Node<Type>> headExistent();
-        virtual std::shared_ptr<Node<Type>> tailExistent();
+        virtual std::shared_ptr<Node<Type>> headExistent() const;
+        virtual std::shared_ptr<Node<Type>> tailExistent() const;
 
         virtual void setHead(const std::shared_ptr<Node<Type>>& head) noexcept;
         virtual void setTail(const std::weak_ptr<Node<Type>>& tail) noexcept;
@@ -146,7 +143,7 @@ namespace jora {
         append(cArray, length);
     }
     template<typename Type>
-    inline List<Type>::List(ListIterator<const Type> begin, ListIterator<const Type> end)
+    inline List<Type>::List(ConstListIterator<Type> begin, ConstListIterator<Type> end)
         : List() {
         append(begin, end);
     }
@@ -193,7 +190,7 @@ namespace jora {
         return *this;
     }
     template<typename Type>
-    inline List<Type>& List<Type>::append(ListIterator<const Type> begin, ListIterator<const Type> end) {
+    inline List<Type>& List<Type>::append(ConstListIterator<Type> begin, ConstListIterator<Type> end) {
         while (begin != end)
             append(*begin++);
         return *this;
@@ -231,10 +228,10 @@ namespace jora {
     }
 
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, List&& other) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, List&& other) {
         if (other.size()) {
             std::shared_ptr<Node<Type>> node = element.node();
-            std::shared_ptr<Node<Type>> otherTail = other.tail();
+            std::shared_ptr<Node<Type>> otherTail = other.tailExistent();
             std::shared_ptr<Node<Type>> saved_next = node->next();
             node->setNext(other.head());
             otherTail->setNext(saved_next);
@@ -243,7 +240,7 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const List& other) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, const List& other) {
         for (const Type& el : other) {
             insertAfter(element, el);
             ++element;
@@ -251,7 +248,7 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, std::initializer_list<Type> initList) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, std::initializer_list<Type> initList) {
         for (const Type& el : initList) {
             insertAfter(element, el);
             ++element;
@@ -259,7 +256,7 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const std::list<Type>& stdList) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, const std::list<Type>& stdList) {
         for (const Type& el : stdList) {
             insertAfter(element, el);
             ++element;
@@ -267,7 +264,7 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, ListIterator<const Type> begin, ListIterator<const Type> end) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, ConstListIterator<Type> begin, ConstListIterator<Type> end) {
         for (auto it = begin; it != end; it++) {
             insertAfter(element, *it);
             ++element;
@@ -275,11 +272,11 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, Type&& value) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, Type&& value) {
         return insertAfter(element, value);
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const Type& value) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, const Type& value) {
         std::shared_ptr<Node<Type>> nodeCur = element.node();
         std::shared_ptr<Node<Type>> nodeNew = Node<Type>::create(value, nodeCur->next());
         nodeCur->setNext(nodeNew);
@@ -287,7 +284,7 @@ namespace jora {
         return *this;
     }
     template <typename Type>
-    inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const Type* cArray, size_t length) {
+    inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, const Type* cArray, size_t length) {
         if (!cArray)
             throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
         for (int i = 0; i < length; i++)
@@ -375,44 +372,28 @@ namespace jora {
     }
 
     template<typename Type>
-    inline bool List<Type>::operator==(const List<Type>& other) const noexcept {
-        if (size() != other.size())
-            return false;
-        ListIterator<const Type> it1 = begin();
-        ListIterator<const Type> it2 = other.begin();
-        bool eq = true;
-        while (eq && it1 != end())
-            eq = *it1++ == *it2++;
-        return eq;
-    }
-    template<typename Type>
-    inline bool List<Type>::operator!=(const List& other) const noexcept {
-        return !(*this == other);
-    }
-
-    template<typename Type>
     inline ListIterator<Type> List<Type>::begin() {
-        return ListIterator<Type>(head());
+        return ListIterator<Type>(std::weak_ptr<Node<Type>>(head()));
     }
     template<typename Type>
     inline ListIterator<Type> List<Type>::end() {
         return ListIterator<Type>();
     }
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::begin() const {
+    inline ConstListIterator<Type> List<Type>::begin() const {
         return cbegin();
     }
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::end() const {
+    inline ConstListIterator<Type> List<Type>::end() const {
         return cend();
     }
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::cbegin() const {
-        return ListIterator<const Type>(head());
+    inline ConstListIterator<Type> List<Type>::cbegin() const {
+        return ConstListIterator<Type>(std::weak_ptr<Node<Type>>(head()));
     }
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::cend() const {
-        return ListIterator<const Type>();
+    inline ConstListIterator<Type> List<Type>::cend() const {
+        return ConstListIterator<Type>();
     }
 
     template<typename Type>
@@ -421,8 +402,8 @@ namespace jora {
     }
 
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::last() const {
-        return ListIterator<const Type>(tail());
+    inline ConstListIterator<Type> List<Type>::last() const {
+        return ConstListIterator<Type>(tail());
     }
 
     template<typename Type>
@@ -467,14 +448,14 @@ namespace jora {
     }
 
     template<typename Type>
-    inline std::shared_ptr<Node<Type>> List<Type>::headExistent() {
+    inline std::shared_ptr<Node<Type>> List<Type>::headExistent() const {
         if (!head())
             throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
         return head();
     }
 
     template<typename Type>
-    inline std::shared_ptr<Node<Type>> List<Type>::tailExistent() {
+    inline std::shared_ptr<Node<Type>> List<Type>::tailExistent() const {
         std::shared_ptr<Node<Type>> result = tail().lock();
         if (!result)
             throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
@@ -564,9 +545,9 @@ namespace jora {
         return ListIterator<Type>();
     }
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::find(const Type& value) const {
+    inline ConstListIterator<Type> List<Type>::find(const Type& value) const {
         throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ListIterator<const Type>();
+        return ConstListIterator<Type>();
     }
 
     template<typename Type>
@@ -576,9 +557,9 @@ namespace jora {
     }
 
     template<typename Type>
-    inline ListIterator<const Type> List<Type>::iteratorFromIndex(size_t index) const {
+    inline ConstListIterator<Type> List<Type>::iteratorFromIndex(size_t index) const {
         throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ListIterator<const Type>();
+        return ConstListIterator<Type>();
     }
     template<typename Type>
     inline ListIterator<Type> List<Type>::iteratorFromIndex(size_t index) {

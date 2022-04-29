@@ -29,7 +29,7 @@ bool test1() {
         std::cout << *it++ << ' ';
     std::cout << std::endl;
 
-    return list;
+    return false;
 }
 
 bool test2() {
@@ -91,9 +91,9 @@ bool test6() {
     jora::List<int> list({ 1, 1, 1, 1 });
     auto it = list.begin();
     ++it;
-    list.insertAfter(it, { 0, 0, 0 });
+    list.insertAfter(it, {1, 2, 3});
 
-    std::cout << list << ": ";
+    std::cout << list << ':';
     for (const int& s : list)
         std::cout << ' ' << s;
     std::cout << std::endl;
@@ -107,13 +107,33 @@ bool test7() {
 
     std::cout << list << " front: " << list.front() << "; back: " << list.back() << std::endl;
     int value = list.popFront();
-    std::cout << "pop front: " << value << " -> ";
+    std::cout << "popFront: " << value << " -> "; printListContent(list);
+
+    list.pushFront(-9);
+    std::cout << "pushFront -9 -> "; printListContent(list);
+    list.pushBack(9);
+    std::cout << "pushBack 9 -> "; printListContent(list);
+
+    return false;
+}
+
+bool test8() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
+    jora::List<int> list({ -1, 0, 1 });
+
+    auto it = list.cbegin();
+    ++it;
+    list.insertAfter(it, 2);
     printListContent(list);
 
     return false;
 }
 
 int main() {
+    std::list<int> l(2);
+    auto i = l.begin();
+    *i++ = 2;
+
     int failed = 0;
     failed += test1();
     failed += test2();
