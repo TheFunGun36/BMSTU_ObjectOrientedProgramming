@@ -18,6 +18,7 @@ namespace jora {
         List(std::initializer_list<Type> initList);
         explicit List(std::list<Type>& stdList);
         explicit List(const Type* cArray, size_t length);
+        explicit List(const Type* begin, const Type *end);
         explicit List(ConstListIterator<Type> begin, ConstListIterator<Type> end);
         explicit List(size_t count, const Type& value = 13);
         explicit List(size_t count, Type&& value);
@@ -63,6 +64,7 @@ namespace jora {
         virtual List<Type>& append(Type&& value);
         virtual List<Type>& append(const Type& value);
         virtual List<Type>& append(const Type* cArray, size_t length);
+        virtual List<Type>& append(const Type* begin, const Type* end);
 
         virtual List<Type>& insertAfter(ConstListIterator<Type> element, List<Type>&& other);
         virtual List<Type>& insertAfter(ConstListIterator<Type> element, const List<Type>& other);
@@ -84,13 +86,11 @@ namespace jora {
         virtual const Type& peekBack() const;
         virtual const Type& peekFront() const;
 
-        virtual ListIterator<Type> find(const Type& value);
-        virtual ConstListIterator<Type> find(const Type& value) const;
-
-        virtual Type* toCArray() noexcept;
+        virtual Type* toCArray() const noexcept;
 
         virtual ConstListIterator<Type> iteratorFromIndex(size_t index) const;
         virtual ListIterator<Type> iteratorFromIndex(size_t index);
+        virtual size_t indexFromIterator(ConstListIterator<Type> iterator) const;
 
         virtual void clear() override;
 
@@ -110,7 +110,7 @@ namespace jora {
     };
 
 
-    /********** IMPLEMENTATION **********/
+    /********** IMPLEMENTATION **********/    
     template<typename Type>
     inline List<Type>::List() noexcept {
         setHead(nullptr);
@@ -143,9 +143,17 @@ namespace jora {
         append(cArray, length);
     }
     template<typename Type>
-    inline List<Type>::List(ConstListIterator<Type> begin, ConstListIterator<Type> end)
+    inline List<Type>::List(const Type* begin, const Type* end)
         : List() {
         append(begin, end);
+    }
+    template<typename Type>
+    inline List<Type>::List(ConstListIterator<Type> begin, ConstListIterator<Type> end)
+        : List() {
+        while (begin && begin != end)
+            append(*begin++);
+        if (!begin)
+            throw ListBadIteratorRangeException(__FILE__, __FUNCTION__, __LINE__);
     }
     template<typename Type>
     inline List<Type>::List(size_t count, const Type& value)
@@ -181,7 +189,7 @@ namespace jora {
     }
     template<typename Type>
     inline List<Type>& List<Type>::append(std::initializer_list<Type> initList) {
-        return append(initList.begin(), initList.size());
+        return append(initList.begin(), initList.end());
     }
     template<typename Type>
     inline List<Type>& List<Type>::append(const std::list<Type>& stdList) {
@@ -191,9 +199,7 @@ namespace jora {
     }
     template<typename Type>
     inline List<Type>& List<Type>::append(ConstListIterator<Type> begin, ConstListIterator<Type> end) {
-        while (begin != end)
-            append(*begin++);
-        return *this;
+        return append(std::move(List<Type>(begin, end)));;
     }
     template<typename Type>
     inline List<Type>& List<Type>::append(Type&& value) {
@@ -220,9 +226,14 @@ namespace jora {
     }
     template<typename Type>
     inline List<Type>& List<Type>::append(const Type* cArray, size_t length) {
-        if (!cArray)
+        return append(cArray, cArray + length);
+    }
+
+    template<typename Type>
+    inline List<Type>& List<Type>::append(const Type* begin, const Type* end) {
+        if (!begin || !end)
             throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
-        for (const Type* ptr = cArray; ptr < cArray + length; ptr++)
+        for (const Type* ptr = begin; ptr < end; ptr++)
             append(*ptr);
         return *this;
     }
@@ -540,31 +551,43 @@ namespace jora {
     }
 
     template<typename Type>
-    inline ListIterator<Type> List<Type>::find(const Type& value) {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ListIterator<Type>();
-    }
-    template<typename Type>
-    inline ConstListIterator<Type> List<Type>::find(const Type& value) const {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ConstListIterator<Type>();
-    }
+    inline Type* List<Type>::toCArray() const noexcept {
+        Type* result = nullptr;
 
-    template<typename Type>
-    inline Type* List<Type>::toCArray() noexcept {
-        //throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return nullptr;
+        try {
+            result = new Type[size()];
+            Type* p = result;
+            for (const Type& el : *this)
+                *p++ = el;
+        }
+        catch (const std::bad_alloc&) {}
+
+        return result;
     }
 
     template<typename Type>
     inline ConstListIterator<Type> List<Type>::iteratorFromIndex(size_t index) const {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ConstListIterator<Type>();
+        ConstListIterator<Type> iterator = begin();
+        while (index-- > 0)
+            ++iterator;
+        return iterator;
     }
     template<typename Type>
     inline ListIterator<Type> List<Type>::iteratorFromIndex(size_t index) {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ListIterator<Type>();
+        ListIterator<Type> iterator = begin();
+        while (index-- > 0)
+            ++iterator;
+        return iterator;
+    }
+    template<typename Type>
+    inline size_t List<Type>::indexFromIterator(ConstListIterator<Type> iterator) const {
+        size_t count = 0;
+        ConstListIterator<Type> it;
+        for (it = begin(); it != iterator && it != end(); ++it)
+            ++count;
+        if (it == end() && it != iterator)
+            throw ListDifferentListIteratorException(__FILE__, __FUNCTION__, __LINE__);
+        return count;
     }
 }
 

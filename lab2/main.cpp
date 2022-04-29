@@ -88,9 +88,8 @@ bool test5() {
 
 bool test6() {
     std::cout << std::endl << __FUNCTION__ << std::endl;
-    jora::List<int> list({ 1, 1, 1, 1 });
-    auto it = list.begin();
-    ++it;
+    jora::List<int> list({ -1, -1, -1, -1 });
+    auto it = list.iteratorFromIndex(1);
     list.insertAfter(it, {1, 2, 3});
 
     std::cout << list << ':';
@@ -129,6 +128,17 @@ bool test8() {
     return false;
 }
 
+bool test9() {
+    std::cout << std::endl << __FUNCTION__ << std::endl;
+    jora::List<int> list({ -1, 0, 1 });
+
+    int *arr = list.toCArray();
+    std::cout << arr[0] << ' ' << arr[1] << ' ' << arr[2] << std::endl;
+    delete[] arr;
+
+    return false;
+}
+
 int main() {
     std::list<int> l(2);
     auto i = l.begin();
@@ -142,6 +152,8 @@ int main() {
     failed += test5();
     failed += test6();
     failed += test7();
+    failed += test8();
+    failed += test9();
     std::cout << "Failed: " << failed << std::endl;
     return 0;
 }

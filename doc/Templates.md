@@ -57,4 +57,74 @@ public:
 
 Итератор - специальная структура данных, привязанная к другой, "перечисляемой" структуре данных. Итератор, по своей сути, является указателем на текущий элемент. Необходим для того, чтобы не привязываться к данным, и унифицировать интерфейс взаимодействия с ними.
 
-## 
+# Порождающие паттерны
+
+## Factory
+
+![](C:\Users\Jora\repo\oop\doc\Factory.jpg)
+
+## Creator
+
+```cpp
+class Creator {
+public:
+    shared_ptr<Product> get() {
+        if (!product) {
+            product = create();
+        }
+
+        return product;
+    }
+}
+protected:
+    virtual shared_ptr<Product> create() = 0;
+private:
+    shared_ptr<Product> product;
+}
+```
+
+## Abstract Factory
+
+![](C:\Users\Jora\repo\oop\doc\AbstractFactory.jpg)
+
+## Prototype
+
+![](C:\Users\Jora\repo\oop\doc\Prototype.jpg)
+
+## Builder
+
+![](C:\Users\Jora\repo\oop\doc\Builder.jpg)
+
+Агрегация может быть и на уровне конкретных объектов, если построение объекта отличается для каждого производного строителя
+
+## Singleton
+
+```cpp
+template<typename Type>
+class Singleton {
+public:
+    static Type& instance(); {
+        static unique_ptr<Type> myInstance = make_unique<Type>();
+        return *myInstance;
+    }
+private:
+    Singleton() = delete;
+    Singleton(const Singleton& other) = delete;
+}
+```
+
+## Pool
+
+![](C:\Users\Jora\repo\oop\doc\Pool.jpg)
+
+## Singleton Pool
+
+Говорить мы про него не будем
+
+# Структурные паттерны
+
+## Adapter
+
+Выделить простой класс, для которого посредники будут представлять интерфейс работы.
+
+![](C:\Users\Jora\repo\oop\doc\Adapter.jpg)

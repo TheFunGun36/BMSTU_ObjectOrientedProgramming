@@ -31,4 +31,16 @@ namespace jora {
         ListNotImplementedException(const char* file, const char* function, int line)
             : ListException("not implemented", file, function, line) {}
     };
+
+    class ListDifferentListIteratorException : public ListException {
+    public:
+        ListDifferentListIteratorException(const char* file, const char* function, int line)
+            : ListException("list does not contain iterator", file, function, line) {}
+    };
+
+    class ListBadIteratorRangeException : public ListException {
+    public:
+        ListBadIteratorRangeException(const char* file, const char* function, int line)
+            : ListException("iterator pair does not form valid list range", file, function, line) {}
+    };
 }
