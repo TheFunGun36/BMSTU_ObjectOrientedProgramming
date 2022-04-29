@@ -16,9 +16,11 @@ namespace jora {
         inline List(List<Type>&& other) noexcept;
         inline explicit List(const List<Type>& other);
         inline List(std::initializer_list<Type> initList);
-        inline List(std::list<Type>& stdList);
-        inline List(const Type* cArray, size_t length);
-        inline List(ListIterator<const Type> begin, ListIterator<const Type> end);
+        inline explicit List(std::list<Type>& stdList);
+        inline explicit List(const Type* cArray, size_t length);
+        inline explicit List(ListIterator<const Type> begin, ListIterator<const Type> end);
+        inline explicit List(size_t count, const Type& value = 13);
+        inline explicit List(size_t count, Type&& value);
         ~List() = default;
 
         inline List<Type>& operator=(List<Type>&& other) noexcept;
@@ -39,8 +41,6 @@ namespace jora {
         inline List<Type>&& operator+(Type&& value) const;
         inline List<Type>&& operator+(const Type& value) const;
 
-        friend std::ostream& operator<<(std::ostream& stream, const List<Type>& list);
-
         inline bool operator==(const List<Type>& other) const noexcept;
         inline bool operator!=(const List<Type>& other) const noexcept;
 
@@ -50,6 +50,13 @@ namespace jora {
         inline ListIterator<const Type> end() const;
         inline ListIterator<const Type> cbegin() const;
         inline ListIterator<const Type> cend() const;
+
+        inline ListIterator<Type> last();
+        inline ListIterator<const Type> last() const;
+        inline Type& front();
+        inline const Type& front() const;
+        inline Type& back();
+        inline const Type& back() const;
 
         inline List<Type>& append(List<Type>&& other) noexcept;
         inline List<Type>& append(const List<Type>& other);
@@ -137,7 +144,16 @@ namespace jora {
         : List() {
         append(begin, end);
     }
-    
+    template<typename Type>
+    inline List<Type>::List(size_t count, const Type& value)
+        : List() {
+        for (int i = 0; i < count; i++)
+            append(value);
+    }
+    template<typename Type>
+    inline List<Type>::List(size_t count, Type&& value)
+        : List(count, value) {}
+
     template<typename Type>
     inline List<Type>& List<Type>::append(List<Type>&& other) noexcept {
         if (!other)
@@ -222,26 +238,34 @@ namespace jora {
     }
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const List& other) {
-        for (const Type& el : other)
-            insertAfter(element++, el);
+        for (const Type& el : other) {
+            insertAfter(element, el);
+            ++element;
+        }
         return *this;
     }
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, std::initializer_list<Type> initList) {
-        for (const Type& el : initList)
-            insertAfter(element++, el);
+        for (const Type& el : initList) {
+            insertAfter(element, el);
+            ++element;
+        }
         return *this;
     }
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, const std::list<Type>& stdList) {
-        for (const Type& el : stdList)
-            insertAfter(element++, el);
+        for (const Type& el : stdList) {
+            insertAfter(element, el);
+            ++element;
+        }
         return *this;
     }
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ListIterator<Type> element, ListIterator<const Type> begin, ListIterator<const Type> end) {
-        for (auto it = begin; it != end; it++)
-            insertAfter(element++, *it);
+        for (auto it = begin; it != end; it++) {
+            insertAfter(element, *it);
+            ++element;
+        }
         return *this;
     }
     template <typename Type>
@@ -345,11 +369,6 @@ namespace jora {
     }
     
     template<typename Type>
-    std::ostream& operator<<(std::ostream& stream, const List<Type>& list) {
-        return stream << "[list, size " << list->size() << "]";
-    }
-    
-    template<typename Type>
     inline bool List<Type>::operator==(const List<Type>& other) const noexcept {
         if (size() != other.size())
             return false;
@@ -367,12 +386,10 @@ namespace jora {
     
     template<typename Type>
     inline ListIterator<Type> List<Type>::begin() {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return ListIterator<Type>();
+        return ListIterator<Type>(_head);
     }
     template<typename Type>
     inline ListIterator<Type> List<Type>::end() {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
         return ListIterator<Type>();
     }
     template<typename Type>
@@ -389,8 +406,41 @@ namespace jora {
     }
     template<typename Type>
     inline ListIterator<const Type> List<Type>::cend() const {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
         return ListIterator<const Type>();
+    }
+
+    template<typename Type>
+    inline ListIterator<Type> List<Type>::last() {
+        return ListIterator<Type>(tail());
+    }
+
+    template<typename Type>
+    inline ListIterator<const Type> List<Type>::last() const {
+        return ListIterator<const Type>(tail());
+    }
+
+    template<typename Type>
+    inline Type& List<Type>::front() {
+        if (!_head)
+            throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
+        return _head->value();
+    }
+
+    template<typename Type>
+    inline const Type& List<Type>::front() const {
+        if (!_head)
+            throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
+        return _head->value();
+    }
+
+    template<typename Type>
+    inline Type& List<Type>::back() {
+        return tail()->value();
+    }
+
+    template<typename Type>
+    inline const Type& List<Type>::back() const {
+        return tail()->value();
     }
     
     template <typename Type>
@@ -402,13 +452,15 @@ namespace jora {
     
     template<typename Type>
     inline std::shared_ptr<Node<Type>> List<Type>::tail() {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return std::shared_ptr<Node<Type>>();
+        if (_tail.expired())
+            throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
+        return _tail.lock();
     }
     template<typename Type>
     inline std::shared_ptr<const Node<Type>> List<Type>::tail() const {
-        throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
-        return std::shared_ptr<const Node<Type>>();
+        if (_tail.expired())
+            throw ListEmptyException(__FILE__, __FUNCTION__, __LINE__);
+        return _tail.lock();
     }
     
     template <typename Type>
@@ -416,9 +468,9 @@ namespace jora {
         size_t count = 0;
         std::shared_ptr<Node<Type>> node = element.node();
         while (amount && element) {
-            count++;
-            element++;
-            amount--;
+            ++count;
+            ++element;
+            --amount;
         }
         if (element)
             node->setNext(element.node());
@@ -429,7 +481,7 @@ namespace jora {
     inline size_t List<Type>::cutAfter(ListIterator<Type> element) noexcept {
         return remove(element, size());
     }
-    
+
     template <typename Type>
     inline bool List<Type>::pushBack(Type&& value) noexcept {
         return pushBack(value);
@@ -506,4 +558,9 @@ namespace jora {
         throw ListNotImplementedException(__FILE__, __FUNCTION__, __LINE__);
         return ListIterator<Type>();
     }
+}
+
+template<typename Type>
+inline std::ostream& operator<<(std::ostream& stream, const jora::List<Type>& list) {
+    return stream << "[List, size=" << list.size() << "]";
 }
