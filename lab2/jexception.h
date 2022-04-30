@@ -1,15 +1,18 @@
 #pragma once
 #include <exception>
+#include <chrono>
 
 namespace jora {
     class Exception : public std::exception {
     public:
+        using TimePoint = std::chrono::time_point<std::chrono::high_resolution_clock>;
         inline Exception(const char* message, const char* file, const char* function, int line);
 
         virtual inline const char* what() const noexcept override;
         virtual inline const char* file() const noexcept final;
         virtual inline const char* function() const noexcept final;
         virtual inline int line() const noexcept final;
+        virtual inline TimePoint time() const noexcept final;
 
     protected:
         virtual inline const char* message() const noexcept final;
@@ -22,6 +25,7 @@ namespace jora {
         const char* _file;
         const char* _function;
         int _line;
+        TimePoint _time;
     };
 
 
@@ -31,7 +35,8 @@ namespace jora {
         , _message(message)
         , _file(file)
         , _function(function)
-        , _line(line) {}
+        , _line(line)
+        , _time(std::chrono::high_resolution_clock::now()) {}
     inline const char* Exception::what() const noexcept {
         return message();
     }
@@ -43,6 +48,9 @@ namespace jora {
     }
     inline int Exception::line() const noexcept {
         return _line;
+    }
+    inline Exception::TimePoint Exception::time() const noexcept {
+        return _time;
     }
     inline const char* Exception::message() const noexcept {
         return _message;

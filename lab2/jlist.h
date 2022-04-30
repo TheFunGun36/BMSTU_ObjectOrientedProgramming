@@ -20,7 +20,7 @@ namespace jora {
         explicit List(const Type* cArray, size_t length);
         explicit List(const Type* begin, const Type *end);
         explicit List(ConstListIterator<Type> begin, ConstListIterator<Type> end);
-        explicit List(size_t count, const Type& value = 13);
+        explicit List(size_t count, const Type& value = Type());
         explicit List(size_t count, Type&& value);
         ~List() = default;
 
@@ -36,11 +36,29 @@ namespace jora {
         virtual List<Type>& operator+=(Type&& value);
         virtual List<Type>& operator+=(const Type& value);
 
-        virtual List<Type>&& operator+(List<Type>&& other) const;
-        virtual List<Type>&& operator+(const List<Type>& other) const;
-        virtual List<Type>&& operator+(const std::initializer_list<Type>& stdList) const;
-        virtual List<Type>&& operator+(Type&& value) const;
-        virtual List<Type>&& operator+(const Type& value) const;
+        virtual List<Type> operator+(List<Type>&& other) const;
+        virtual List<Type> operator+(const List<Type>& other) const;
+        virtual List<Type> operator+(const std::initializer_list<Type>& stdList) const;
+        virtual List<Type> operator+(Type&& value) const;
+        virtual List<Type> operator+(const Type& value) const;
+
+        virtual List<Type>& append(List<Type>&& other) noexcept;
+        virtual List<Type>& append(const List<Type>& other);
+        virtual List<Type>& append(std::initializer_list<Type> initList);
+        virtual List<Type>& append(const std::list<Type>& stdList);
+        virtual List<Type>& append(ConstListIterator<Type> begin, ConstListIterator<Type> end);
+        virtual List<Type>& append(Type&& value);
+        virtual List<Type>& append(const Type& value);
+        virtual List<Type>& append(const Type* cArray, size_t length);
+        virtual List<Type>& append(const Type* begin, const Type* end);
+
+        virtual bool pushBack(Type&& value) noexcept;
+        virtual bool pushBack(const Type& value) noexcept;
+        virtual bool pushFront(Type&& value) noexcept;
+        virtual bool pushFront(const Type& value) noexcept;
+        virtual Type&& popFront();
+        virtual const Type& peekBack() const;
+        virtual const Type& peekFront() const;
 
         virtual ListIterator<Type> begin();
         virtual ListIterator<Type> end();
@@ -56,16 +74,6 @@ namespace jora {
         virtual Type& back();
         virtual const Type& back() const;
 
-        virtual List<Type>& append(List<Type>&& other) noexcept;
-        virtual List<Type>& append(const List<Type>& other);
-        virtual List<Type>& append(std::initializer_list<Type> initList);
-        virtual List<Type>& append(const std::list<Type>& stdList);
-        virtual List<Type>& append(ConstListIterator<Type> begin, ConstListIterator<Type> end);
-        virtual List<Type>& append(Type&& value);
-        virtual List<Type>& append(const Type& value);
-        virtual List<Type>& append(const Type* cArray, size_t length);
-        virtual List<Type>& append(const Type* begin, const Type* end);
-
         virtual List<Type>& insertAfter(ConstListIterator<Type> element, List<Type>&& other);
         virtual List<Type>& insertAfter(ConstListIterator<Type> element, const List<Type>& other);
         virtual List<Type>& insertAfter(ConstListIterator<Type> element, std::initializer_list<Type> initList);
@@ -77,14 +85,6 @@ namespace jora {
 
         virtual size_t remove(ListIterator<Type> element, size_t amount = 1) noexcept;
         virtual size_t cutAfter(ListIterator<Type> element) noexcept;
-
-        virtual bool pushBack(Type&& value) noexcept;
-        virtual bool pushBack(const Type& value) noexcept;
-        virtual bool pushFront(Type&& value) noexcept;
-        virtual bool pushFront(const Type& value) noexcept;
-        virtual Type&& popFront();
-        virtual const Type& peekBack() const;
-        virtual const Type& peekFront() const;
 
         virtual Type* toCArray() const noexcept;
 
@@ -232,7 +232,8 @@ namespace jora {
     template<typename Type>
     inline List<Type>& List<Type>::append(const Type* begin, const Type* end) {
         if (!begin || !end)
-            throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
+            return *this;
+
         for (const Type* ptr = begin; ptr < end; ptr++)
             append(*ptr);
         return *this;
@@ -297,7 +298,7 @@ namespace jora {
     template <typename Type>
     inline List<Type>& List<Type>::insertAfter(ConstListIterator<Type> element, const Type* cArray, size_t length) {
         if (!cArray)
-            throw ListCArrayNullptrException(__FILE__, __FUNCTION__, __LINE__);
+            return *this;
         for (int i = 0; i < length; i++)
             insertAfter(element++, cArray[i]);
         return *this;
@@ -350,33 +351,32 @@ namespace jora {
     inline List<Type>& List<Type>::operator+=(const Type& value) {
         return append(value);
     }
-
     template<typename Type>
-    inline List<Type>&& List<Type>::operator+(List<Type>&& other) const {
+    inline List<Type> List<Type>::operator+(List<Type>&& other) const {
         List<Type> copy(*this);
         copy.append(std::move(other));
-        return std::move(copy);
+        return copy;
     }
     template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const List<Type>& other) const {
+    inline List<Type> List<Type>::operator+(const List<Type>& other) const {
         List<Type> copy(*this);
         copy.append(other);
-        return std::move(copy);
+        return copy;
     }
     template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const std::initializer_list<Type>& stdList) const {
+    inline List<Type> List<Type>::operator+(const std::initializer_list<Type>& stdList) const {
         List<Type> copy(*this);
         copy.append(stdList);
-        return std::move(copy);
+        return copy;
     }
     template<typename Type>
-    inline List<Type>&& List<Type>::operator+(Type&& value) const {
+    inline List<Type> List<Type>::operator+(Type&& value) const {
         List<Type> copy(*this);
         copy.append(std::move(value));
-        return std::move(copy);
+        return copy;
     }
     template<typename Type>
-    inline List<Type>&& List<Type>::operator+(const Type& value) const {
+    inline List<Type> List<Type>::operator+(const Type& value) const {
         List<Type> copy(*this);
         copy.append(value);
         return std::move(copy);

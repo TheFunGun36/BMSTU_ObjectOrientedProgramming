@@ -14,12 +14,6 @@ namespace jora {
             : ListException("failed to allocate memory for new list element", file, function, line) {}
     };
 
-    class ListCArrayNullptrException : public ListException {
-    public:
-        ListCArrayNullptrException(const char* file, const char* function, int line)
-            : ListException("input CArray is nullptr", file, function, line) {}
-    };
-
     class ListEmptyException : public ListException {
     public:
         ListEmptyException(const char* file, const char* function, int line)

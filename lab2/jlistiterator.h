@@ -12,6 +12,8 @@ namespace jora {
         virtual operator bool() const noexcept override;
         virtual bool operator==(const ListIteratorBase& other) const;
         virtual bool operator!=(const ListIteratorBase& other) const;
+        virtual const Type& operator*() const;
+        virtual const Type* operator->() const;
 
     protected:
         ListIteratorBase() noexcept;
@@ -33,8 +35,8 @@ namespace jora {
 
         virtual inline ListIterator& operator++();
         virtual inline ListIterator operator++(int);
-        virtual Type& operator*() const;
-        virtual Type* operator->() const;
+        virtual Type& operator*();
+        virtual Type* operator->();
 
     private:
         friend class List<Type>;
@@ -51,8 +53,6 @@ namespace jora {
 
         virtual ConstListIterator& operator++();
         virtual ConstListIterator operator++(int);
-        virtual const Type& operator*() const;
-        virtual const Type* operator->() const;
 
     private:
         friend class List<Type>;
@@ -78,10 +78,9 @@ namespace jora {
     }
     template<typename Type>
     inline std::shared_ptr<Node<Type>> ListIteratorBase<Type>::node() const {
-        std::shared_ptr<Node<Type>> locked = _ptr.lock();
-        if (!locked)
+        if (_ptr.expired())
             throw IteratorExpiredException(__FILE__, __FUNCTION__, __LINE__);
-        return locked;
+        return _ptr.lock();
     }
     template<typename Type>
     inline bool ListIteratorBase<Type>::operator==(const ListIteratorBase& other) const {
@@ -118,11 +117,11 @@ namespace jora {
         return result;
     }
     template<typename Type>
-    inline Type& ListIterator<Type>::operator*() const {
+    inline Type& ListIterator<Type>::operator*() {
         return this->node()->value();
     }
     template<typename Type>
-    inline Type* ListIterator<Type>::operator->() const {
+    inline Type* ListIterator<Type>::operator->() {
         return &this->node()->value();
     }
     template<typename Type>
@@ -155,11 +154,11 @@ namespace jora {
         return result;
     }
     template<typename Type>
-    inline const Type& ConstListIterator<Type>::operator*() const {
+    inline const Type& ListIteratorBase<Type>::operator*() const {
         return this->node()->value();
     }
     template<typename Type>
-    inline const Type* ConstListIterator<Type>::operator->() const {
+    inline const Type* ListIteratorBase<Type>::operator->() const {
         return &this->node()->value();
     }
     template<typename Type>
