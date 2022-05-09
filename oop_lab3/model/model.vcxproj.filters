@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Exceptions">
+      <UniqueIdentifier>{3ba53a1f-b721-4294-bc98-8a58d20e754b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Precompile">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Exceptions\Header">
+      <UniqueIdentifier>{c0602e2b-22ad-4c28-8016-c6e2a9581631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exceptions\Source">
+      <UniqueIdentifier>{c82a2686-7663-49db-a6c8-c7e4be5d544d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Model\Header">
+      <UniqueIdentifier>{5cf24433-5c4c-4f10-b8b5-2e84ef931b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model\Source">
+      <UniqueIdentifier>{14d0181c-5f45-45ce-9b8b-7c0ac44a7569}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jcoords3dexception.h">
+      <Filter>Exceptions\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jexception.h">
+      <Filter>Exceptions\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jvector3d.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jnumerical.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jobject3d.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jpoint3d.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jangle.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Precompile</Filter>
+    </ClCompile>
+    <ClCompile Include="jexception.cpp">
+      <Filter>Exceptions\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jvector3d.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jnumerical.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jpoint3d.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jangle.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jobject3d.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
