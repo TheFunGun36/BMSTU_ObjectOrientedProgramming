@@ -18,6 +18,10 @@ void Point3D::setValue(const Vector3D& point) noexcept {
     _value = point;
 }
 
+void Point3D::move(const Vector3D& offset) noexcept {
+    _value += offset;
+}
+
 void Point3D::scale(const Vector3D& factors) noexcept {
     for (int i = 0; i < 3; i++)
         _value[i] *= factors[i];

@@ -59,6 +59,12 @@
     <ClInclude Include="jtriangle3dexception.h">
       <Filter>Exceptions\Header</Filter>
     </ClInclude>
+    <ClInclude Include="jmodel3d.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3dexception.h">
+      <Filter>Exceptions\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -83,6 +89,9 @@
       <Filter>Model\Source</Filter>
     </ClCompile>
     <ClCompile Include="jtriangle3d.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodel3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
   </ItemGroup>

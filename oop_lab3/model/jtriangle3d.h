@@ -28,6 +28,10 @@ public:
 
     virtual void setPoints(const std::weak_ptr<std::vector<Point3D>>& points) noexcept;
 
+    virtual void move(const Vector3D& offset) noexcept override;
+    virtual void scale(const Vector3D& factors) noexcept override;
+    virtual void rotateAround(const Angle& value, Axis axisIndex) noexcept override;
+
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const override;
     virtual std::wostream& addToStream(std::wostream& stream) const override;

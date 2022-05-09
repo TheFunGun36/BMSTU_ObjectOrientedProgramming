@@ -12,6 +12,7 @@ public:
     const Vector3D& value() const noexcept;
     Vector3D& value() noexcept;
     void setValue(const Vector3D& point) noexcept;
+    virtual void move(const Vector3D& offset) noexcept override;
     virtual void scale(const Vector3D& factors) noexcept override;
     virtual void rotateAround(const Angle& angle, Axis axisIndex) noexcept override;
 

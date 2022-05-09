@@ -157,6 +157,8 @@
   <ItemGroup>
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
+    <ClInclude Include="jmodel3d.h" />
+    <ClInclude Include="jmodel3dexception.h" />
     <ClInclude Include="jpoint3d.h" />
     <ClInclude Include="jprintable.h" />
     <ClInclude Include="jtriangle3d.h" />
@@ -169,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jangle.cpp" />
+    <ClCompile Include="jmodel3d.cpp" />
     <ClCompile Include="jobject3d.cpp" />
     <ClCompile Include="jpoint3d.cpp" />
     <ClCompile Include="jprintable.cpp" />

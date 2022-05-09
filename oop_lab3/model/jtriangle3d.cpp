@@ -16,6 +16,7 @@ Triangle3D::Triangle3D(const std::weak_ptr<std::vector<Point3D>>& points)
 Triangle3D& Triangle3D::operator=(const Triangle3D& other) {
     _points = other._points;
     _indexes = other._indexes;
+    return *this;
 }
 
 Triangle3D::operator bool() const noexcept {
@@ -23,7 +24,15 @@ Triangle3D::operator bool() const noexcept {
 }
 
 bool Triangle3D::isValid() const noexcept {
-    return !_points.expired() && _indexes[0] >= 0 && _indexes[1] >= 0 && _indexes[2] >= 0;
+    bool result = !_points.expired();
+    if (result) {
+        const auto& ptr = _points.lock();
+        const auto& arr = *ptr;
+
+        for (int i = 0; result && i < _indexes.size(); i++)
+            result = _indexes[i] >= 0 && _indexes[i] < arr.size();
+    }
+    return result;
 }
 
 int Triangle3D::index(int which) const noexcept {
@@ -56,6 +65,30 @@ Point3D& Triangle3D::operator[](int which) {
 
 void Triangle3D::setPoints(const std::weak_ptr<std::vector<Point3D>>& points) noexcept {
     _points = points;
+}
+
+void Triangle3D::move(const Vector3D& offset) noexcept {
+    if (!_points.expired()) {
+        auto ptr = _points.lock();
+        for (Point3D &p : *ptr)
+            p.move(offset);
+    }
+}
+
+void Triangle3D::scale(const Vector3D& factors) noexcept {
+    if (!_points.expired()) {
+        auto ptr = _points.lock();
+        for (Point3D &p : *ptr)
+            p.scale(factors);
+    }
+}
+
+void Triangle3D::rotateAround(const Angle& value, Axis axisIndex) noexcept {
+    if (!_points.expired()) {
+        auto ptr = _points.lock();
+        for (Point3D &p : *ptr)
+            p.rotateAround(value, axisIndex);
+    }
 }
 
 std::ostream& Triangle3D::addToStream(std::ostream& stream) const {
