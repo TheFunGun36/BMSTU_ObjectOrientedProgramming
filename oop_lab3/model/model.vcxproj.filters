@@ -38,7 +38,7 @@
     <ClInclude Include="jvector3d.h">
       <Filter>Model\Header</Filter>
     </ClInclude>
-    <ClInclude Include="jnumerical.h">
+    <ClInclude Include="jreal.h">
       <Filter>Model\Header</Filter>
     </ClInclude>
     <ClInclude Include="jobject3d.h">
@@ -49,6 +49,9 @@
     </ClInclude>
     <ClInclude Include="jangle.h">
       <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jprintable.h">
+      <Filter>Precompile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -61,9 +64,6 @@
     <ClCompile Include="jvector3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
-    <ClCompile Include="jnumerical.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
     <ClCompile Include="jpoint3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
@@ -72,6 +72,9 @@
     </ClCompile>
     <ClCompile Include="jobject3d.cpp">
       <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="jprintable.cpp">
+      <Filter>Model\Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

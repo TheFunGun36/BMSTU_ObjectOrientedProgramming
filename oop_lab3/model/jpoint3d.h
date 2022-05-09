@@ -13,7 +13,11 @@ public:
     Vector3D& value();
     void setValue(const Vector3D& point);
     virtual void scale(const Vector3D& factors) override;
-    virtual void rotate(const Angle& x, const Angle& y, const Angle& z) noexcept override;
+    virtual void rotateAround(const Angle& value, int axisIndex) noexcept override;
+
+protected:
+    virtual std::ostream& addToStream(std::ostream& stream) const override;
+    virtual std::wostream& addToStream(std::wostream& stream) const override;
 
 private:
     Vector3D _value;

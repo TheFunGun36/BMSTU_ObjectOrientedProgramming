@@ -68,13 +68,13 @@ bool Angle::operator==(const Angle& other) const {
 bool Angle::operator!=(const Angle& other) const {
     return !(*this == other);
 }
-        
-std::ostream& operator<<(std::ostream& stream, const Angle& a) {
-    return stream << "radians(" << a.radians() << ")";
+
+std::ostream& Angle::addToStream(std::ostream& stream) const {
+    return stream << "radians(" << radians() << ")";
 }
 
-std::wostream& operator<<(std::wostream& stream, const Angle& a) {
-    return stream << L"radians(" << a.radians() << L")";
+std::wostream& Angle::addToStream(std::wostream& stream) const {
+    return stream << L"radians(" << radians() << L")";
 }
 
 }

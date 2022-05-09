@@ -1,10 +1,11 @@
 #pragma once
 #include <ostream>
-#include "jnumerical.h"
+#include "jreal.h"
+#include "jprintable.h"
 
 namespace Jora {
 
-class Angle {
+class Angle : public Printable {
 public:
     Angle() = default;
     Angle(const Angle& other) = default;
@@ -27,8 +28,9 @@ public:
     bool operator==(const Angle& other) const;
     bool operator!=(const Angle& other) const;
 
-    friend std::ostream& operator<<(std::ostream& stream, const Angle& a);
-    friend std::wostream& operator<<(std::wostream& stream, const Angle& a);
+protected:
+    virtual std::ostream& addToStream(std::ostream& stream) const override;
+    virtual std::wostream& addToStream(std::wostream& stream) const override;
 
 private:
     real _radians;

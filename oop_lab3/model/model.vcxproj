@@ -158,9 +158,10 @@
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
     <ClInclude Include="jpoint3d.h" />
+    <ClInclude Include="jprintable.h" />
     <ClInclude Include="jvector3d.h" />
     <ClInclude Include="jexception.h" />
-    <ClInclude Include="jnumerical.h" />
+    <ClInclude Include="jreal.h" />
     <ClInclude Include="jobject3d.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -168,9 +169,9 @@
     <ClCompile Include="jangle.cpp" />
     <ClCompile Include="jobject3d.cpp" />
     <ClCompile Include="jpoint3d.cpp" />
+    <ClCompile Include="jprintable.cpp" />
     <ClCompile Include="jvector3d.cpp" />
     <ClCompile Include="jexception.cpp" />
-    <ClCompile Include="jnumerical.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

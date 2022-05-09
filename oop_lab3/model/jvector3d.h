@@ -1,58 +1,62 @@
 #pragma once
 #include <initializer_list>
-#include <ostream>
-#include "jnumerical.h"
+#include <array>
+#include "jreal.h"
 #include "jcoords3dexception.h"
+#include "jprintable.h"
 
 namespace Jora {
 
-class Vector3D {
+class Vector3D : public Printable {
 public:
     Vector3D(real x = 0., real y = 0., real z = 0.) noexcept;
     Vector3D(const Vector3D& other) = default;
+    virtual ~Vector3D() = default;
 
-    real operator[](size_t index) const;
-    real& operator[](size_t index);
-    real x() const noexcept;
-    real y() const noexcept;
-    real z() const noexcept;
-    real& x() noexcept;
-    real& y() noexcept;
-    real& z() noexcept;
-    Vector3D& setX(real value) noexcept;
-    Vector3D& setY(real value) noexcept;
-    Vector3D& setZ(real value) noexcept;
+    virtual real operator[](size_t index) const;
+    virtual real& operator[](size_t index);
+    virtual real x() const noexcept;
+    virtual real y() const noexcept;
+    virtual real z() const noexcept;
+    virtual real& x() noexcept;
+    virtual real& y() noexcept;
+    virtual real& z() noexcept;
+    virtual Vector3D& setX(real value) noexcept;
+    virtual Vector3D& setY(real value) noexcept;
+    virtual Vector3D& setZ(real value) noexcept;
 
-    Vector3D& operator=(const Vector3D& other) noexcept;
+    virtual Vector3D& operator=(const Vector3D& other) noexcept;
 
-    Vector3D& operator+=(const Vector3D& other) noexcept;
-    Vector3D& operator+=(real value) noexcept;
-    Vector3D& operator-=(const Vector3D& other) noexcept;
-    Vector3D& operator-=(real value) noexcept;
-    Vector3D& operator*=(real value) noexcept;
-    Vector3D& operator/=(real value) noexcept;
+    virtual Vector3D& operator+=(const Vector3D& other) noexcept;
+    virtual Vector3D& operator+=(real value) noexcept;
+    virtual Vector3D& operator-=(const Vector3D& other) noexcept;
+    virtual Vector3D& operator-=(real value) noexcept;
+    virtual Vector3D& operator*=(real value) noexcept;
+    virtual Vector3D& operator/=(real value) noexcept;
 
-    Vector3D operator+(const Vector3D& other) const noexcept;
-    Vector3D operator+(real value) const noexcept;
-    Vector3D operator-(const Vector3D& other) const noexcept;
-    Vector3D operator-(real value) const noexcept;
-    Vector3D operator*(real value) const noexcept;
-    Vector3D operator/(real value) const noexcept;
+    virtual Vector3D operator+(const Vector3D& other) const noexcept;
+    virtual Vector3D operator+(real value) const noexcept;
+    virtual Vector3D operator-(const Vector3D& other) const noexcept;
+    virtual Vector3D operator-(real value) const noexcept;
+    virtual Vector3D operator*(real value) const noexcept;
+    virtual Vector3D operator/(real value) const noexcept;
 
-    Vector3D operator-() const noexcept;
+    virtual Vector3D operator-() const noexcept;
 
-    bool operator==(const Vector3D& other) const noexcept;
-    bool operator!=(const Vector3D& other) const noexcept;
-    operator bool();
+    virtual bool operator==(const Vector3D& other) const noexcept;
+    virtual bool operator!=(const Vector3D& other) const noexcept;
+    virtual operator bool();
 
     static size_t indexCycleForward(size_t value);
     static size_t indexCycleBackward(size_t value);
 
-    friend std::ostream& operator<<(std::ostream& stream, const Vector3D& position);
-    friend std::wostream& operator<<(std::wostream& stream, const Vector3D& position);
+protected:
+    virtual std::ostream& addToStream(std::ostream& stream) const override;
+    virtual std::wostream& addToStream(std::wostream& stream) const override;
 
 private:
-    real _value[3];
+    //real _value[3];
+    std::array<real, 3> _value;
 };
 
 }

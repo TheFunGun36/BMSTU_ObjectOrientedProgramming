@@ -10,9 +10,7 @@ namespace VisualStudio {
 namespace CppUnitTestFramework {
 template<>
 static std::wstring ToString<Angle>(const Angle& angle) {
-    std::wstringstream sstr;
-    sstr << angle << L'\0';
-    return sstr.str();
+    return angle.toWString();
 }
 }
 }

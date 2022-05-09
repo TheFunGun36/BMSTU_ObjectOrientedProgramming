@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "jvector3d.h"
+#include <sstream>
 
 namespace Jora {
 
@@ -161,12 +162,12 @@ size_t Vector3D::indexCycleBackward(size_t value) {
     return value;
 }
 
-std::ostream& operator<<(std::ostream& stream, const Vector3D& position) {
-    return stream << "Vector3D(" << position.x() << ", " << position.y() << ", " << position.z() << ")";
+std::ostream& Vector3D::addToStream(std::ostream& stream) const {
+    return stream << "(" << x() << ", " << y() << ", " << z() << ")";
 }
 
-std::wostream& operator<<(std::wostream& stream, const Vector3D& position) {
-    return stream << L"Vector3D(" << position.x() << L", " << position.y() << L", " << position.z() << L")";
+std::wostream& Vector3D::addToStream(std::wostream& stream) const {
+    return stream << L"(" << x() << L", " << y() << L", " << z() << L")";
 }
 
 }

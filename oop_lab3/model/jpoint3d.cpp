@@ -23,20 +23,20 @@ void Point3D::scale(const Vector3D& factors) {
         _value[i] *= factors[i];
 }
 
-void Point3D::rotate(const Angle& x, const Angle& y, const Angle& z) noexcept {
-    Angle angles[] = { x, y, z };
-    size_t ix = 1;
-    size_t iy = 2;
-    size_t iz = 0;
+void Point3D::rotateAround(const Angle& value, int i) noexcept {
+    Vector3D newPoint(_value);
+    int j = Vector3D::indexCycleForward(i);
+    int k = Vector3D::indexCycleForward(j);
+    newPoint[j] = _value[j] * value.cos() - _value[k] * value.sin();
+    newPoint[k] = _value[j] * value.sin() + _value[k] * value.cos();
+}
 
-    for (int i = 0; i < 3; i++) {
-        Vector3D newPoint(_value);
-        newPoint[ix] = _value[ix] * angles[iz].cos() - _value[iy] * angles[iz].sin();
-        newPoint[iy] = _value[ix] * angles[iz].sin() + _value[iy] * angles[iz].cos();
-        ix = Vector3D::indexCycleForward(ix);
-        iy = Vector3D::indexCycleForward(iy);
-        iz = Vector3D::indexCycleForward(iz);
-    }
+std::ostream& Point3D::addToStream(std::ostream& stream) const {
+    return stream << "Point" << _value;
+}
+
+std::wostream& Point3D::addToStream(std::wostream& stream) const {
+    return stream << L"Point" << _value;
 }
 
 }

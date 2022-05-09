@@ -10,9 +10,7 @@ namespace VisualStudio {
 namespace CppUnitTestFramework {
 template<>
 static std::wstring ToString<Vector3D>(const Vector3D& coords) {
-    std::wstringstream sstr;
-    sstr << coords << L'\0';
-    return sstr.str();
+    return coords.toWString();
 }
 }
 }
