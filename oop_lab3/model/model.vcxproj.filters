@@ -70,10 +70,10 @@
     <ClCompile Include="jangle.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
-    <ClCompile Include="jobject3d.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="jprintable.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jobject3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
   </ItemGroup>

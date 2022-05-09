@@ -7,6 +7,13 @@
 
 namespace Jora {
 
+enum class Axis
+{
+    X,
+    Y,
+    Z
+};
+
 class Vector3D : public Printable {
 public:
     Vector3D(real x = 0., real y = 0., real z = 0.) noexcept;
@@ -47,8 +54,10 @@ public:
     virtual bool operator!=(const Vector3D& other) const noexcept;
     virtual operator bool();
 
-    static size_t indexCycleForward(size_t value);
-    static size_t indexCycleBackward(size_t value);
+    static Axis nextAxis(Axis axis);
+    static Axis prevAxis(Axis axis);
+    static int nextAxis(int axis);
+    static int prevAxis(int axis);
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const override;

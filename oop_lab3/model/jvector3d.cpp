@@ -152,16 +152,20 @@ Vector3D::operator bool() {
     return *this != Vector3D();
 }
 
-size_t Vector3D::indexCycleForward(size_t value) {
-    value = value == 2 ? 0 : value + 1;
-    return value;
+Axis Vector3D::nextAxis(Axis value) {
+    return Axis(nextAxis(int(value)));
 }
 
-size_t Vector3D::indexCycleBackward(size_t value) {
-    value = value ? value - 1 : 2;
-    return value;
+Axis Vector3D::prevAxis(Axis value) {
+    return Axis(prevAxis(int(value)));
 }
 
+int Vector3D::nextAxis(int axis) {
+    return axis == 2 ? 0 : axis + 1;
+}
+int Vector3D::prevAxis(int axis) {
+    return axis ? axis - 1 : 2;
+}
 std::ostream& Vector3D::addToStream(std::ostream& stream) const {
     return stream << "(" << x() << ", " << y() << ", " << z() << ")";
 }
