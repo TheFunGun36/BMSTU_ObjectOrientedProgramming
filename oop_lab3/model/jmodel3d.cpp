@@ -43,7 +43,7 @@ bool Model3D::addPoint(const Point3D& point) noexcept {
     try {
         (*_points).push_back(point);
     }
-    catch (const std::bad_alloc& e) {
+    catch (const std::bad_alloc&) {
         result = false;
     }
     return result;
@@ -53,7 +53,7 @@ Point3D& Model3D::point(int index) {
     try {
         return (*_points)[index];
     }
-    catch (const std::out_of_range& e) {
+    catch (const std::out_of_range&) {
         throw ModelOutOfRange(__FILE__, __FUNCTION__, __LINE__);
     }
 }
@@ -62,8 +62,8 @@ const Point3D& Model3D::point(int index) const {
     return const_cast<Model3D &>(*this).point(index);
 }
 
-int Model3D::pointsAmount() const noexcept {
-    return (*_points).size();
+size_t Model3D::pointsAmount() const noexcept {
+    return _points->size();
 }
 
 bool Model3D::addTriangle(int i1, int i2, int i3) noexcept {
@@ -73,7 +73,7 @@ bool Model3D::addTriangle(int i1, int i2, int i3) noexcept {
         triangle.setIndexes(i1, i2, i3);
         _triangles.push_back(triangle);
     }
-    catch (const std::bad_alloc& e) {
+    catch (const std::bad_alloc&) {
         result = false;
     }
     return result;
@@ -85,7 +85,7 @@ bool Model3D::addTriangle(Triangle3D triangle) noexcept {
     try {
         _triangles.push_back(triangle);
     }
-    catch (const std::bad_alloc& e) {
+    catch (const std::bad_alloc&) {
         result = false;
     }
     return result;
@@ -95,7 +95,7 @@ Triangle3D& Model3D::triangle(int index) {
     try {
         return _triangles[index];
     }
-    catch (const std::out_of_range& e) {
+    catch (const std::out_of_range&) {
         throw ModelOutOfRange(__FILE__, __FUNCTION__, __LINE__);
     }
 }
@@ -104,7 +104,7 @@ const Triangle3D& Model3D::triangle(int index) const {
     return const_cast<Model3D&>(*this).triangle(index);
 }
 
-int Model3D::triangleAmount() const noexcept {
+size_t Model3D::triangleAmount() const noexcept {
     return _triangles.size();
 }
 

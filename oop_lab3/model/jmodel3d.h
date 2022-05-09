@@ -18,13 +18,13 @@ public:
     virtual bool addPoint(const Point3D& point) noexcept;
     virtual Point3D& point(int index);
     virtual const Point3D& point(int index) const;
-    virtual int pointsAmount() const noexcept;
+    virtual size_t pointsAmount() const noexcept;
 
     virtual bool addTriangle(int i1, int i2, int i3) noexcept;
     virtual bool addTriangle(Triangle3D triangle) noexcept;
     virtual Triangle3D& triangle(int index);
     virtual const Triangle3D& triangle(int index) const;
-    virtual int triangleAmount() const noexcept;
+    virtual size_t triangleAmount() const noexcept;
 
     virtual operator bool() const noexcept;
     virtual bool isEmpty() const noexcept;
