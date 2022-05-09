@@ -24,6 +24,24 @@
     <Filter Include="Model\Source">
       <UniqueIdentifier>{14d0181c-5f45-45ce-9b8b-7c0ac44a7569}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Control">
+      <UniqueIdentifier>{df8208d9-65a4-41bb-bc18-28d08a605b5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control\Header">
+      <UniqueIdentifier>{f3527f60-621f-42a3-91c6-886c7a15289b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control\Source">
+      <UniqueIdentifier>{4c0e918b-6dcc-4b47-8cb3-9dedda94bd90}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View">
+      <UniqueIdentifier>{ff1e9a89-0f9d-4615-892b-2296895897c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Header">
+      <UniqueIdentifier>{fb0511ff-941e-40c5-8372-f2c9089bdfce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="View\Source">
+      <UniqueIdentifier>{fd9728d0-70f3-4efb-9bfa-a4257fab3930}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -65,6 +83,27 @@
     <ClInclude Include="jmodel3dexception.h">
       <Filter>Exceptions\Header</Filter>
     </ClInclude>
+    <ClInclude Include="jmodel3dloader.h">
+      <Filter>Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jfileexception.h">
+      <Filter>Exceptions\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3dloaderobj.h">
+      <Filter>Control\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jpixmapbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jscreenline.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jscreenpoint.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jcolor.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -93,6 +132,18 @@
     </ClCompile>
     <ClCompile Include="jmodel3d.cpp">
       <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodel3dloader.cpp">
+      <Filter>Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodel3dloaderobj.cpp">
+      <Filter>Control\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jscreenpoint.cpp">
+      <Filter>View\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jscreenline.cpp">
+      <Filter>Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

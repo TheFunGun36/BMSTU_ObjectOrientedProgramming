@@ -155,10 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="jcolor.h" />
+    <ClInclude Include="jfileexception.h" />
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
+    <ClInclude Include="jscreenline.h" />
     <ClInclude Include="jmodel3d.h" />
     <ClInclude Include="jmodel3dexception.h" />
+    <ClInclude Include="jmodel3dloaderobj.h" />
     <ClInclude Include="jpoint3d.h" />
     <ClInclude Include="jprintable.h" />
     <ClInclude Include="jtriangle3d.h" />
@@ -167,14 +171,21 @@
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jreal.h" />
     <ClInclude Include="jobject3d.h" />
+    <ClInclude Include="jmodel3dloader.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="jpixmapbase.h" />
+    <ClInclude Include="jscreenpoint.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jangle.cpp" />
     <ClCompile Include="jmodel3d.cpp" />
+    <ClCompile Include="jmodel3dloader.cpp" />
+    <ClCompile Include="jmodel3dloaderobj.cpp" />
     <ClCompile Include="jobject3d.cpp" />
     <ClCompile Include="jpoint3d.cpp" />
     <ClCompile Include="jprintable.cpp" />
+    <ClCompile Include="jscreenline.cpp" />
+    <ClCompile Include="jscreenpoint.cpp" />
     <ClCompile Include="jtriangle3d.cpp" />
     <ClCompile Include="jvector3d.cpp" />
     <ClCompile Include="jexception.cpp" />
