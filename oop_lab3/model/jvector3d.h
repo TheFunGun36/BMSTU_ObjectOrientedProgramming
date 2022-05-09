@@ -22,6 +22,8 @@ public:
 
     virtual real operator[](size_t index) const;
     virtual real& operator[](size_t index);
+    virtual real operator[](Axis axis) const;
+    virtual real& operator[](Axis axis);
     virtual real x() const noexcept;
     virtual real y() const noexcept;
     virtual real z() const noexcept;
@@ -64,7 +66,6 @@ protected:
     virtual std::wostream& addToStream(std::wostream& stream) const override;
 
 private:
-    //real _value[3];
     std::array<real, 3> _value;
 };
 

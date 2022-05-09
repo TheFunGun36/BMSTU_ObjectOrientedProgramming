@@ -51,7 +51,7 @@
       <Filter>Model\Header</Filter>
     </ClInclude>
     <ClInclude Include="jprintable.h">
-      <Filter>Precompile</Filter>
+      <Filter>Model\Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,5 +76,8 @@
     <ClCompile Include="jobject3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
   </ItemGroup>
 </Project>

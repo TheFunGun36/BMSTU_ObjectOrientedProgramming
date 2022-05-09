@@ -22,6 +22,14 @@ real& Vector3D::operator[](size_t index) {
     return _value[index];
 }
 
+real Vector3D::operator[](Axis axis) const {
+    return (*this)[int(axis)];
+}
+
+real& Vector3D::operator[](Axis axis) {
+    return (*this)[int(axis)];
+}
+
 real Vector3D::x() const noexcept {
     return _value[0];
 }
