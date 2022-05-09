@@ -159,6 +159,8 @@
     <ClInclude Include="jcoords3dexception.h" />
     <ClInclude Include="jpoint3d.h" />
     <ClInclude Include="jprintable.h" />
+    <ClInclude Include="jtriangle3d.h" />
+    <ClInclude Include="jtriangle3dexception.h" />
     <ClInclude Include="jvector3d.h" />
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jreal.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="jobject3d.cpp" />
     <ClCompile Include="jpoint3d.cpp" />
     <ClCompile Include="jprintable.cpp" />
+    <ClCompile Include="jtriangle3d.cpp" />
     <ClCompile Include="jvector3d.cpp" />
     <ClCompile Include="jexception.cpp" />
     <ClCompile Include="pch.cpp">

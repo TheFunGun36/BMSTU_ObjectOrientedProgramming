@@ -11,6 +11,8 @@ public:
     friend std::ostream& operator<<(std::ostream& stream, const Printable& position);
     friend std::wostream& operator<<(std::wostream& stream, const Printable& position);
 
+    inline virtual ~Printable() = default;
+
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const = 0;
     virtual std::wostream& addToStream(std::wostream& stream) const = 0;

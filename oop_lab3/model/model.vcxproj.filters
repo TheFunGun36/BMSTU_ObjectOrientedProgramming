@@ -53,6 +53,12 @@
     <ClInclude Include="jprintable.h">
       <Filter>Model\Header</Filter>
     </ClInclude>
+    <ClInclude Include="jtriangle3d.h">
+      <Filter>Model\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jtriangle3dexception.h">
+      <Filter>Exceptions\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -74,6 +80,9 @@
       <Filter>Model\Source</Filter>
     </ClCompile>
     <ClCompile Include="jobject3d.cpp">
+      <Filter>Model\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="jtriangle3d.cpp">
       <Filter>Model\Source</Filter>
     </ClCompile>
   </ItemGroup>
