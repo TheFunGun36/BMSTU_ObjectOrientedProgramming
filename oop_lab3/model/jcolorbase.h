@@ -7,28 +7,21 @@ namespace Jora {
 
 class ColorBase : public Printable {
 public:
-    ColorBase(const ColorBase& other) = delete;
-    ColorBase& operator=(const ColorBase& other) = delete;
 
-    inline virtual uint8_t red() const noexcept { return const_cast<ColorBase&>(*this).red(); }
-    inline virtual uint8_t green() const noexcept { return const_cast<ColorBase&>(*this).green(); }
-    inline virtual uint8_t blue() const noexcept { return const_cast<ColorBase&>(*this).blue(); }
-    inline virtual uint8_t alpha() const noexcept { return const_cast<ColorBase&>(*this).alpha(); }
+    inline virtual uint8_t red() const noexcept = 0;
+    inline virtual uint8_t green() const noexcept = 0;
+    inline virtual uint8_t blue() const noexcept = 0;
+    inline virtual uint8_t alpha() const noexcept = 0;
 
-    virtual uint8_t& red() noexcept = 0;
-    virtual uint8_t& green() noexcept = 0;
-    virtual uint8_t& blue() noexcept = 0;
-    virtual uint8_t& alpha() noexcept = 0;
+    virtual void setRed(uint8_t value) noexcept = 0;
+    virtual void setGreen(uint8_t value) noexcept = 0;
+    virtual void setBlue(uint8_t value) noexcept = 0;
+    virtual void setAlpha(uint8_t value) noexcept = 0;
 
-    virtual uint8_t& setRed(uint8_t value) noexcept = 0;
-    virtual uint8_t& setGreen(uint8_t value) noexcept = 0;
-    virtual uint8_t& setBlue(uint8_t value) noexcept = 0;
-    virtual uint8_t& setAlpha(uint8_t value) noexcept = 0;
-
-    inline virtual uint8_t& setRed(real value) noexcept { return setRed(ColorBase::mapComponent(value)); }
-    inline virtual uint8_t& setGreen(real value) noexcept { return setGreen(ColorBase::mapComponent(value)); }
-    inline virtual uint8_t& setBlue(real value) noexcept { return setBlue(ColorBase::mapComponent(value)); }
-    inline virtual uint8_t& setAlpha(real value) noexcept { return setAlpha(ColorBase::mapComponent(value)); }
+    inline virtual void setRed(real value) noexcept { return setRed(ColorBase::mapComponent(value)); }
+    inline virtual void setGreen(real value) noexcept { return setGreen(ColorBase::mapComponent(value)); }
+    inline virtual void setBlue(real value) noexcept { return setBlue(ColorBase::mapComponent(value)); }
+    inline virtual void setAlpha(real value) noexcept { return setAlpha(ColorBase::mapComponent(value)); }
 
     virtual std::unique_ptr<ColorBase> copy() const = 0;
 
@@ -37,6 +30,13 @@ public:
 
 protected:
     ColorBase() = default;
+    ColorBase(const ColorBase& other) noexcept {
+        setRed(other.red());
+        setGreen(other.green());
+        setBlue(other.blue());
+        setAlpha(other.alpha());
+    }
+    ColorBase& operator=(const ColorBase& other) = default;
 };
 
 }

@@ -8,10 +8,7 @@ class PenBase : public Printable {
 public:
     virtual std::unique_ptr<PenBase> copy() const = 0;
 
-    inline virtual const ColorBase& color() const noexcept {
-        return const_cast<PenBase&>(*this).color();
-    }
-    virtual ColorBase& color() noexcept = 0;
+    virtual std::unique_ptr<Jora::ColorBase> color() const noexcept = 0;
     virtual void setColor(const ColorBase& color) noexcept = 0;
 
     inline virtual ~PenBase() = default;

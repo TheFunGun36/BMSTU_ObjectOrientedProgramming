@@ -119,6 +119,9 @@
     <ClInclude Include="jevent.h">
       <Filter>View\Header</Filter>
     </ClInclude>
+    <ClInclude Include="jviewfactorybase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -158,7 +161,7 @@
       <Filter>View\Source</Filter>
     </ClCompile>
     <ClCompile Include="jscreenline.cpp">
-      <Filter>Model</Filter>
+      <Filter>View\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
