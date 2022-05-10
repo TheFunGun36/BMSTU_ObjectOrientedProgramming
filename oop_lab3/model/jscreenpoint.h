@@ -17,7 +17,7 @@ public:
     inline int& operator[](int index) noexcept { return index ? _y : _x; }
 
     inline void setX(int value) noexcept { _x = value; }
-    inline void setX(int value) noexcept { _y = value; }
+    inline void setY(int value) noexcept { _y = value; }
 
     ScreenPoint& operator+=(const ScreenPoint& other) noexcept;
     ScreenPoint& operator-=(const ScreenPoint& other) noexcept;

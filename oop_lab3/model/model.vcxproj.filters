@@ -101,7 +101,22 @@
     <ClInclude Include="jscreenpoint.h">
       <Filter>View\Header</Filter>
     </ClInclude>
-    <ClInclude Include="jcolor.h">
+    <ClInclude Include="jcolorbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jpainterbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jpenbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jbrushbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jwindowbase.h">
+      <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="jevent.h">
       <Filter>View\Header</Filter>
     </ClInclude>
   </ItemGroup>

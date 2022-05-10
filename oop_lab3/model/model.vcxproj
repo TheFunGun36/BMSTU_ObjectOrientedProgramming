@@ -155,10 +155,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="jcolor.h" />
+    <ClInclude Include="jbrushbase.h" />
+    <ClInclude Include="jcolorbase.h" />
+    <ClInclude Include="jevent.h" />
     <ClInclude Include="jfileexception.h" />
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
+    <ClInclude Include="jpainterbase.h" />
+    <ClInclude Include="jpenbase.h" />
     <ClInclude Include="jscreenline.h" />
     <ClInclude Include="jmodel3d.h" />
     <ClInclude Include="jmodel3dexception.h" />
@@ -172,6 +176,7 @@
     <ClInclude Include="jreal.h" />
     <ClInclude Include="jobject3d.h" />
     <ClInclude Include="jmodel3dloader.h" />
+    <ClInclude Include="jwindowbase.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="jpixmapbase.h" />
     <ClInclude Include="jscreenpoint.h" />

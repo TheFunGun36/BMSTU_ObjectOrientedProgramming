@@ -104,14 +104,14 @@ public:
         Assert::AreEqual(2., cc.y(), L"y() const");
         Assert::AreEqual(3., cc.z(), L"z() const");
 
-        size_t idx = 2;
-        Assert::AreEqual(size_t(0), idx = Vector3D::nextAxis(idx));
-        Assert::AreEqual(size_t(1), idx = Vector3D::nextAxis(idx));
-        Assert::AreEqual(size_t(2), idx = Vector3D::nextAxis(idx));
+        int idx = 2;
+        Assert::AreEqual(0, idx = Vector3D::nextAxis(idx));
+        Assert::AreEqual(2, idx = Vector3D::nextAxis(idx));
+        Assert::AreEqual(1, idx = Vector3D::nextAxis(idx));
 
-        Assert::AreEqual(size_t(1), idx = Vector3D::prevAxis(idx));
-        Assert::AreEqual(size_t(0), idx = Vector3D::prevAxis(idx));
-        Assert::AreEqual(size_t(2), idx = Vector3D::prevAxis(idx));
+        Assert::AreEqual(1, idx = Vector3D::prevAxis(idx));
+        Assert::AreEqual(0, idx = Vector3D::prevAxis(idx));
+        Assert::AreEqual(2, idx = Vector3D::prevAxis(idx));
     }
 };
 }
