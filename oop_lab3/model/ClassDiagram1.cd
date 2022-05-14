@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Jora::FileException" Collapsed="true">
+    <Position X="1.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAECAAQAAAAAAiAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>jfileexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::FileNotOpen" Collapsed="true">
+    <Position X="5.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jfileexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::FileInvalidVertex" Collapsed="true">
+    <Position X="10.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>jfileexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::FileInvalidFace" Collapsed="true">
+    <Position X="12.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jfileexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::CoordsOutOfRange" Collapsed="true">
+    <Position X="14.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jcoords3dexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ModelBadAlloc" Collapsed="true">
+    <Position X="17" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jmodel3dexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ModelOutOfRange" Collapsed="true">
+    <Position X="3.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jmodel3dexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::PointsArrayExpired" Collapsed="true">
+    <Position X="8" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jtriangle3dexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Exception" Collapsed="true">
+    <Position X="9" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEBAAAAAACgAAAAAgABAAAAAEAAAAABFABQAAAAECI=</HashCode>
+      <FileName>jexception.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Angle" Collapsed="true">
+    <Position X="10.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QoAAAAAAAEAAMBQAAAAAAUAAAEJAAAAAAEAAYAAAAAA=</HashCode>
+      <FileName>jangle.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Model3D" Collapsed="true">
+    <Position X="22" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAABCAAAAECACEgCCEAYACAACAECAAAQAAAAAAQAA=</HashCode>
+      <FileName>jmodel3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Point3D" Collapsed="true">
+    <Position X="24.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAAAAIAAAAAACAAAIAAAACAAAAECAAAAAAAAAAAAA=</HashCode>
+      <FileName>jpoint3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Printable" Collapsed="true">
+    <Position X="16.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAIAAAAAAABAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>jprintable.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Triangle3D" Collapsed="true">
+    <Position X="19.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QACCAACAEAAACACkkAAAAAADAAEAEAAAAAAgQAABAAA=</HashCode>
+      <FileName>jtriangle3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Vector3D" Collapsed="true">
+    <Position X="13" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBAAAAAAAQAACAQEAAAWAQAAAAEAAAAACABgAQAAAAA=</HashCode>
+      <FileName>jvector3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Object3D" Collapsed="true">
+    <Position X="22" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAQAAACAAAAEAAAAAAAAACAAAA=</HashCode>
+      <FileName>jobject3d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Model3DLoaderObj" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAgAAAAAgiAAACBAAAAAAAAgAACAAAA=</HashCode>
+      <FileName>jmodel3dloaderobj.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Model3DLoader" Collapsed="true">
+    <Position X="0.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAIAAAAgAAAAAEAAAAAAAAAAAAAAAAAABAAA=</HashCode>
+      <FileName>jmodel3dloader.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::BrushBase" Collapsed="true">
+    <Position X="4" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAKAAEAgAAAIAAA=</HashCode>
+      <FileName>jbrushbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ColorBase" Collapsed="true">
+    <Position X="8.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAABAAAAAAIAAAAAAQAAAAIAAAAwoAEACgA=</HashCode>
+      <FileName>jcolorbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::Event" Collapsed="true">
+    <Position X="15.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jevent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::MouseEvent" Collapsed="true">
+    <Position X="15.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>jevent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::PainterBase" Collapsed="true">
+    <Position X="28.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAgAAAAAgAAkAAAAAAAAAAAIAAAAggAACAAA=</HashCode>
+      <FileName>jpainterbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::PenBase" Collapsed="true">
+    <Position X="1.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAAAAAAgKAAAAgAAAIAAA=</HashCode>
+      <FileName>jpenbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ScreenLine" Collapsed="true">
+    <Position X="6.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>SAAAAAAAEAABAwAAAAAAAAAAAwEAAACAgQAACBgAAAA=</HashCode>
+      <FileName>jscreenline.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ViewFactoryBase" Collapsed="true">
+    <Position X="33.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAACAAAAAAAAAAAAAAgAACgCAAAAAAA=</HashCode>
+      <FileName>jviewfactorybase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::WindowBase" Collapsed="true">
+    <Position X="17.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgCgAAAAA=</HashCode>
+      <FileName>jwindowbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::PixmapBase" Collapsed="true">
+    <Position X="26.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAJQAEAAAAAQAQAAACAAAAAAAAAAAAQAgAAAIAAg=</HashCode>
+      <FileName>jpixmapbase.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Jora::ScreenPoint" Collapsed="true">
+    <Position X="31" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAIAQQAAAAAAAAGAQAAAAEAAAAAAABgACAAAAA=</HashCode>
+      <FileName>jscreenpoint.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Jora::Axis" Collapsed="true">
+    <Position X="33.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAE=</HashCode>
+      <FileName>jvector3d.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

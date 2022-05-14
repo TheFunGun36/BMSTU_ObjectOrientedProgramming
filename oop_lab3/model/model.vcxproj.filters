@@ -166,5 +166,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>
