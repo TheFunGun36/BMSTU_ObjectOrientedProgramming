@@ -168,6 +168,7 @@
     <ClInclude Include="jcoords3dexception.h" />
     <ClInclude Include="jpainterbase.h" />
     <ClInclude Include="jpenbase.h" />
+    <ClInclude Include="property.h" />
     <ClInclude Include="jscreenline.h" />
     <ClInclude Include="jmodel3d.h" />
     <ClInclude Include="jmodel3dexception.h" />
@@ -179,7 +180,7 @@
     <ClInclude Include="jvector3d.h" />
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jreal.h" />
-    <ClInclude Include="jobject3d.h" />
+    <ClInclude Include="jsceneobject.h" />
     <ClInclude Include="jmodel3dloader.h" />
     <ClInclude Include="jviewfactorybase.h" />
     <ClInclude Include="jwindowbase.h" />

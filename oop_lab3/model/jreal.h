@@ -2,6 +2,7 @@
 #include <cmath>
 
 namespace Jora {
+
 using real = double;
 
 namespace {
@@ -9,4 +10,5 @@ namespace {
 }
 
 inline bool realEq(real a, real b) { return abs(a - b) <= tolerance; }
+
 }

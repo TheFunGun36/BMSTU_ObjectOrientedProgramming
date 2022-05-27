@@ -1,9 +1,9 @@
 #pragma once
-#include "jobject3d.h"
+#include "jsceneobject.h"
 
 namespace Jora {
 
-class Point3D : public Object3D {
+class Point3D : public SceneObject {
 public:
     Point3D() = default;
     Point3D(const Point3D& other) = default;
@@ -12,9 +12,6 @@ public:
     const Vector3D& value() const noexcept;
     Vector3D& value() noexcept;
     void setValue(const Vector3D& point) noexcept;
-    virtual void move(const Vector3D& offset) noexcept override;
-    virtual void scale(const Vector3D& factors) noexcept override;
-    virtual void rotateAround(const Angle& angle, Axis axisIndex) noexcept override;
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const override;

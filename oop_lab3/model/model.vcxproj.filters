@@ -42,6 +42,9 @@
     <Filter Include="View\Source">
       <UniqueIdentifier>{fd9728d0-70f3-4efb-9bfa-a4257fab3930}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DefaultPatterns">
+      <UniqueIdentifier>{16bbabae-03d5-44b4-83c9-ea0c6f913d6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -59,7 +62,7 @@
     <ClInclude Include="jreal.h">
       <Filter>Model\Header</Filter>
     </ClInclude>
-    <ClInclude Include="jobject3d.h">
+    <ClInclude Include="jsceneobject.h">
       <Filter>Model\Header</Filter>
     </ClInclude>
     <ClInclude Include="jpoint3d.h">
@@ -121,6 +124,9 @@
     </ClInclude>
     <ClInclude Include="jviewfactorybase.h">
       <Filter>View\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="property.h">
+      <Filter>DefaultPatterns</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

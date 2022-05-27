@@ -2,12 +2,13 @@
 #include <ostream>
 #include "jreal.h"
 #include "jprintable.h"
+#include "property.h"
 
 namespace Jora {
 
 class Angle : public Printable {
 public:
-    Angle() = default;
+    Angle();
     Angle(const Angle& other) = default;
 
     static Angle fromDegrees(real value);
@@ -17,16 +18,28 @@ public:
     static real optimizeDegrees(real value);
     static real optimizeRadians(real value);
 
-    real degrees() const;
-    real radians() const;
-    void setDegrees(real value);
-    void setRadians(real value);
+    const real& degrees() const;
+    const real& radians() const;
+    void setDegrees(const real& value);
+    void setRadians(const real& value);
 
     real cos() const;
     real sin() const;
 
     bool operator==(const Angle& other) const;
     bool operator!=(const Angle& other) const;
+
+    Angle& operator=(const Angle& other);
+
+    Angle& operator+=(const Angle& other);
+    Angle& operator-=(const Angle& other);
+    Angle& operator*=(real value);
+    Angle& operator/=(real value);
+
+    Angle operator+(const Angle& other) const;
+    Angle operator-(const Angle& other) const;
+    Angle operator*(real value) const;
+    Angle operator/(real value) const;
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const override;
