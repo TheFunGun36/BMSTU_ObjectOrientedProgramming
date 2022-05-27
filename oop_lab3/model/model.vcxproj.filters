@@ -8,166 +8,169 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Exceptions\Header">
-      <UniqueIdentifier>{c0602e2b-22ad-4c28-8016-c6e2a9581631}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Exceptions\Source">
-      <UniqueIdentifier>{c82a2686-7663-49db-a6c8-c7e4be5d544d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Model\Header">
-      <UniqueIdentifier>{5cf24433-5c4c-4f10-b8b5-2e84ef931b2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Model\Source">
-      <UniqueIdentifier>{14d0181c-5f45-45ce-9b8b-7c0ac44a7569}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Control">
-      <UniqueIdentifier>{df8208d9-65a4-41bb-bc18-28d08a605b5b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Control\Header">
-      <UniqueIdentifier>{f3527f60-621f-42a3-91c6-886c7a15289b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Control\Source">
-      <UniqueIdentifier>{4c0e918b-6dcc-4b47-8cb3-9dedda94bd90}</UniqueIdentifier>
-    </Filter>
     <Filter Include="View">
       <UniqueIdentifier>{ff1e9a89-0f9d-4615-892b-2296895897c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="View\Header">
-      <UniqueIdentifier>{fb0511ff-941e-40c5-8372-f2c9089bdfce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="View\Source">
-      <UniqueIdentifier>{fd9728d0-70f3-4efb-9bfa-a4257fab3930}</UniqueIdentifier>
-    </Filter>
     <Filter Include="DefaultPatterns">
       <UniqueIdentifier>{16bbabae-03d5-44b4-83c9-ea0c6f913d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Facade">
+      <UniqueIdentifier>{da880bc9-19ba-48ae-aea1-1974a788302e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{e7cb89ad-96d1-4d44-a5fc-088d4a5955a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
       <Filter>Precompile</Filter>
     </ClInclude>
-    <ClInclude Include="jcoords3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jvector3d.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jreal.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jsceneobject.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jpoint3d.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jangle.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jprintable.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jtriangle3d.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jtriangle3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3d.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3dloader.h">
-      <Filter>Control\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jfileexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3dloaderobj.h">
-      <Filter>Control\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jpixmapbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jscreenline.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jscreenpoint.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jcolorbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jpainterbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jpenbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jbrushbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jwindowbase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jevent.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jviewfactorybase.h">
-      <Filter>View\Header</Filter>
-    </ClInclude>
     <ClInclude Include="property.h">
       <Filter>DefaultPatterns</Filter>
+    </ClInclude>
+    <ClInclude Include="jangle.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3d.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jprintable.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jreal.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jsceneobject.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jvector3d.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jcoords3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jfileexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jtriangle3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jcommand.h">
+      <Filter>Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="jmanager.h">
+      <Filter>Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodelviewer.h">
+      <Filter>Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="jscenemanagercommands.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="jscenemanager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransform.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jeulerangles.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jcomposite.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jcamera.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransformaction.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jbrushbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jcolorbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jevent.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jpainterbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jpenbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jpixmapbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jscreenline.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jscreenpoint.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jviewfactorybase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jwindowbase.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="qpenimpl.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodelviewercreator.h">
+      <Filter>Facade</Filter>
+    </ClInclude>
+    <ClInclude Include="jrendermanager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Precompile</Filter>
     </ClCompile>
-    <ClCompile Include="jexception.cpp">
-      <Filter>Exceptions\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jvector3d.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jpoint3d.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
     <ClCompile Include="jangle.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jprintable.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jobject3d.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jtriangle3d.cpp">
-      <Filter>Model\Source</Filter>
+      <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="jmodel3d.cpp">
-      <Filter>Model\Source</Filter>
+      <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="jmodel3dloader.cpp">
-      <Filter>Control\Source</Filter>
+    <ClCompile Include="jprintable.cpp">
+      <Filter>Data</Filter>
     </ClCompile>
-    <ClCompile Include="jmodel3dloaderobj.cpp">
-      <Filter>Control\Source</Filter>
+    <ClCompile Include="jvector3d.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="jexception.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="jcomposite.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="jeulerangles.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodelviewer.cpp">
+      <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="jscreenpoint.cpp">
-      <Filter>View\Source</Filter>
+      <Filter>View</Filter>
     </ClCompile>
     <ClCompile Include="jscreenline.cpp">
-      <Filter>View\Source</Filter>
+      <Filter>View</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodelviewercreator.cpp">
+      <Filter>Data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

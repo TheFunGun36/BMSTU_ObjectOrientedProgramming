@@ -4,11 +4,15 @@
 namespace Jora {
 
 void ModelViewer::execute(Command&& cmd) {
-    cmd.execute(_scene, *this);
+    cmd.execute(_scene, _selection, _managers[cmd.neededManager()]);
 }
 
-Manager& ModelViewer::manager(const std::type_info& managerType) {
-    return _managers[managerType];
+void ModelViewer::addManager(const std::shared_ptr<Manager>& manager) {
+    _managers[typeid(manager)] = manager;
+}
+
+void ModelViewer::clear() {
+    _managers.clear();
 }
 
 }
