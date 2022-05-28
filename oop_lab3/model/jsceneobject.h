@@ -2,6 +2,7 @@
 #include "jvector3d.h"
 #include "jangle.h"
 #include "property.h"
+#include "jtransform.h"
 #include <string>
 #include <list>
 
@@ -17,7 +18,9 @@ public:
         , Label(this, &Self::label, &Self::setLabel)
         , Type(this, &Self::type)
         , _visible(false)
-        , _label(_label) { }
+        , _label(_label)
+        , _transform() {
+    }
     inline virtual ~SceneObject() = default;
 
     Property<Self, bool> Visible;

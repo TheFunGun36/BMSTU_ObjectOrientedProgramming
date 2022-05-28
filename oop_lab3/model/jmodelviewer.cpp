@@ -2,10 +2,12 @@
 #include "jmodelviewer.h"
 
 namespace Jora {
+
 ModelViewer::ModelViewer()
     : _scene("Scene")
     , _selection("Selection") {
 }
+
 void ModelViewer::execute(Command&& cmd) {
     cmd.execute(_scene, _selection, *_managers[cmd.neededManager()]);
 }
