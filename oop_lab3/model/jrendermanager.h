@@ -27,7 +27,7 @@ public:
     inline void clear() { _renderers.clear(); }
 
 private:
-    std::unordered_map<const std::type_info&, std::shared_ptr<Renderer>> _renderers;
+    std::unordered_map<std::type_index, std::shared_ptr<Renderer>> _renderers;
     std::weak_ptr<Camera3D> _currentCamera;
 };
 

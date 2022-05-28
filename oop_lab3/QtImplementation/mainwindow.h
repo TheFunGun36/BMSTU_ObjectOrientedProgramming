@@ -13,5 +13,5 @@ public:
 
 private:
     Ui::MainWindowClass ui;
-    Jora::ModelViewer modelViewer;
+    std::unique_ptr<Jora::ModelViewer> modelViewer;
 };

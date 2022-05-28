@@ -2,6 +2,8 @@
 #include "jinitializationmanager.h"
 #include "jwireframemodelcreator.h"
 #include "jmodelviewercreator.h"
+#include "jrendermanager.h"
+#include "jscenemanager.h"
 
 namespace Jora {
 
@@ -14,7 +16,11 @@ std::unique_ptr<To> dyncast(std::unique_ptr<From> ptr) {
 }
 
 std::unique_ptr<ModelViewer> InitializationManager::createModelViewer() {
-    return _solution->modelViewerCreator()->create();
+    std::unique_ptr<ModelViewer> result = _solution->modelViewerCreator()->create();
+    result->addManager(std::make_shared<InitializationManager>(*this));
+    result->addManager(std::make_shared<RenderManager>());
+    result->addManager(std::make_shared<SceneManager>());
+    return result;
 }
 
 std::unique_ptr<Model3D> InitializationManager::createModel(const std::string& filename, const std::string& label) {

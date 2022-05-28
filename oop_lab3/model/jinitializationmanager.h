@@ -9,7 +9,7 @@ namespace Jora {
 
 class InitializationManager : public Manager {
 public:
-    InitializationManager(std::unique_ptr<Solution> solution)
+    InitializationManager(std::shared_ptr<Solution> solution)
         : _solution(std::move(solution)) {
     }
 
@@ -18,7 +18,7 @@ public:
     std::unique_ptr<Camera3D> createCamera3D(const std::string& label);
 
 private:
-    std::unique_ptr<Solution> _solution;
+    std::shared_ptr<Solution> _solution;
 };
 
 }
