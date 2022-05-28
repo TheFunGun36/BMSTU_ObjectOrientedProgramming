@@ -1,13 +1,15 @@
 #pragma once
+#include <unordered_map>
+#include <typeindex>
 #include "jcomposite.h"
 #include "jcommand.h"
 #include "jmanager.h"
-#include <unordered_map>
 
 namespace Jora {
 
 class ModelViewer {
 public:
+    ModelViewer();
     void execute(Command&& cmd);
 
     void addManager(const std::shared_ptr<Manager>& manager);
@@ -16,7 +18,7 @@ public:
 private:
     Composite _scene;
     Composite _selection;
-    std::unordered_map<const std::type_info&, std::shared_ptr<Manager>> _managers;
+    std::unordered_map<std::type_index, std::shared_ptr<Manager>> _managers;
 };
 
 }

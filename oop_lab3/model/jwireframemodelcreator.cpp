@@ -25,7 +25,7 @@ std::unique_ptr<SceneObject> Director::create() const {
 }
 
 bool Builder::createModel(const std::string& label) noexcept {
-    _model = std::make_unique<Model3D>(WireframeModel3DImpl(), label);
+    _model = std::make_unique<Model3D>(std::make_shared<WireframeModel3DImpl>(), label);
     return bool(_model);
 }
 

@@ -1,5 +1,4 @@
 #pragma once
-#include "pch.h"
 #include "jpenbase.h"
 #include "jbrushbase.h"
 

@@ -3,9 +3,9 @@
 
 namespace Jora {
 
-Model3D::Model3D(ImplPtr&& implementation, const std::string& _label)
+Model3D::Model3D(const ImplPtr& implementation, const std::string& _label)
     : SceneObject(_label)
-    , _implementation(std::move(implementation)) {
+    , _implementation(implementation) {
 }
 
 Model3D::Model3D(Model3D&& other) noexcept

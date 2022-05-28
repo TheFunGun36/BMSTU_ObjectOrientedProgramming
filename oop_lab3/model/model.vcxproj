@@ -200,7 +200,6 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="jpixmapbase.h" />
     <ClInclude Include="jscreenpoint.h" />
-    <ClInclude Include="qpenimpl.h" />
     <ClInclude Include="jsceneobjectcreator.h" />
   </ItemGroup>
   <ItemGroup>

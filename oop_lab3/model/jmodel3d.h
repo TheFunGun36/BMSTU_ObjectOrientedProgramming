@@ -11,7 +11,7 @@ class Model3D : public SceneObject {
 public:
     using ImplPtr = std::shared_ptr<Model3DImpl>;
 
-    Model3D(ImplPtr&& implementation, const std::string& label);
+    Model3D(const ImplPtr& implementation, const std::string& label);
     Model3D(const Model3D& other) = delete;
     Model3D(Model3D&& other) noexcept;
     virtual ~Model3D() = default;

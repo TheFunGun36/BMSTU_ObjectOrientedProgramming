@@ -9,6 +9,9 @@ public:
     using ElementPtr = std::shared_ptr<SceneObject>;
     using Element = SceneObject;
 
+    inline Composite(const std::string& label)
+        : SceneObject(label) {
+    }
     inline virtual ~Composite() = default;
 
     using Iterator = std::list<ElementPtr>::iterator;

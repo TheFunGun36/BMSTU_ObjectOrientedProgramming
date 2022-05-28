@@ -107,9 +107,6 @@
     <ClInclude Include="jwindowbase.h">
       <Filter>View</Filter>
     </ClInclude>
-    <ClInclude Include="qpenimpl.h">
-      <Filter>View</Filter>
-    </ClInclude>
     <ClInclude Include="jmodelviewercreator.h">
       <Filter>Facade</Filter>
     </ClInclude>
