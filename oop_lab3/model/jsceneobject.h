@@ -32,6 +32,9 @@ public:
 
     inline virtual const std::type_info& type() const { return typeid(*this); }
 
+    inline virtual const Transform& transform() const { return _transform; }
+    inline virtual Transform& transform() { return _transform; }
+
     // COMPOSITE PART
     using Iterator = std::list<SelfPtr>::iterator;
     using IteratorConst = std::list<SelfPtr>::const_iterator;
@@ -39,18 +42,19 @@ public:
     inline virtual bool isComposite() const { return false; }
 
     inline virtual bool add(const SelfPtr& sceneObject) { return false; }
-    inline virtual bool remove(IteratorConst it) { return false; }
-    inline virtual size_t count() { return 1; }
-    inline virtual Iterator begin() { return Iterator(); }
-    inline virtual Iterator end() { return Iterator(); }
-    inline virtual IteratorConst begin() const { return IteratorConst(); }
-    inline virtual IteratorConst end() const { return IteratorConst(); }
-    inline virtual IteratorConst cbegin() const { return IteratorConst(); }
-    inline virtual IteratorConst cend() const { return IteratorConst(); }
+    inline virtual bool remove(IteratorConst it) noexcept { return false; }
+    inline virtual size_t count() const noexcept { return 1; }
+    inline virtual Iterator begin() noexcept { return Iterator(); }
+    inline virtual Iterator end() noexcept { return Iterator(); }
+    inline virtual IteratorConst begin() const noexcept { return IteratorConst(); }
+    inline virtual IteratorConst end() const noexcept { return IteratorConst(); }
+    inline virtual IteratorConst cbegin() const noexcept { return IteratorConst(); }
+    inline virtual IteratorConst cend() const noexcept { return IteratorConst(); }
 
 private:
     bool _visible;
     std::string _label;
+    Transform _transform;
 };
 
 }

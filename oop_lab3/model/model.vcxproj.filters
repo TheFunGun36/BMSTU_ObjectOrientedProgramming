@@ -33,6 +33,9 @@
     <Filter Include="Initialization">
       <UniqueIdentifier>{ebb0860f-0706-46e1-861c-e7121eaea02c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers\Renderer">
+      <UniqueIdentifier>{d979f988-f729-4e3e-8179-2c8423a28377}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -77,34 +80,13 @@
     <ClInclude Include="jtransformaction.h">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="jbrushbase.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jcolorbase.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jevent.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jpainterbase.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jpenbase.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jpixmapbase.h">
+    <ClInclude Include="jpainter.h">
       <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="jscreenline.h">
       <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="jscreenpoint.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jviewfactorybase.h">
-      <Filter>View</Filter>
-    </ClInclude>
-    <ClInclude Include="jwindowbase.h">
       <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="jmodelviewercreator.h">
@@ -158,6 +140,15 @@
     <ClInclude Include="jwireframemodelcreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\bmstu_oop\oop_lab3\model\jcolor.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jscreenrect.h">
+      <Filter>View</Filter>
+    </ClInclude>
+    <ClInclude Include="jrenderer.h">
+      <Filter>Managers\Renderer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -201,6 +192,9 @@
     </ClCompile>
     <ClCompile Include="jwireframemodelcreator.cpp">
       <Filter>Initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="jrenderer.cpp">
+      <Filter>Managers\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

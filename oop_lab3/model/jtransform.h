@@ -24,6 +24,13 @@ public:
     Vector3D pointGlobalToLocal(const Vector3D& point);
     Vector3D pointLocalToGlobal(const Vector3D& point);
 
+protected:
+    inline virtual std::ostream& addToStream(std::ostream& stream) const {
+        stream << "Transform(P:" << _position << ", R:" << _rotation << ", S:" << _scale << ")";
+    }
+    inline virtual std::wostream& addToStream(std::wostream& stream) const {
+        stream << L"Transform(P:" << _position << L", R:" << _rotation << L", S:" << _scale << L")";
+    }
 private:
     Vector3D _position;
     EulerAngles _rotation;

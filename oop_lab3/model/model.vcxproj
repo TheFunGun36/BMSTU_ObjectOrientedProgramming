@@ -160,14 +160,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="jbrushbase.h" />
+    <ClInclude Include="..\..\..\bmstu_oop\oop_lab3\model\jcolor.h" />
     <ClInclude Include="jcamera.h" />
     <ClInclude Include="jcameracreator.h" />
-    <ClInclude Include="jcolorbase.h" />
     <ClInclude Include="jcommand.h" />
     <ClInclude Include="jcomposite.h" />
     <ClInclude Include="jeulerangles.h" />
-    <ClInclude Include="jevent.h" />
     <ClInclude Include="jfileexception.h" />
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
@@ -176,11 +174,12 @@
     <ClInclude Include="jmodelcreator.h" />
     <ClInclude Include="jmodelviewer.h" />
     <ClInclude Include="jmodelviewercreator.h" />
-    <ClInclude Include="jpainterbase.h" />
-    <ClInclude Include="jpenbase.h" />
+    <ClInclude Include="jpainter.h" />
+    <ClInclude Include="jrenderer.h" />
     <ClInclude Include="jrendermanager.h" />
     <ClInclude Include="jscenemanager.h" />
     <ClInclude Include="jscenemanagercommands.h" />
+    <ClInclude Include="jscreenrect.h" />
     <ClInclude Include="jtransform.h" />
     <ClInclude Include="jtransformaction.h" />
     <ClInclude Include="jwireframemodel3d_impl.h" />
@@ -195,10 +194,7 @@
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jreal.h" />
     <ClInclude Include="jsceneobject.h" />
-    <ClInclude Include="jviewfactorybase.h" />
-    <ClInclude Include="jwindowbase.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="jpixmapbase.h" />
     <ClInclude Include="jscreenpoint.h" />
     <ClInclude Include="jsceneobjectcreator.h" />
   </ItemGroup>
@@ -210,6 +206,7 @@
     <ClCompile Include="jmodelviewer.cpp" />
     <ClCompile Include="jmodelviewercreator.cpp" />
     <ClCompile Include="jprintable.cpp" />
+    <ClCompile Include="jrenderer.cpp" />
     <ClCompile Include="jscreenline.cpp" />
     <ClCompile Include="jscreenpoint.cpp" />
     <ClCompile Include="jvector3d.cpp" />

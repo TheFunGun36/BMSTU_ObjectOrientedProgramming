@@ -5,7 +5,7 @@
 
 namespace Jora {
 
-class ColorBase : public Printable {
+class Color : public Printable {
 public:
 
     inline virtual uint8_t red() const noexcept = 0;
@@ -18,25 +18,25 @@ public:
     virtual void setBlue(uint8_t value) noexcept = 0;
     virtual void setAlpha(uint8_t value) noexcept = 0;
 
-    inline virtual void setRed(real value) noexcept { return setRed(ColorBase::mapComponent(value)); }
-    inline virtual void setGreen(real value) noexcept { return setGreen(ColorBase::mapComponent(value)); }
-    inline virtual void setBlue(real value) noexcept { return setBlue(ColorBase::mapComponent(value)); }
-    inline virtual void setAlpha(real value) noexcept { return setAlpha(ColorBase::mapComponent(value)); }
+    inline virtual void setRed(real value) noexcept { return setRed(Color::mapComponent(value)); }
+    inline virtual void setGreen(real value) noexcept { return setGreen(Color::mapComponent(value)); }
+    inline virtual void setBlue(real value) noexcept { return setBlue(Color::mapComponent(value)); }
+    inline virtual void setAlpha(real value) noexcept { return setAlpha(Color::mapComponent(value)); }
 
-    virtual std::unique_ptr<ColorBase> copy() const = 0;
+    virtual std::unique_ptr<Color> copy() const = 0;
 
     inline static real mapComponent(uint8_t value) noexcept { return value / 255.0; }
-    inline static uint8_t mapComponent(real value) noexcept { return value * 255; }
+    inline static uint8_t mapComponent(real value) noexcept { return uint8_t(value * 255); }
 
 protected:
-    ColorBase() = default;
-    ColorBase(const ColorBase& other) noexcept {
+    Color() = default;
+    Color(const Color& other) noexcept {
         setRed(other.red());
         setGreen(other.green());
         setBlue(other.blue());
         setAlpha(other.alpha());
     }
-    ColorBase& operator=(const ColorBase& other) = default;
+    Color& operator=(const Color& other) = default;
 };
 
 }

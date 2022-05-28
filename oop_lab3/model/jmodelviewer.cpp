@@ -11,7 +11,7 @@ void ModelViewer::execute(Command&& cmd) {
 }
 
 void ModelViewer::addManager(const std::shared_ptr<Manager>& manager) {
-    _managers[typeid(manager)] = manager;
+    _managers[typeid(*manager)] = manager;
 }
 
 void ModelViewer::clear() {

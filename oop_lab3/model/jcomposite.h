@@ -19,15 +19,15 @@ public:
 
     inline virtual bool isComposite() const { return false; }
 
-    inline virtual bool add(const ElementPtr& sceneObject) { _list.push_back(sceneObject); return true; }
-    inline virtual bool remove(IteratorConst it) { _list.erase(it, it); return true; }
-    inline virtual size_t count() { return _list.size(); }
-    inline virtual Iterator begin() { return _list.begin(); }
-    inline virtual Iterator end() { return _list.end(); }
-    inline virtual IteratorConst begin() const { return _list.begin(); }
-    inline virtual IteratorConst end() const { return _list.end(); }
-    inline virtual IteratorConst cbegin() const { return _list.cbegin(); }
-    inline virtual IteratorConst cend() const { return _list.cend(); }
+    inline virtual bool add(const ElementPtr& sceneObject) override { _list.push_back(sceneObject); return true; }
+    inline virtual bool remove(IteratorConst it) noexcept override { _list.erase(it, it); return true; }
+    inline virtual size_t count() const noexcept override { return _list.size(); }
+    inline virtual Iterator begin() noexcept override { return _list.begin(); }
+    inline virtual Iterator end() noexcept override { return _list.end(); }
+    inline virtual IteratorConst begin() const noexcept override { return _list.begin(); }
+    inline virtual IteratorConst end() const noexcept override { return _list.end(); }
+    inline virtual IteratorConst cbegin() const noexcept override { return _list.cbegin(); }
+    inline virtual IteratorConst cend() const noexcept override { return _list.cend(); }
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const;

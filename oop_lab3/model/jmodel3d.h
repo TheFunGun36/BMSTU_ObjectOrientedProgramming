@@ -29,7 +29,8 @@ public:
     virtual bool isEmpty() const noexcept;
     virtual bool isValid() const noexcept;
 
-    inline virtual ImplPtr implementation() const noexcept { return _implementation; }
+    inline virtual ImplPtr implementation() noexcept { return _implementation; }
+    inline virtual const Model3DImpl& implementation() const noexcept { return *_implementation; }
 
 protected:
     ImplPtr _implementation;
