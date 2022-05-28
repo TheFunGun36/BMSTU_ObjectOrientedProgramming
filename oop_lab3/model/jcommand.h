@@ -1,5 +1,6 @@
 #pragma once
 #include "jcomposite.h"
+#include "jmanager.h"
 
 namespace Jora {
 class ModelViewer;

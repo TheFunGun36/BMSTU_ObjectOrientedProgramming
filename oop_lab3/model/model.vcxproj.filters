@@ -24,6 +24,15 @@
     <Filter Include="Managers">
       <UniqueIdentifier>{e7cb89ad-96d1-4d44-a5fc-088d4a5955a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Data\Basic">
+      <UniqueIdentifier>{3f377887-bb3e-4871-a2a4-758a3a8add83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Data\Scene">
+      <UniqueIdentifier>{cecc0965-9c0c-4777-baf2-fb26a66f1c77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Initialization">
+      <UniqueIdentifier>{ebb0860f-0706-46e1-861c-e7121eaea02c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -32,22 +41,7 @@
     <ClInclude Include="property.h">
       <Filter>DefaultPatterns</Filter>
     </ClInclude>
-    <ClInclude Include="jangle.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3d.h">
-      <Filter>Data</Filter>
-    </ClInclude>
     <ClInclude Include="jprintable.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jreal.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jsceneobject.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jvector3d.h">
       <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="jcoords3dexception.h">
@@ -79,18 +73,6 @@
     </ClInclude>
     <ClInclude Include="jscenemanager.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="jtransform.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jeulerangles.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jcomposite.h">
-      <Filter>Data</Filter>
-    </ClInclude>
-    <ClInclude Include="jcamera.h">
-      <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="jtransformaction.h">
       <Filter>Data</Filter>
@@ -134,34 +116,61 @@
     <ClInclude Include="jrendermanager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="jangle.h">
+      <Filter>Data\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="jvector3d.h">
+      <Filter>Data\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="jeulerangles.h">
+      <Filter>Data\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="jreal.h">
+      <Filter>Data\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="jcomposite.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jcamera.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3d.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jsceneobject.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransform.h">
+      <Filter>Data</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3d_impl.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jwireframemodel3d_impl.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jsceneobjectcreator.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="jcameracreator.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodelcreator.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="jwireframemodelcreator.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
       <Filter>Precompile</Filter>
     </ClCompile>
-    <ClCompile Include="jangle.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
-    <ClCompile Include="jmodel3d.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
     <ClCompile Include="jprintable.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
-    <ClCompile Include="jvector3d.cpp">
       <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="jexception.cpp">
       <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="jcomposite.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
-    <ClCompile Include="jeulerangles.cpp">
-      <Filter>Data</Filter>
-    </ClCompile>
-    <ClCompile Include="jmodelviewer.cpp">
-      <Filter>Data</Filter>
     </ClCompile>
     <ClCompile Include="jscreenpoint.cpp">
       <Filter>View</Filter>
@@ -169,8 +178,32 @@
     <ClCompile Include="jscreenline.cpp">
       <Filter>View</Filter>
     </ClCompile>
+    <ClCompile Include="jangle.cpp">
+      <Filter>Data\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="jvector3d.cpp">
+      <Filter>Data\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="jeulerangles.cpp">
+      <Filter>Data\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="jcomposite.cpp">
+      <Filter>Data\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodel3d.cpp">
+      <Filter>Data\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodelviewer.cpp">
+      <Filter>Facade</Filter>
+    </ClCompile>
     <ClCompile Include="jmodelviewercreator.cpp">
-      <Filter>Data</Filter>
+      <Filter>Facade</Filter>
+    </ClCompile>
+    <ClCompile Include="jwireframemodel3d_impl.cpp">
+      <Filter>Data\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="jwireframemodelcreator.cpp">
+      <Filter>Initialization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

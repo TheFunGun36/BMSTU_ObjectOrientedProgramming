@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "jeulerangles.h"
 
 namespace Jora {

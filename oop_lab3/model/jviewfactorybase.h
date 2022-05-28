@@ -10,7 +10,7 @@ class ViewFactoryBase {
     virtual std::unique_ptr<PenBase> createPen() = 0;
     virtual std::unique_ptr<BrushBase> createBrush() = 0;
     virtual std::unique_ptr<PixmapBase> createPixmap() = 0;
-    virtual std::unique_ptr<PainterBase> createPainter() = 0;
+    virtual std::unique_ptr<Painter> createPainter() = 0;
     virtual std::unique_ptr<WindowBase> createWindow() = 0;
 };
 

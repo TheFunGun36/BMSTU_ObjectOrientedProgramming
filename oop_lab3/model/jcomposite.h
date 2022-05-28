@@ -18,7 +18,7 @@ public:
 
     inline virtual bool add(const ElementPtr& sceneObject) { _list.push_back(sceneObject); return true; }
     inline virtual bool remove(IteratorConst it) { _list.erase(it, it); return true; }
-    inline virtual int count() { return _list.size(); }
+    inline virtual size_t count() { return _list.size(); }
     inline virtual Iterator begin() { return _list.begin(); }
     inline virtual Iterator end() { return _list.end(); }
     inline virtual IteratorConst begin() const { return _list.begin(); }

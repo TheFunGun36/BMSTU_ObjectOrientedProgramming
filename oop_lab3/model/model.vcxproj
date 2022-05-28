@@ -162,6 +162,7 @@
   <ItemGroup>
     <ClInclude Include="jbrushbase.h" />
     <ClInclude Include="jcamera.h" />
+    <ClInclude Include="jcameracreator.h" />
     <ClInclude Include="jcolorbase.h" />
     <ClInclude Include="jcommand.h" />
     <ClInclude Include="jcomposite.h" />
@@ -171,6 +172,8 @@
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
     <ClInclude Include="jmanager.h" />
+    <ClInclude Include="jmodel3d_impl.h" />
+    <ClInclude Include="jmodelcreator.h" />
     <ClInclude Include="jmodelviewer.h" />
     <ClInclude Include="jmodelviewercreator.h" />
     <ClInclude Include="jpainterbase.h" />
@@ -180,6 +183,8 @@
     <ClInclude Include="jscenemanagercommands.h" />
     <ClInclude Include="jtransform.h" />
     <ClInclude Include="jtransformaction.h" />
+    <ClInclude Include="jwireframemodel3d_impl.h" />
+    <ClInclude Include="jwireframemodelcreator.h" />
     <ClInclude Include="property.h" />
     <ClInclude Include="jscreenline.h" />
     <ClInclude Include="jmodel3d.h" />
@@ -196,6 +201,7 @@
     <ClInclude Include="jpixmapbase.h" />
     <ClInclude Include="jscreenpoint.h" />
     <ClInclude Include="qpenimpl.h" />
+    <ClInclude Include="jsceneobjectcreator.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jangle.cpp" />
@@ -209,6 +215,8 @@
     <ClCompile Include="jscreenpoint.cpp" />
     <ClCompile Include="jvector3d.cpp" />
     <ClCompile Include="jexception.cpp" />
+    <ClCompile Include="jwireframemodel3d_impl.cpp" />
+    <ClCompile Include="jwireframemodelcreator.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

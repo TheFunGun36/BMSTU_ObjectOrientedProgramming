@@ -5,9 +5,11 @@
 namespace Jora {
 
 std::unique_ptr<ModelViewer> ModelViewerCreator::create() {
-    using namespace std;
+    using std::make_unique, std::make_shared;
     auto result = make_unique<ModelViewer>();
-    result->addManager(SceneManager());
+
+    result->addManager(make_shared<SceneManager>());
+
     return result;
 }
 

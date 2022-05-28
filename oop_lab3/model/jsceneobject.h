@@ -40,7 +40,7 @@ public:
 
     inline virtual bool add(const SelfPtr& sceneObject) { return false; }
     inline virtual bool remove(IteratorConst it) { return false; }
-    inline virtual int count() { return 1; }
+    inline virtual size_t count() { return 1; }
     inline virtual Iterator begin() { return Iterator(); }
     inline virtual Iterator end() { return Iterator(); }
     inline virtual IteratorConst begin() const { return IteratorConst(); }
