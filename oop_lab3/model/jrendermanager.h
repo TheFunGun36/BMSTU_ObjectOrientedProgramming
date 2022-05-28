@@ -7,7 +7,7 @@
 
 namespace Jora {
 
-class RenderManager {
+class RenderManager : public Manager {
 public:
     inline void render(Painter& painter, const SceneObject& target) {
         if (target.isComposite()) {
@@ -19,14 +19,12 @@ public:
         }
     }
 
-    inline void setCamera(std::weak_ptr<Camera3D> camera) { _currentCamera = camera; }
+    inline void setActiveCamera(const std::weak_ptr<Camera3D>& camera) { _currentCamera = camera; }
 
     inline void addRenderer(const std::shared_ptr<Renderer>& renderer) {
         _renderers[typeid(*renderer)] = renderer;
     }
-    inline void clear() {
-        _renderers.clear();
-    }
+    inline void clear() { _renderers.clear(); }
 
 private:
     std::unordered_map<const std::type_info&, std::shared_ptr<Renderer>> _renderers;

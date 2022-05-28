@@ -17,12 +17,15 @@ private:
 
 class WireframeModel3DStreamDirector : public Model3DDirector {
 public:
-    WireframeModel3DStreamDirector(std::istream& stream, const std::string& label);
-    virtual std::unique_ptr<SceneObject> create() const;
+    inline WireframeModel3DStreamDirector() = default;
+
+    virtual std::unique_ptr<SceneObject> create(const std::string& label) const override;
+
+    void assignStream(const std::shared_ptr<std::istream>& stream) noexcept override;
+    bool openStream(const std::string& filename) override;
 
 private:
-    std::string _label;
-    std::istream& _stream;
+    std::shared_ptr<std::istream> _stream;
 };
 
 }

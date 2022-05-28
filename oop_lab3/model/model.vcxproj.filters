@@ -89,9 +89,6 @@
     <ClInclude Include="jscreenpoint.h">
       <Filter>View</Filter>
     </ClInclude>
-    <ClInclude Include="jmodelviewercreator.h">
-      <Filter>Facade</Filter>
-    </ClInclude>
     <ClInclude Include="jrendermanager.h">
       <Filter>Managers</Filter>
     </ClInclude>
@@ -149,6 +146,18 @@
     <ClInclude Include="jrenderer.h">
       <Filter>Managers\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="jrenderercommands.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="jinitializationmanager.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodelviewercreator.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
+    <ClInclude Include="jsolution.h">
+      <Filter>Initialization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -184,9 +193,6 @@
     <ClCompile Include="jmodelviewer.cpp">
       <Filter>Facade</Filter>
     </ClCompile>
-    <ClCompile Include="jmodelviewercreator.cpp">
-      <Filter>Facade</Filter>
-    </ClCompile>
     <ClCompile Include="jwireframemodel3d_impl.cpp">
       <Filter>Data\Scene</Filter>
     </ClCompile>
@@ -195,6 +201,12 @@
     </ClCompile>
     <ClCompile Include="jrenderer.cpp">
       <Filter>Managers\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="jinitializationmanager.cpp">
+      <Filter>Initialization</Filter>
+    </ClCompile>
+    <ClCompile Include="jmodelviewercreator.cpp">
+      <Filter>Initialization</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

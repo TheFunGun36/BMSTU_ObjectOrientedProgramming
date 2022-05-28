@@ -17,6 +17,9 @@ protected:
 };
 
 class Model3DDirector : public SceneObjectCreator {
+public:
+    virtual void assignStream(const std::shared_ptr<std::istream>& stream) noexcept = 0;
+    virtual bool openStream(const std::string& filename) = 0;
 };
 
 }

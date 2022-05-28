@@ -4,25 +4,23 @@
 #include "jvector3d.h"
 #include <istream>
 #include <sstream>
+#include <fstream>
 
 namespace Jora {
 using Builder = WireframeModel3DStreamBuilder;
 using Director = WireframeModel3DStreamDirector;
 
-Director::WireframeModel3DStreamDirector(std::istream& stream, const std::string& label)
-    : _label(label)
-    , _stream(stream) {
-}
-
-std::unique_ptr<SceneObject> Director::create() const {
+std::unique_ptr<SceneObject> Director::create(const std::string& label) const {
     WireframeModel3DStreamBuilder builder;
     std::unique_ptr<SceneObject> result;
-    if (builder.createModel(_label) &&
-        builder.readData(_stream) &&
+    if (builder.createModel(label) &&
+        builder.readData(*_stream) &&
         builder.validate())
         result = builder.get();
     return result;
 }
+
+
 
 bool Builder::createModel(const std::string& label) noexcept {
     _model = std::make_unique<Model3D>(std::make_shared<WireframeModel3DImpl>(), label);
@@ -88,6 +86,21 @@ bool Builder::processEdge(std::istream&& lineStream) {
     return result;
 }
 
+void Director::assignStream(const std::shared_ptr<std::istream>& stream) noexcept {
+    _stream = stream;
+}
+
+bool Director::openStream(const std::string& filename) {
+    auto tmp = std::make_shared<std::ifstream>(filename);
+    bool result = false;
+
+    if (tmp->is_open()) {
+        _stream = tmp;
+        result = true;
+    }
+
+    return result;
+}
 
 
 }
