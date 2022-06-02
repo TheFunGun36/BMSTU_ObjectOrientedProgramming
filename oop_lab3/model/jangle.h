@@ -18,8 +18,8 @@ public:
     static real optimizeDegrees(real value);
     static real optimizeRadians(real value);
 
-    const real& degrees() const;
-    const real& radians() const;
+    real degrees() const;
+    real radians() const;
     void setDegrees(const real& value);
     void setRadians(const real& value);
 

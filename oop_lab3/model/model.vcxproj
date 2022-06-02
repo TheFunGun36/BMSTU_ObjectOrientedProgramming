@@ -160,57 +160,63 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="jbrushbase.h" />
+    <ClInclude Include="..\..\..\bmstu_oop\oop_lab3\model\jcolor.h" />
     <ClInclude Include="jcamera.h" />
-    <ClInclude Include="jcolorbase.h" />
+    <ClInclude Include="jcameracreator.h" />
     <ClInclude Include="jcommand.h" />
     <ClInclude Include="jcomposite.h" />
     <ClInclude Include="jeulerangles.h" />
-    <ClInclude Include="jevent.h" />
     <ClInclude Include="jfileexception.h" />
     <ClInclude Include="jangle.h" />
     <ClInclude Include="jcoords3dexception.h" />
+    <ClInclude Include="jinitializationmanager.h" />
     <ClInclude Include="jmanager.h" />
+    <ClInclude Include="jmodel3d_impl.h" />
+    <ClInclude Include="jmodelcreator.h" />
     <ClInclude Include="jmodelviewer.h" />
-    <ClInclude Include="jpainterbase.h" />
-    <ClInclude Include="jpenbase.h" />
+    <ClInclude Include="jmodelviewercreator.h" />
+    <ClInclude Include="jpainter.h" />
+    <ClInclude Include="jrenderer.h" />
+    <ClInclude Include="jrenderercommands.h" />
+    <ClInclude Include="jrendermanager.h" />
     <ClInclude Include="jscenemanager.h" />
     <ClInclude Include="jscenemanagercommands.h" />
+    <ClInclude Include="jscreenrect.h" />
     <ClInclude Include="jtransform.h" />
     <ClInclude Include="jtransformaction.h" />
+    <ClInclude Include="jwireframemodel3d_impl.h" />
+    <ClInclude Include="jwireframemodelcreator.h" />
     <ClInclude Include="property.h" />
     <ClInclude Include="jscreenline.h" />
     <ClInclude Include="jmodel3d.h" />
     <ClInclude Include="jmodel3dexception.h" />
-    <ClInclude Include="jpoint3d.h" />
     <ClInclude Include="jprintable.h" />
-    <ClInclude Include="jtriangle3d.h" />
     <ClInclude Include="jtriangle3dexception.h" />
     <ClInclude Include="jvector3d.h" />
     <ClInclude Include="jexception.h" />
     <ClInclude Include="jreal.h" />
     <ClInclude Include="jsceneobject.h" />
-    <ClInclude Include="jviewfactorybase.h" />
-    <ClInclude Include="jwindowbase.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="jpixmapbase.h" />
     <ClInclude Include="jscreenpoint.h" />
-    <ClInclude Include="qpenimpl.h" />
+    <ClInclude Include="jsceneobjectcreator.h" />
+    <ClInclude Include="jsolution.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="jangle.cpp" />
     <ClCompile Include="jcomposite.cpp" />
     <ClCompile Include="jeulerangles.cpp" />
+    <ClCompile Include="jinitializationmanager.cpp" />
     <ClCompile Include="jmodel3d.cpp" />
     <ClCompile Include="jmodelviewer.cpp" />
-    <ClCompile Include="jobject3d.cpp" />
-    <ClCompile Include="jpoint3d.cpp" />
+    <ClCompile Include="jmodelviewercreator.cpp" />
     <ClCompile Include="jprintable.cpp" />
+    <ClCompile Include="jrenderer.cpp" />
     <ClCompile Include="jscreenline.cpp" />
     <ClCompile Include="jscreenpoint.cpp" />
-    <ClCompile Include="jtriangle3d.cpp" />
     <ClCompile Include="jvector3d.cpp" />
     <ClCompile Include="jexception.cpp" />
+    <ClCompile Include="jwireframemodel3d_impl.cpp" />
+    <ClCompile Include="jwireframemodelcreator.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -1,8 +1,9 @@
+#include "pch.h"
 #include "jeulerangles.h"
 
 namespace Jora {
 
-inline EulerAngles::EulerAngles(const Angle x, const Angle y, const Angle z)
+EulerAngles::EulerAngles(const Angle x, const Angle y, const Angle z)
     : _angle({ x, y, z }) {
 }
 

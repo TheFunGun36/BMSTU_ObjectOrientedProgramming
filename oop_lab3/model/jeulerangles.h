@@ -8,7 +8,7 @@ namespace Jora {
 
 class EulerAngles : public Printable {
 public:
-    inline EulerAngles(const Angle x = Angle(), const Angle y = Angle(), const Angle z = Angle());
+    EulerAngles(const Angle x = Angle(), const Angle y = Angle(), const Angle z = Angle());
     inline EulerAngles(const EulerAngles& other) = default;
 
     inline Angle& operator[](int index) { return _angle[index]; }

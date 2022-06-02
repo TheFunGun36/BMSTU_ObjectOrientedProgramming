@@ -8,19 +8,23 @@ namespace Jora {
 class CSceneObjectIterate : public Command {
 public:
     using SceneObjectPtr = std::weak_ptr<SceneObject>;
-    using CompositeRef = const Composite&;
-    using Method = void(SceneManager::*)(SceneObjectPtr, CompositeRef);
+    using Method = void(SceneManager::*)(SceneObjectPtr, const Composite&);
+
+    virtual inline void execute(Composite& scene, Composite& selection, Manager& manager) override {
+        (dynamic_cast<SceneManager&>(manager).*_method)(_sceneObject, scene);
+    }
+
+    virtual inline const std::type_info& neededManager() const noexcept override {
+        return typeid(SceneManager);
+    }
 
 protected:
     CSceneObjectIterate(const SceneObjectPtr& sceneObject, Method method)
-        : _sceneObject(sceneObject), _method(method) {
+        : _sceneObject(sceneObject)
+        , _method(method) {
     }
 
 private:
-    virtual inline void execute(Composite& scene, ModelViewer& modelViewer) override {
-        (dynamic_cast<SceneManager&>(modelViewer.manager(typeid(SceneManager))).*_method)(_sceneObject, scene);
-    }
-
     SceneObjectPtr _sceneObject;
     Method _method;
 };
@@ -54,16 +58,19 @@ public:
     using IntPtr = std::weak_ptr<int>;
     using Method = void(SceneManager::*)(int&);
 
-protected:
     CSceneObjectsCount(const IntPtr& value)
         : _value(value), _method(&SceneManager::countSceneObjects) {
     }
 
-private:
-    virtual inline void execute(Composite& scene, ModelViewer& modelViewer) override {
-        (dynamic_cast<SceneManager&>(modelViewer.manager(typeid(SceneManager))).*_method)(*_value.lock());
+    virtual inline void execute(Composite& scene, Composite& selection, Manager& manager) override {
+        (dynamic_cast<SceneManager&>(manager).*_method)(*_value.lock());
     }
 
+    virtual inline const std::type_info& neededManager() const noexcept override {
+        return typeid(SceneManager);
+    }
+
+private:
     IntPtr _value;
     Method _method;
 };

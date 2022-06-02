@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "jcomposite.h"
 
 namespace Jora {

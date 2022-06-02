@@ -3,8 +3,9 @@
 
 namespace Jora {
 
-Model3D::Model3D(const std::string& _label)
-    : SceneObject(_label) {
+Model3D::Model3D(const ImplPtr& implementation, const std::string& _label)
+    : SceneObject(_label)
+    , _implementation(implementation) {
 }
 
 Model3D::Model3D(Model3D&& other) noexcept
@@ -17,12 +18,20 @@ bool Model3D::addPoint(const Vector3D& point) noexcept {
     return true;
 }
 
-Vector3D& Model3D::point(int index) {
+Vector3D& Model3D::point(size_t index) {
     return _points[index];
 }
 
-const Vector3D& Model3D::point(int index) const {
+Vector3D& Model3D::operator[](size_t index) {
+    return _points[index];
+}
+
+const Vector3D& Model3D::point(size_t index) const {
     return const_cast<Model3D &>(*this).point(index);
+}
+
+const Vector3D& Model3D::operator[](size_t index) const {
+    return _points[index];
 }
 
 size_t Model3D::pointsAmount() const noexcept {
@@ -34,47 +43,24 @@ Model3D::operator bool() const noexcept {
 }
 
 Model3D& Model3D::operator<<(const Vector3D& point) {
-    if (!addPoint(point))
-        throw ModelBadAlloc(__FILE__, __FUNCTION__, __LINE__);
+    addPoint(point);
     return *this;
 }
 
-//std::ostream& Model3D::addToStream(std::ostream& stream) const {
-//    stream << "Model3D {";
-//    if (!_points->empty() || !_triangles.empty())
-//        stream << '\n';
-//    if (!_points->empty()) {
-//        stream << "\tPoints:\n";
-//        for (int i = 0; i < _points->size(); i++)
-//            stream << "\t\t" << (*_points)[i] << '\n';
-//    }
-//    if (!_triangles.empty()) {
-//        stream << "\tTriangles:\n";
-//        for (int i = 0; i < _triangles.size(); i++)
-//            stream << "\t\t" << _triangles[i] << '\n';
-//    }
-//    return stream << "}";
-//}
-//
-//std::wostream& Model3D::addToStream(std::wostream& stream) const {
-//    stream << L"Model3D {";
-//    if (!_points->empty() || !_triangles.empty())
-//        stream << L'\n';
-//    if (!_points->empty()) {
-//        stream << L"\tPoints:\n";
-//        for (int i = 0; i < _points->size(); i++)
-//            stream << L"\t\t" << (*_points)[i] << L'\n';
-//    }
-//    if (!_triangles.empty()) {
-//        stream << L"\tTriangles:\n";
-//        for (int i = 0; i < _triangles.size(); i++)
-//            stream << L"\t\t" << _triangles[i] << L'\n';
-//    }
-//    return stream << L"}";
-//}
+std::ostream& Model3D::addToStream(std::ostream& stream) const {
+    return stream << "Model3D()";
+}
+
+std::wostream& Model3D::addToStream(std::wostream& stream) const {
+    return stream << L"Model3D()";
+}
 
 bool Model3D::isEmpty() const noexcept {
     return _points.empty();
+}
+
+bool Model3D::isValid() const noexcept {
+    return _implementation->isValid(_points.size());
 }
 
 }

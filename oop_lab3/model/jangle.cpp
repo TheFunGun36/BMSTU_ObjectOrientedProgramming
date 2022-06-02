@@ -30,7 +30,7 @@ real Angle::radiansFromDegrees(real value) {
 }
 
 real Angle::optimizeDegrees(real value) {
-    return fmod(value, 360) + 360 * (value < 0.);
+    return fmod(value, 360.) + 360. * (value < 0.);
 }
 
 real Angle::optimizeRadians(real value) {
@@ -38,11 +38,11 @@ real Angle::optimizeRadians(real value) {
     return fmod(value, pi2) + pi2 * (value < 0.);
 }
 
-const real& Angle::degrees() const {
+real Angle::degrees() const {
     return degreesFromRadians(_radians);
 }
 
-const real& Angle::radians() const {
+real Angle::radians() const {
     return _radians;
 }
 
@@ -78,6 +78,7 @@ Angle& Angle::operator=(const Angle& other) {
     _radians = other._radians;
     _cos = other._cos;
     _sin = other._sin;
+    return *this;
 }
 
 Angle& Angle::operator+=(const Angle& other) {
@@ -125,11 +126,11 @@ Angle Angle::operator/(real value) const {
 }
 
 std::ostream& Angle::addToStream(std::ostream& stream) const {
-    return stream << "getRadians(" << getRadians() << ")";
+    return stream << "radians(" << radians() << ")";
 }
 
 std::wostream& Angle::addToStream(std::wostream& stream) const {
-    return stream << L"getRadians(" << getRadians() << L")";
+    return stream << L"radians(" << radians() << L")";
 }
 
 }
