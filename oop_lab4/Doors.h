@@ -20,11 +20,18 @@ public slots:
     void close();
     void idle();
 
+private slots:
+    void onOpened();
+    void onClosed();
+
+
 public:
     enum State {
-        StateIdle,
+        StateBlocked,
         StateOpening,
-        StateClosing
+        StateClosing,
+        StateOpened,
+        StateClosed
     };
     Q_ENUM(State);
 
@@ -41,7 +48,7 @@ public:
     inline int distance() { return _doorsDistance; }
 
 private:
-    State _state = StateIdle;
+    State _state = StateOpened;
 
     int _doorsDistanceMin = 0;
     int _doorsDistanceMax = 5;

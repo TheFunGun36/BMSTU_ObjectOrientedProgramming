@@ -10,41 +10,26 @@ class Cabin : public QObject {
 
 
 signals:
-    // Doors:
-    void doorsClose();
-    void doorsOpen();
-
-    // Timer:
-    void timerStart(int ticks);
-
-    // Controller
-    void requestDirection(int currentFloor, bool goUp);
-    void requestArrival(int currentFloor);
-
-    // Internal
-    void startClosingDoors();
+    void requestArrival(int floor);
+    void requestDirection(int floor, ButtonController::Direction direction);
+    void requestTimerStart(int ticks);
     void startMoving();
-    void startOpeningDoors();
-    void goIdle();
 
-public slots:
-    void stop();
-    void setDirection(bool goUp);
-    void arrived();
+    void startOpeningDoors();
+    void startClosingDoors();
 
 private slots:
-    void waitDoorsClose();
-    void move();
+    void idle();
+    void move(ButtonController::Direction direction);
     void waitForTimer();
+    void processButton(int floor);
 
 public:
     enum State {
         StateIdle,
-        StateGettingDirection,
-        StateWaitingDoorsClose,
+        StateWaiting,
         StateMoving,
-        StateWaitingDoorsOpen,
-        StateWaiting
+        StateProcessingButton
     };
     Q_ENUM(State);
 
@@ -54,11 +39,9 @@ public:
     inline ButtonController& controller() { return _controller; }
     inline Doors& doors() { return _doors; }
     inline Timer& timer() { return _timer; }
-    inline QTimer& movementTimer() { return _movementTimer; }
 
-    inline State state() const noexcept { return _state; }
     inline int currentFloor() const noexcept { return _floor; }
-    inline bool goingUp() const noexcept { return _goingUp; }
+    inline ButtonController::Direction direction() const noexcept { return _direction; }
 
 private:
     State _state = StateIdle;
@@ -67,9 +50,8 @@ private:
     Timer _timer;
     
     int _floor = 1;
-    bool _goingUp = false;
-    int _timerWaitTicks = 3;
+    ButtonController::Direction _direction;
+    int _timerWaitTicks = 6;
 
-    int _movementDelayMsec = 500;
     QTimer _movementTimer;
 };

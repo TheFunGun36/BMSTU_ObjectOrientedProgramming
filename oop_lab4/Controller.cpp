@@ -1,50 +1,19 @@
 #include "Controller.h"
 
 void ButtonController::idle() {
-    _state = State::Idle;
+    _state = StateIdle;
 }
 
-void ButtonController::buttonPressed(int floor, bool isInside) {
-    if (_state == State::WaitButton) {
-        _state = State::ProcessingButton;
-        if (floor == _savedFloor)
-            emit waitForButton();
-        else {
-            _floorsToVisit.insert(floor);
-            emit setDirection(floor > _savedFloor);
-        }
-    }
-    else {
-        _state = State::ProcessingButton;
-        _floorsToVisit.insert(floor);
-        emit buttonProcessed();
-    }
+void ButtonController::processButton(int floor, bool isPriority) {
+    _state = StateProcessingButton;
+    _floorsToVisit.insert(floor);
+    emit newButton(floor);
 }
 
-void ButtonController::waitButton() {
-    _state = State::WaitButton;
-}
+void ButtonController::processArrival(int floor) {
+    _state = StateProcessingArrival;
+    auto it = _floorsToVisit.find(floor);
 
-void ButtonController::requestDirection(int currentFloor, bool goUp) {
-    _state = State::CheckDirection;
-    if (_floorsToVisit.empty()) {
-        _savedFloor = currentFloor;
-        emit waitForButton();
-    }
-    else {
-        std::set<int>::iterator it = _floorsToVisit.upper_bound(currentFloor); // got NEXT element
-        if (it == _floorsToVisit.begin())
-            emit setDirection(true); //up, if nothing down
-        else if (it == _floorsToVisit.end())
-            emit setDirection(false); // down, if nothing up
-        else
-            emit setDirection(goUp); // save inertia otherwise
-    }
-}
-
-void ButtonController::requestArrival(int currentFloor) {
-    _state = State::CheckArrival;
-    auto it = _floorsToVisit.find(currentFloor);
     if (it == _floorsToVisit.end()) {
         emit goIdle();
     }
@@ -54,15 +23,32 @@ void ButtonController::requestArrival(int currentFloor) {
     }
 }
 
+void ButtonController::processDirection(int floor, Direction direction) {
+    _state = StateProcessingDirection;
+    if (_floorsToVisit.empty()) {
+        emit goIdle();
+    }
+    else {
+        std::set<int>::iterator it = _floorsToVisit.lower_bound(floor);
+        
+        if (it == _floorsToVisit.end())
+            emit this->direction(DirectionDown); // down, if nothing up
+        else if (*it == floor)
+            emit goIdle(); //same floor, stay
+        else if (it == _floorsToVisit.begin())
+            emit this->direction(DirectionUp); //up, if nothing down
+        else
+            emit this->direction(direction);// save inertia otherwise
+    }
+}
+
 ButtonController::ButtonController(QObject* parent)
     : QObject(parent) {
 }
 
 void ButtonController::connectAll() {
-    connect(this, &ButtonController::buttonProcessed, this, &ButtonController::idle);
+    connect(this, &ButtonController::newButton, this, &ButtonController::idle);
     connect(this, &ButtonController::goIdle, this, &ButtonController::idle);
-    connect(this, &ButtonController::waitForButton, this, &ButtonController::waitButton);
     connect(this, &ButtonController::arrived, this, &ButtonController::idle);
-    connect(this, &ButtonController::requestArrival, this, [this](int) { idle(); });
-    connect(this, &ButtonController::requestDirection, this, [this](int) { idle(); });
+    connect(this, &ButtonController::direction, this, [this](Direction) { idle(); });
 }

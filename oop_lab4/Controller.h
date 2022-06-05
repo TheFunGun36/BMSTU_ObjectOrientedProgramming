@@ -1,39 +1,50 @@
 #pragma once
 #include <qobject.h>
 #include <set>
+#include <QMetaEnum>
 
 class ButtonController : public QObject {
     Q_OBJECT
 
 
+public:
+    enum Direction {
+        DirectionNone,
+        DirectionUp,
+        DirectionDown
+    };
+    Q_ENUM(Direction);
+
 signals:
-    void buttonProcessed();
-    void arrived();
     void goIdle();
-    void setDirection(bool goUp);
-    void waitForButton();
+
+    void arrived();
+    void direction(Direction direction);
+    void newButton(int floor);
 
 public slots:
+    void processButton(int floor, bool isPriority);
+    void processArrival(int floor);
+    void processDirection(int floor, Direction direction);
+
+private slots:
     void idle();
-    void waitButton();
-    void buttonPressed(int floor, bool isInside);
-    void requestDirection(int currentFloor, bool goUp);
-    void requestArrival(int currentFloor);
 
 public:
-    enum class State {
-        Idle,
-        WaitButton,
-        ProcessingButton,
-        CheckDirection,
-        CheckArrival
+    enum State {
+        StateIdle,
+        StateProcessingButton,
+        StateProcessingArrival,
+        StateProcessingDirection
     };
+    Q_ENUM(State);
 
     ButtonController(QObject* parent = nullptr);
     void connectAll();
+    inline std::set<int>& floorsToVisit() noexcept { return _floorsToVisit; }
 
 private:
-    State _state = State::WaitButton;
+    State _state = StateIdle;
     std::set<int> _floorsToVisit;
     int _savedFloor = 1;
 };
