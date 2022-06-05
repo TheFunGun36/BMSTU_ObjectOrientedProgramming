@@ -49,6 +49,7 @@ public:
     Q_ENUM(State);
 
     Cabin(int floorsAmount = 2, QObject* parent = nullptr);
+    void connectAll();
 
     inline ButtonController& controller() { return _controller; }
     inline Doors& doors() { return _doors; }

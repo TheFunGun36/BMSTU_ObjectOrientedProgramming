@@ -29,6 +29,7 @@ public:
     Q_ENUM(State);
 
     Doors(QObject* parent = nullptr);
+    void connectAll();
 
     inline State state() { return _state; }
 

@@ -18,6 +18,8 @@ private:
 
     void buttonPressed(int index);
     void addToHistory(QString string);
+    void setDarkTheme();
+    void connectAll();
 
 private slots:
     void update();

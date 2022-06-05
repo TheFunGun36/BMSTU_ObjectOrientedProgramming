@@ -52,11 +52,12 @@ void Doors::idle() {
 
 Doors::Doors(QObject* parent)
     : QObject(parent) {
+    _timer.setSingleShot(false);
+}
+
+void Doors::connectAll() {
     connect(this, &Doors::opened, this, &Doors::idle);
     connect(this, &Doors::closed, this, &Doors::idle);
     connect(this, &Doors::failToOpen, this, &Doors::idle);
     connect(this, &Doors::failToClose, this, &Doors::idle);
-    _timer.setSingleShot(false);
 }
-
-

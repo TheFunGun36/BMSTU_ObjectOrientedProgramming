@@ -25,6 +25,7 @@ public:
     };
 
     Timer(int timerDelayMsec = 500, QObject* parent = nullptr);
+    void connectAll();
     inline int ticks() const { return _ticks; }
 
 private:

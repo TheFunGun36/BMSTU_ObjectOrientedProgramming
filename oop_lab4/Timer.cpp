@@ -35,7 +35,9 @@ Timer::Timer(int timerDelayMsec, QObject* parent)
     : QObject(parent)
     , _timerDelayMsec(timerDelayMsec) {
     _timer.setSingleShot(false);
+}
+
+void Timer::connectAll() {
     connect(&_timer, &QTimer::timeout, this, &Timer::onTick);
     connect(this, &Timer::timeout, this, &Timer::reset);
 }
-

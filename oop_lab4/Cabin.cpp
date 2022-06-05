@@ -43,6 +43,14 @@ void Cabin::waitForTimer() {
 
 Cabin::Cabin(int floorsAmount, QObject* parent)
     : QObject(parent) {
+    _movementTimer.setSingleShot(false);
+}
+
+void Cabin::connectAll() {
+    _doors.connectAll();
+    _controller.connectAll();
+    _timer.connectAll();
+
     connect(this, &Cabin::doorsClose, &_doors, &Doors::close);
     connect(&_doors, &Doors::closed, this, &Cabin::move);
     connect(&_doors, &Doors::failToClose, this, &Cabin::arrived);
@@ -64,5 +72,4 @@ Cabin::Cabin(int floorsAmount, QObject* parent)
     connect(this, &Cabin::goIdle, this, &Cabin::stop);
 
     connect(&_movementTimer, &QTimer::timeout, this, &Cabin::move);
-    _movementTimer.setSingleShot(false);
 }

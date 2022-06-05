@@ -56,6 +56,9 @@ void ButtonController::requestArrival(int currentFloor) {
 
 ButtonController::ButtonController(QObject* parent)
     : QObject(parent) {
+}
+
+void ButtonController::connectAll() {
     connect(this, &ButtonController::buttonProcessed, this, &ButtonController::idle);
     connect(this, &ButtonController::goIdle, this, &ButtonController::idle);
     connect(this, &ButtonController::waitForButton, this, &ButtonController::waitButton);
@@ -63,4 +66,3 @@ ButtonController::ButtonController(QObject* parent)
     connect(this, &ButtonController::requestArrival, this, [this](int) { idle(); });
     connect(this, &ButtonController::requestDirection, this, [this](int) { idle(); });
 }
-

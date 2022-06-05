@@ -30,6 +30,7 @@ public:
     };
 
     ButtonController(QObject* parent = nullptr);
+    void connectAll();
 
 private:
     State _state = State::WaitButton;
