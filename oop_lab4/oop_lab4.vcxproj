@@ -111,6 +111,9 @@
   <ItemGroup>
     <QtMoc Include="Timer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="StyleSheet.css" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

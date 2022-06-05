@@ -1,11 +1,20 @@
 #include "MainWindow.h"
 #include <QMetaEnum>
 #include <qscrollbar.h>
+#include <qfile.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , _cabin(8) {
     ui.setupUi(this);
+
+    {
+        QFile file;
+        file.setFileName(":/MainWindow/StyleSheet.css");
+        file.open(QFile::ReadOnly);
+        setStyleSheet(file.readAll());
+        file.close();
+    }
 
     connect(ui.btn1, &QPushButton::pressed, this, [this]() { buttonPressed(0); });
     connect(ui.btn2, &QPushButton::pressed, this, [this]() { buttonPressed(1); });

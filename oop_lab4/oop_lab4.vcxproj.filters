@@ -73,4 +73,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="StyleSheet.css">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
