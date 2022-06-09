@@ -6,7 +6,7 @@ namespace Jora {
 
 class Model3DBuilder {
 public:
-    virtual bool createModel(const std::string& label) noexcept = 0;
+    virtual bool createModel() noexcept = 0;
     virtual bool readData(std::istream& stream) noexcept = 0;
     virtual bool validate() noexcept = 0;
     

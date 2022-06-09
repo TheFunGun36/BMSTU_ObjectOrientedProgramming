@@ -48,6 +48,7 @@ bool Composite::remove(size_t id) noexcept {
 
 bool Composite::remove(IteratorConst it) noexcept {
     _map.erase(it);
+    return true;
 }
 
 Composite::Iterator Composite::begin() noexcept {
@@ -68,7 +69,7 @@ bool Composite::insert(const ElementPtr& sceneObject) noexcept {
 std::ostream& Composite::addToStream(std::ostream& stream) const {
     stream << "{";
     for (IteratorConst it = _map.begin(); it != _map.end();) {
-        stream << it->first();
+        stream << it->first;
         it++;
         if (it != _map.end())
             stream << ", ";
@@ -79,7 +80,7 @@ std::ostream& Composite::addToStream(std::ostream& stream) const {
 std::wostream& Composite::addToStream(std::wostream& stream) const {
     stream << L"{";
     for (IteratorConst it = _map.begin(); it != _map.end();) {
-        stream << it->first();
+        stream << it->first;
         it++;
         if (it != _map.end())
             stream << L", ";

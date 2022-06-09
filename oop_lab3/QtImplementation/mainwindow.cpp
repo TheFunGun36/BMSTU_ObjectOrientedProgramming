@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-#include "../model/jsolution.h"
 #include "../model/jinitializationmanager.h"
 
 MainWindow::MainWindow(QWidget* parent)
@@ -7,7 +6,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui.setupUi(this);
 
     using namespace Jora;
-    Solution solution;
-    InitializationManager im(std::make_unique<Solution>(solution));
+    InitializationManager im;
     modelViewer = im.createModelViewer();
 }

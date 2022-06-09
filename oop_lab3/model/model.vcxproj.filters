@@ -92,7 +92,7 @@
     <ClInclude Include="jmodel3d_impl.h">
       <Filter>Data\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="jwireframemodel3d_impl.h">
+    <ClInclude Include="jpolygonalmodel3d_impl.h">
       <Filter>Data\Scene</Filter>
     </ClInclude>
     <ClInclude Include="jsceneobjectcreator.h">
@@ -104,7 +104,7 @@
     <ClInclude Include="jmodelcreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
-    <ClInclude Include="jwireframemodelcreator.h">
+    <ClInclude Include="jpolygonalmodelcreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\bmstu_oop\oop_lab3\model\jcolor.h">
@@ -123,9 +123,6 @@
       <Filter>Initialization</Filter>
     </ClInclude>
     <ClInclude Include="jmodelviewercreator.h">
-      <Filter>Initialization</Filter>
-    </ClInclude>
-    <ClInclude Include="jsolution.h">
       <Filter>Initialization</Filter>
     </ClInclude>
     <ClInclude Include="jcoords3dexception.h">
@@ -232,10 +229,10 @@
     <ClCompile Include="jmodelviewer.cpp">
       <Filter>Facade</Filter>
     </ClCompile>
-    <ClCompile Include="jwireframemodel3d_impl.cpp">
+    <ClCompile Include="jpolygonalmodel3d_impl.cpp">
       <Filter>Data\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="jwireframemodelcreator.cpp">
+    <ClCompile Include="jpolygonalmodelcreator.cpp">
       <Filter>Initialization</Filter>
     </ClCompile>
     <ClCompile Include="jrenderer.cpp">

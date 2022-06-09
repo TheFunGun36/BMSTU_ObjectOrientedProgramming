@@ -31,6 +31,10 @@ Model3D::ImplPtr Model3D::implementation() noexcept {
     return _implementation;
 }
 
+Model3D::ConstImplPtr Model3D::implementation() const noexcept {
+    return _implementation;
+}
+
 void Model3D::setImplementation(const ImplPtr& implementation) noexcept {
     if (implementation != nullptr)
         _implementation = implementation;

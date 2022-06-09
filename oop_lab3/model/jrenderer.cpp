@@ -4,16 +4,22 @@
 
 namespace Jora {
 
-inline void WireframeModelRenderer::render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) {
-    const auto& model = dynamic_cast<const Model3D&>(sceneObject);
-    const auto& impl = dynamic_cast<const WireframeModel3DImpl&>(model.implementation());
+inline void PolygonalModelRenderer::render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) {
+    auto implPtr = dynamic_cast<const Model3D&>(sceneObject).implementation();
+    const auto& impl = dynamic_cast<const PolygonalModel3DImpl&>(*implPtr);
 
-    for (int i = 0; i < impl.edgesAmount(); i++) {
-        ScreenLine line;
+    for (auto face : impl) {
+        ScreenPoint p[3];
+        bool succeed[3];
+        for (int i = 0; i < 3; i++)
+            succeed[i] = project(p[i], impl.vertex(face[i]), camera);
 
-        bool succeed = project(line.p1(), model[impl[i].first], camera);
-        if (succeed && project(line.p2(), model[impl[i].second], camera))
-            painter.drawLine(line);
+        for (int i = 0; i <= 1; i++) {
+            for (int j = i + 1; j < 3; j++) {
+                if (succeed[i] && succeed[j])
+                    painter.drawLine(ScreenLine(p[i], p[j]));
+            }
+        }
     }
 }
 

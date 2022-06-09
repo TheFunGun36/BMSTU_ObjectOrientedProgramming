@@ -12,7 +12,7 @@ public:
     inline void render(Painter& painter, const SceneObject& target) {
         if (target.isComposite()) {
             for (const auto& el : target)
-                render(painter, *el);
+                render(painter, *el.second);
         }
         else if (target.visible()) {
             _renderers[typeid(target)]->render(painter, *_currentCamera.lock(), target);

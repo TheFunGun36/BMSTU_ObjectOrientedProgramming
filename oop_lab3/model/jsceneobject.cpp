@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "jsceneobject.h"
 
 namespace Jora {
@@ -37,7 +38,7 @@ Transform& SceneObject::transform() noexcept {
     return _transform;
 }
 
-void setVisible(const bool& _visible) noexcept {
+void SceneObject::setVisible(const bool& _visible) noexcept {
     // beeba! Yaaaay
 }
 
@@ -45,19 +46,15 @@ void SceneObject::setLabel(const std::string& label) noexcept {
     _label = label;
 }
 
-SceneObject::SelfRef SceneObject::operator[](size_t id) noexcept {
-    return *this;
+SceneObject::SelfPtr SceneObject::operator[](size_t id) noexcept {
+    return nullptr;
 }
 
-SceneObject::SelfCRef SceneObject::operator[](size_t id) const noexcept {
-    return *this;
-}
-
-bool SceneObject::isComposite() const {
+bool SceneObject::isComposite() const noexcept {
     return false;
 }
 
-bool SceneObject::insert(const SceneObject::SelfPtr& sceneObject) {
+bool SceneObject::insert(const SceneObject::SelfPtr& sceneObject) noexcept {
     return false;
 }
 
@@ -70,7 +67,7 @@ bool SceneObject::remove(SceneObject::IteratorConst it) noexcept {
 }
 
 bool SceneObject::contains(size_t id) const noexcept {
-
+    return _id == id;
 }
 
 size_t SceneObject::count() const noexcept {

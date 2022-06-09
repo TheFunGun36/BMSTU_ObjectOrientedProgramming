@@ -10,6 +10,7 @@ namespace Jora {
 class Model3D : public SceneObject {
 public:
     using ImplPtr = std::shared_ptr<Model3DImpl>;
+    using ConstImplPtr = std::shared_ptr<const Model3DImpl>;
 
     Model3D(const ImplPtr& implementation, const std::string& label = "Model");
     Model3D(const std::string& label = "Model");
@@ -21,6 +22,7 @@ public:
     virtual bool isValid() const noexcept;
 
     virtual ImplPtr implementation() noexcept;
+    virtual ConstImplPtr implementation() const noexcept;
     virtual void setImplementation(const ImplPtr& implementation) noexcept;
 
 protected:
