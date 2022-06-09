@@ -211,6 +211,7 @@
     <ClCompile Include="jmodelviewercreator.cpp" />
     <ClCompile Include="jprintable.cpp" />
     <ClCompile Include="jrenderer.cpp" />
+    <ClCompile Include="jsceneobject.cpp" />
     <ClCompile Include="jscreenline.cpp" />
     <ClCompile Include="jscreenpoint.cpp" />
     <ClCompile Include="jvector3d.cpp" />

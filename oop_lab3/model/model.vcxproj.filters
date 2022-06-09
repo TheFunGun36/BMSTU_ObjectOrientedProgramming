@@ -47,21 +47,6 @@
     <ClInclude Include="jprintable.h">
       <Filter>Data</Filter>
     </ClInclude>
-    <ClInclude Include="jcoords3dexception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="jexception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="jfileexception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3dexception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="jtriangle3dexception.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
     <ClInclude Include="jcommand.h">
       <Filter>Facade</Filter>
     </ClInclude>
@@ -76,9 +61,6 @@
     </ClInclude>
     <ClInclude Include="jscenemanager.h">
       <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="jtransformaction.h">
-      <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="jpainter.h">
       <Filter>View</Filter>
@@ -98,26 +80,14 @@
     <ClInclude Include="jvector3d.h">
       <Filter>Data\Basic</Filter>
     </ClInclude>
-    <ClInclude Include="jeulerangles.h">
-      <Filter>Data\Basic</Filter>
-    </ClInclude>
     <ClInclude Include="jreal.h">
       <Filter>Data\Basic</Filter>
-    </ClInclude>
-    <ClInclude Include="jcomposite.h">
-      <Filter>Data\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="jcamera.h">
-      <Filter>Data\Scene</Filter>
     </ClInclude>
     <ClInclude Include="jmodel3d.h">
       <Filter>Data\Scene</Filter>
     </ClInclude>
     <ClInclude Include="jsceneobject.h">
       <Filter>Data\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="jtransform.h">
-      <Filter>Data</Filter>
     </ClInclude>
     <ClInclude Include="jmodel3d_impl.h">
       <Filter>Data\Scene</Filter>
@@ -203,8 +173,35 @@
     <ClInclude Include="jmanager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="qpenimpl.h">
-      <Filter>View\Header</Filter>
+    <ClInclude Include="jcomposite.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jeulerangles.h">
+      <Filter>Data\Basic</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransform.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jcoords3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jtriangle3dexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jcamera.h">
+      <Filter>Data\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="jfileexception.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransformaction.h">
+      <Filter>Data\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -228,12 +225,6 @@
     </ClCompile>
     <ClCompile Include="jvector3d.cpp">
       <Filter>Data\Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="jeulerangles.cpp">
-      <Filter>Data\Basic</Filter>
-    </ClCompile>
-    <ClCompile Include="jcomposite.cpp">
-      <Filter>Data\Scene</Filter>
     </ClCompile>
     <ClCompile Include="jmodel3d.cpp">
       <Filter>Data\Scene</Filter>
@@ -264,6 +255,15 @@
     </ClCompile>
     <ClCompile Include="jmodelviewer.cpp">
       <Filter>Facade</Filter>
+    </ClCompile>
+    <ClCompile Include="jsceneobject.cpp">
+      <Filter>Data\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="jcomposite.cpp">
+      <Filter>Data\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="jeulerangles.cpp">
+      <Filter>Data\Basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
