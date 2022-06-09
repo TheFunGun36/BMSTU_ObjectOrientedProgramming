@@ -8,9 +8,12 @@
 
 namespace Jora {
 
+using ObjectId = size_t;
+
 class SceneObject : public Printable {
 public:
     using SelfPtr = std::shared_ptr<SceneObject>;
+    using SelfCPtr = std::shared_ptr<const SceneObject>;
     using SelfRef = SceneObject&;
     using SelfCRef = const SceneObject&;
     using Self = SceneObject;
@@ -26,7 +29,7 @@ public:
     virtual const bool& visible() const noexcept;
     virtual const std::string& label() const noexcept;
     virtual const std::type_info& type() const noexcept;
-    virtual const size_t& id() const noexcept;
+    virtual const ObjectId& id() const noexcept;
     virtual const Transform& transform() const noexcept;
     virtual Transform& transform() noexcept;
 
@@ -34,28 +37,29 @@ public:
     virtual void setLabel(const std::string& label) noexcept;
 
     // COMPOSITE PART
-    using Iterator = std::map<size_t, SelfPtr>::iterator;
-    using IteratorConst = std::map<size_t, SelfPtr>::const_iterator;
+    using Iterator = std::map<ObjectId, SelfPtr>::iterator;
+    using IteratorConst = std::map<ObjectId, SelfPtr>::const_iterator;
 
+    virtual SelfCPtr        operator[](ObjectId id) const noexcept;
     virtual bool            isComposite()           const noexcept;
-    virtual bool            contains(size_t id)     const noexcept;
+    virtual bool            contains(ObjectId id)   const noexcept;
     virtual size_t          count()                 const noexcept;
     virtual IteratorConst   begin()                 const noexcept;
     virtual IteratorConst   end()                   const noexcept;
     virtual IteratorConst   cbegin()                const noexcept;
     virtual IteratorConst   cend()                  const noexcept;
 
-    virtual SelfPtr     operator[](size_t id)       noexcept;
-    virtual bool        remove(size_t id)           noexcept;
+    virtual SelfPtr     operator[](ObjectId id)       noexcept;
+    virtual bool        remove(ObjectId id)           noexcept;
     virtual bool        remove(IteratorConst it)    noexcept;
     virtual Iterator    begin()                     noexcept;
     virtual Iterator    end()                       noexcept;
     virtual bool insert(const SelfPtr& sceneObject) noexcept;
 
 private:
-    static size_t generateId();
+    static ObjectId generateId();
 
-    size_t _id;
+    ObjectId _id;
     bool _visible;
     std::string _label;
     Transform _transform;

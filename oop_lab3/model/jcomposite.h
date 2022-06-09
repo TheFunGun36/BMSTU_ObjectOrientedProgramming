@@ -22,6 +22,7 @@ public:
     inline virtual ~Composite() = default;
 
 
+    virtual SelfCPtr        operator[](ObjectId id)     const noexcept override;
     virtual bool            isComposite()               const noexcept override;
     virtual bool            contains(size_t id)         const noexcept override;
     virtual size_t          count()                     const noexcept override;

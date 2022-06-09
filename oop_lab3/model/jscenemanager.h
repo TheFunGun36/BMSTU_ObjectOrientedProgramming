@@ -8,11 +8,12 @@ class SceneManager : public Manager {
 public:
     using SceneObjectPtr = std::weak_ptr<SceneObject>;
 
-    void nextSceneObject(SceneObjectPtr sceneObject, const Composite& scene);
-    void prevSceneObject(SceneObjectPtr sceneObject, const Composite& scene);
-    void firstSceneObject(SceneObjectPtr sceneObject, const Composite& scene);
-    void lastSceneObject(SceneObjectPtr sceneObject, const Composite& scene);
-    void countSceneObjects(int&);
+    void countSceneObjects(const std::weak_ptr<size_t>& result);
+    void makeGroup(const std::weak_ptr<size_t>& groupId, std::initializer_list<size_t> objectsId);
+    void getLabel(const std::weak_ptr<std::string>& label, ObjectId id);
+    void setLabel(ObjectId id, std::string&& label);
+    void removeObject(Composite& scene, ObjectId id);
+    void clear(Composite& scene);
 };
 
 }

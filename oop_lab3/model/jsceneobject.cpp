@@ -26,7 +26,7 @@ const std::type_info& SceneObject::type() const noexcept {
     return typeid(*this);
 }
 
-const size_t& SceneObject::id() const noexcept {
+const ObjectId& SceneObject::id() const noexcept {
     return _id;
 }
 
@@ -46,7 +46,11 @@ void SceneObject::setLabel(const std::string& label) noexcept {
     _label = label;
 }
 
-SceneObject::SelfPtr SceneObject::operator[](size_t id) noexcept {
+SceneObject::SelfPtr SceneObject::operator[](ObjectId id) noexcept {
+    return nullptr;
+}
+
+SceneObject::SelfCPtr SceneObject::operator[](ObjectId id) const noexcept {
     return nullptr;
 }
 
@@ -58,7 +62,7 @@ bool SceneObject::insert(const SceneObject::SelfPtr& sceneObject) noexcept {
     return false;
 }
 
-bool SceneObject::remove(size_t id) noexcept {
+bool SceneObject::remove(ObjectId id) noexcept {
     return false;
 }
 
@@ -66,7 +70,7 @@ bool SceneObject::remove(SceneObject::IteratorConst it) noexcept {
     return false;
 }
 
-bool SceneObject::contains(size_t id) const noexcept {
+bool SceneObject::contains(ObjectId id) const noexcept {
     return _id == id;
 }
 
@@ -98,8 +102,8 @@ SceneObject::IteratorConst SceneObject::cend() const noexcept {
     return SceneObject::IteratorConst();
 }
 
-size_t SceneObject::generateId() {
-    static size_t id = 0;
+ObjectId SceneObject::generateId() {
+    static ObjectId id = 0;
     return id++;
 }
 

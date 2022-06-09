@@ -11,6 +11,10 @@ Composite::ElementPtr Composite::operator[](size_t id) noexcept {
     return result;
 }
 
+Composite::SelfCPtr Composite::operator[](ObjectId id) const noexcept {
+    return const_cast<Composite&>(*this)[id];
+}
+
 bool Composite::isComposite() const noexcept {
     return true;
 }
