@@ -4,12 +4,11 @@
 namespace Jora {
 
 ModelViewer::ModelViewer()
-    : _scene("Scene")
-    , _selection("Selection") {
+    : _scene("Scene") {
 }
 
 void ModelViewer::execute(Command&& cmd) {
-    cmd.execute(_scene, _selection, *_managers[cmd.neededManager()]);
+    cmd.execute(_scene, *_managers[cmd.neededManager()]);
 }
 
 void ModelViewer::addManager(const std::shared_ptr<Manager>& manager) {

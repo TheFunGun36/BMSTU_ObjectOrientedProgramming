@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_mainwindow.h"
+#include "../model/jsceneobject.h"
 #include "../model/jmodelviewer.h"
 #include "../model/jscenemanagercommands.h"
 
@@ -14,6 +15,7 @@ public:
 private:
     Ui::MainWindowClass ui;
     std::unique_ptr<Jora::ModelViewer> modelViewer;
+    Jora::ObjectId currentObject;
 
 private slots:
     void onMove();

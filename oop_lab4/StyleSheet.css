@@ -95,3 +95,10 @@ QPushButton {
 	background: #222;
 	color: #fff;
 }
+
+QProgressBar::chunk {
+	background: #202020;
+	border-bottom-right-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: .px solid black;
+}

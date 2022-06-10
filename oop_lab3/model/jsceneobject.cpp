@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "jsceneobject.h"
+#include "jtransformaction.h"
 
 namespace Jora {
 
@@ -46,6 +47,10 @@ void SceneObject::setLabel(const std::string& label) noexcept {
     _label = label;
 }
 
+void SceneObject::apply(const TransformAction& action) noexcept {
+    action.apply(_transform);
+}
+
 SceneObject::SelfPtr SceneObject::operator[](ObjectId id) noexcept {
     return nullptr;
 }
@@ -60,6 +65,9 @@ bool SceneObject::isComposite() const noexcept {
 
 bool SceneObject::insert(const SceneObject::SelfPtr& sceneObject) noexcept {
     return false;
+}
+
+void SceneObject::clear() noexcept {
 }
 
 bool SceneObject::remove(ObjectId id) noexcept {

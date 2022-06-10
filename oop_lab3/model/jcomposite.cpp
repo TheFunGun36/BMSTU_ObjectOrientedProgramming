@@ -11,6 +11,11 @@ Composite::ElementPtr Composite::operator[](size_t id) noexcept {
     return result;
 }
 
+void Composite::apply(const TransformAction& action) noexcept {
+    for (auto& el : _map)
+        el.second->apply(action);
+}
+
 Composite::SelfCPtr Composite::operator[](ObjectId id) const noexcept {
     return const_cast<Composite&>(*this)[id];
 }
@@ -68,6 +73,10 @@ bool Composite::insert(const ElementPtr& sceneObject) noexcept {
     if (result)
         _map[sceneObject->id()] = sceneObject;
     return result;
+}
+
+void Composite::clear() noexcept {
+    _map.clear();
 }
 
 std::ostream& Composite::addToStream(std::ostream& stream) const {

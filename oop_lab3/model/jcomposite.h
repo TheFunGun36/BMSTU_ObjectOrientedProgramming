@@ -21,6 +21,7 @@ public:
     }
     inline virtual ~Composite() = default;
 
+    virtual void apply(const TransformAction& action)   noexcept override;
 
     virtual SelfCPtr        operator[](ObjectId id)     const noexcept override;
     virtual bool            isComposite()               const noexcept override;
@@ -37,6 +38,7 @@ public:
     virtual Iterator    begin()                                 noexcept override;
     virtual Iterator    end()                                   noexcept override;
     virtual bool        insert(const ElementPtr& sceneObject)   noexcept override;
+    virtual void        clear()                                 noexcept override;
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const;

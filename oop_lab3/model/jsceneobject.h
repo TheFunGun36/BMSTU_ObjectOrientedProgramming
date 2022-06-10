@@ -8,6 +8,8 @@
 
 namespace Jora {
 
+class TransformAction;
+
 using ObjectId = size_t;
 
 class SceneObject : public Printable {
@@ -36,6 +38,8 @@ public:
     virtual void setVisible(const bool& _visible) noexcept;
     virtual void setLabel(const std::string& label) noexcept;
 
+    virtual void apply(const TransformAction& action) noexcept;
+
     // COMPOSITE PART
     using Iterator = std::map<ObjectId, SelfPtr>::iterator;
     using IteratorConst = std::map<ObjectId, SelfPtr>::const_iterator;
@@ -49,12 +53,13 @@ public:
     virtual IteratorConst   cbegin()                const noexcept;
     virtual IteratorConst   cend()                  const noexcept;
 
-    virtual SelfPtr     operator[](ObjectId id)       noexcept;
-    virtual bool        remove(ObjectId id)           noexcept;
+    virtual SelfPtr     operator[](ObjectId id)     noexcept;
+    virtual bool        remove(ObjectId id)         noexcept;
     virtual bool        remove(IteratorConst it)    noexcept;
     virtual Iterator    begin()                     noexcept;
     virtual Iterator    end()                       noexcept;
     virtual bool insert(const SelfPtr& sceneObject) noexcept;
+    virtual void        clear()                     noexcept;
 
 private:
     static ObjectId generateId();

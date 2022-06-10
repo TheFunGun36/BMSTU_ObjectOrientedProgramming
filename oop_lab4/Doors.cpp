@@ -1,65 +1,81 @@
 #include "Doors.h"
 
 void Doors::open() {
-    if (_state == StateOpened) {
-        emit opened();
-    }
-    else if (_state == StateOpening) {
-        if (isOpen()) {
-            emit opened();
-        }
-        else if (_blockedForOpen) {
-            emit failToOpen();
+    _state = StateStartOpening;
+    _timer.disconnect();
+    connect(&_timer, &QTimer::timeout, this, &Doors::openTick);
+    _timer.start(_timerDelayMsec);
+    emit startedOpening();
+}
+
+void Doors::openTick() {
+    if (_state == StateStartOpening || _state == StateOpening) {
+        _state = StateOpening;
+        if (_blockedForOpen) {
+            emit goIdle();
         }
         else if (sender() == &_timer) {
-            _doorsDistance++;
-            emit opening();
+            if (!isOpen())
+                _doorsDistance++;
+            if (isOpen())
+                emit goOpen();
+            else
+                emit opening();
         }
-    }
-    else {
-        _state = StateOpening;
-        _timer.disconnect();
-        connect(&_timer, &QTimer::timeout, this, &Doors::open);
-        _timer.start(_timerDelayMsec);
     }
 }
 
 void Doors::close() {
-    if (_state == StateClosed) {
-        emit closed();
-    }
-    else if (_state == StateClosing) {
-        if (isClosed()) {
-            emit closed();
-        }
-        else if (_blockedForClose) {
-            emit failToClose();
+    _state = StateStartClosing;
+    _timer.disconnect();
+    connect(&_timer, &QTimer::timeout, this, &Doors::closeTick);
+    _timer.start(_timerDelayMsec);
+    emit startedClosing();
+}
+
+void Doors::closeTick() {
+    if (_state == StateStartClosing || _state == StateClosing) {
+        _state = StateClosing;
+        if (_blockedForClose) {
+            emit goIdle();
         }
         else if (sender() == &_timer) {
-            _doorsDistance--;
-            emit closing();
+            if (!isClosed())
+                _doorsDistance--;
+            if (isClosed())
+                emit goClosed();
+            else
+                emit closing();
         }
-    }
-    else {
-        _state = StateClosing;
-        _timer.disconnect();
-        connect(&_timer, &QTimer::timeout, this, &Doors::close);
-        _timer.start(_timerDelayMsec);
     }
 }
 
 void Doors::onOpened() {
-    _state = StateOpened;
-    _timer.stop();
+    if (_state == StateOpening) {
+        _state = StateOpened;
+        _timer.stop();
+        emit opened();
+    }
 }
 void Doors::onClosed() {
-    _state = StateClosed;
-    _timer.stop();
+    if (_state == StateClosing) {
+        _state = StateClosed;
+        _timer.stop();
+        emit closed();
+    }
 }
 
 void Doors::idle() {
-    _state = StateBlocked;
-    _timer.stop();
+    if (_state == StateOpening) {
+        _state = StateBlocked;
+        _timer.stop();
+        emit failToOpen();
+    }
+    else if (_state == StateClosing) {
+        _state = StateBlocked;
+        _timer.stop();
+        emit failToClose();
+    }
 }
 
 Doors::Doors(QObject* parent)
@@ -68,8 +84,7 @@ Doors::Doors(QObject* parent)
 }
 
 void Doors::connectAll() {
-    connect(this, &Doors::opened, this, &Doors::onOpened);
-    connect(this, &Doors::closed, this, &Doors::onClosed);
-    connect(this, &Doors::failToOpen, this, &Doors::idle);
-    connect(this, &Doors::failToClose, this, &Doors::idle);
+    connect(this, &Doors::goOpen, this, &Doors::onOpened);
+    connect(this, &Doors::goClosed, this, &Doors::onClosed);
+    connect(this, &Doors::goIdle, this, &Doors::idle);
 }

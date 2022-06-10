@@ -23,7 +23,8 @@ public:
     }
 
     inline void setActiveCamera(const Composite& scene, ObjectId id) {
-        _currentCamera = scene[id];
+        if (scene[id] && typeid(*scene[id]) == typeid(Camera3D))
+            _currentCamera = std::dynamic_pointer_cast<const Camera3D>(scene[id]);
     }
 
     inline void addRenderer(const std::shared_ptr<Renderer>& renderer) {
