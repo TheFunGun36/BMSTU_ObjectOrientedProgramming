@@ -6,8 +6,8 @@ namespace Jora {
 
 class CameraCreator : public SceneObjectCreator {
 public:
-    inline virtual std::unique_ptr<SceneObject> create(const std::string& label) const override {
-        return std::make_unique<Camera3D>(label);
+    inline virtual std::unique_ptr<SceneObject> create() const override {
+        return std::make_unique<Camera3D>();
     }
 };
 

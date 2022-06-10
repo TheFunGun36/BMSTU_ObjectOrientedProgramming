@@ -9,17 +9,22 @@ namespace Jora {
 
 class RenderManager : public Manager {
 public:
-    inline void render(Painter& painter, const SceneObject& target) {
-        if (target.isComposite()) {
-            for (const auto& el : target)
-                render(painter, *el);
-        }
-        else if (target.visible()) {
-            _renderers[typeid(target)]->render(painter, *_currentCamera.lock(), target);
-        }
+    inline void render(const Composite& scene, std::weak_ptr<Painter> painter, ObjectId id) {
+        if (painter.expired() || _currentCamera.expired())
+            return;
+
+        std::shared_ptr<const SceneObject> targetLocked = scene[id];
+        std::shared_ptr<Painter> painterLocked = painter.lock();
+
+        const SceneObject& targetRef = *targetLocked;
+        Painter& painterRef = *painterLocked;
+
+        renderTarget(painterRef, targetRef);
     }
 
-    inline void setActiveCamera(const std::weak_ptr<Camera3D>& camera) { _currentCamera = camera; }
+    inline void setActiveCamera(const Composite& scene, ObjectId id) {
+        _currentCamera = scene[id];
+    }
 
     inline void addRenderer(const std::shared_ptr<Renderer>& renderer) {
         _renderers[typeid(*renderer)] = renderer;
@@ -27,8 +32,18 @@ public:
     inline void clear() { _renderers.clear(); }
 
 private:
+    inline void renderTarget(Painter& painter, const SceneObject& target) {
+        if (target.isComposite()) {
+            for (const auto& el : target)
+                renderTarget(painter, *el.second);
+        }
+        else if (target.visible()) {
+            _renderers[typeid(target)]->render(painter, *_currentCamera.lock(), target);
+        }
+    }
+
     std::unordered_map<std::type_index, std::shared_ptr<Renderer>> _renderers;
-    std::weak_ptr<Camera3D> _currentCamera;
+    std::weak_ptr<const Camera3D> _currentCamera;
 };
 
 }

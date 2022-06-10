@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>400</height>
+    <width>838</width>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,13 +20,13 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QDoubleSpinBox" name="moveX"/>
+         <widget class="QDoubleSpinBox" name="spinX"/>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="moveY"/>
+         <widget class="QDoubleSpinBox" name="spinY"/>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="moveZ"/>
+         <widget class="QDoubleSpinBox" name="spinZ"/>
         </item>
        </layout>
       </item>
@@ -38,69 +38,11 @@
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>15</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QDoubleSpinBox" name="rotateX"/>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="rotateY"/>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="rotateZ"/>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="QPushButton" name="rotateBtn">
         <property name="text">
          <string>Rotate</string>
         </property>
        </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeType">
-         <enum>QSizePolicy::Fixed</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>15</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QDoubleSpinBox" name="scaleX"/>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="scaleY"/>
-        </item>
-        <item>
-         <widget class="QDoubleSpinBox" name="scaleZ"/>
-        </item>
-       </layout>
       </item>
       <item>
        <widget class="QPushButton" name="scaleBtn">
@@ -125,6 +67,9 @@
      </layout>
     </item>
     <item>
+     <widget class="QListWidget" name="list"/>
+    </item>
+    <item>
      <widget class="QWidget" name="widget" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -141,10 +86,26 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>600</width>
+     <width>838</width>
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuScene">
+    <property name="title">
+     <string>Сцена</string>
+    </property>
+    <widget class="QMenu" name="actionAdd">
+     <property name="title">
+      <string>Добавить</string>
+     </property>
+     <addaction name="actionAddModel"/>
+     <addaction name="actionAddCamera"/>
+    </widget>
+    <addaction name="actionAdd"/>
+    <addaction name="actionRemove"/>
+    <addaction name="actionClear"/>
+   </widget>
+   <addaction name="menuScene"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -155,20 +116,39 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action_2">
+   <property name="text">
+    <string>Камеру</string>
+   </property>
+  </action>
+  <action name="actionAddModel">
+   <property name="text">
+    <string>Модель</string>
+   </property>
+  </action>
+  <action name="actionAddCamera">
+   <property name="text">
+    <string>Камера</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="text">
+    <string>Удалить элемент</string>
+   </property>
+  </action>
+  <action name="actionClear">
+   <property name="text">
+    <string>Очистить</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <tabstops>
-  <tabstop>moveX</tabstop>
-  <tabstop>moveY</tabstop>
-  <tabstop>moveZ</tabstop>
+  <tabstop>spinX</tabstop>
+  <tabstop>spinY</tabstop>
+  <tabstop>spinZ</tabstop>
   <tabstop>moveBtn</tabstop>
-  <tabstop>rotateX</tabstop>
-  <tabstop>rotateY</tabstop>
-  <tabstop>rotateZ</tabstop>
   <tabstop>rotateBtn</tabstop>
-  <tabstop>scaleX</tabstop>
-  <tabstop>scaleY</tabstop>
-  <tabstop>scaleZ</tabstop>
   <tabstop>scaleBtn</tabstop>
  </tabstops>
  <resources>

@@ -4,57 +4,62 @@
 #include "property.h"
 #include "jtransform.h"
 #include <string>
-#include <list>
+#include <map>
 
 namespace Jora {
+
+using ObjectId = size_t;
 
 class SceneObject : public Printable {
 public:
     using SelfPtr = std::shared_ptr<SceneObject>;
+    using SelfCPtr = std::shared_ptr<const SceneObject>;
+    using SelfRef = SceneObject&;
+    using SelfCRef = const SceneObject&;
     using Self = SceneObject;
 
-    inline SceneObject(const std::string& _label)
-        : Visible(this, &Self::visible, &Self::setVisible)
-        , Label(this, &Self::label, &Self::setLabel)
-        , Type(this, &Self::type)
-        , _visible(false)
-        , _label(_label)
-        , _transform() {
-    }
+    SceneObject(const std::string& _label = "Scene object");
     inline virtual ~SceneObject() = default;
 
     Property<Self, bool> Visible;
     Property<Self, std::string> Label;
     Property<Self, std::type_info, PropReadOnly> Type;
+    Property<Self, size_t, PropReadOnly> Id;
 
-    inline virtual const bool& visible() const { return _visible; }
-    inline virtual void setVisible(const bool& _visible) {}
+    virtual const bool& visible() const noexcept;
+    virtual const std::string& label() const noexcept;
+    virtual const std::type_info& type() const noexcept;
+    virtual const ObjectId& id() const noexcept;
+    virtual const Transform& transform() const noexcept;
+    virtual Transform& transform() noexcept;
 
-    inline virtual const std::string& label() const { return _label; }
-    inline virtual void setLabel(const std::string& label) { _label = label; }
-
-    inline virtual const std::type_info& type() const { return typeid(*this); }
-
-    inline virtual const Transform& transform() const { return _transform; }
-    inline virtual Transform& transform() { return _transform; }
+    virtual void setVisible(const bool& _visible) noexcept;
+    virtual void setLabel(const std::string& label) noexcept;
 
     // COMPOSITE PART
-    using Iterator = std::list<SelfPtr>::iterator;
-    using IteratorConst = std::list<SelfPtr>::const_iterator;
+    using Iterator = std::map<ObjectId, SelfPtr>::iterator;
+    using IteratorConst = std::map<ObjectId, SelfPtr>::const_iterator;
 
-    inline virtual bool isComposite() const { return false; }
+    virtual SelfCPtr        operator[](ObjectId id) const noexcept;
+    virtual bool            isComposite()           const noexcept;
+    virtual bool            contains(ObjectId id)   const noexcept;
+    virtual size_t          count()                 const noexcept;
+    virtual IteratorConst   begin()                 const noexcept;
+    virtual IteratorConst   end()                   const noexcept;
+    virtual IteratorConst   cbegin()                const noexcept;
+    virtual IteratorConst   cend()                  const noexcept;
 
-    inline virtual bool add(const SelfPtr& sceneObject) { return false; }
-    inline virtual bool remove(IteratorConst it) noexcept { return false; }
-    inline virtual size_t count() const noexcept { return 1; }
-    inline virtual Iterator begin() noexcept { return Iterator(); }
-    inline virtual Iterator end() noexcept { return Iterator(); }
-    inline virtual IteratorConst begin() const noexcept { return IteratorConst(); }
-    inline virtual IteratorConst end() const noexcept { return IteratorConst(); }
-    inline virtual IteratorConst cbegin() const noexcept { return IteratorConst(); }
-    inline virtual IteratorConst cend() const noexcept { return IteratorConst(); }
+    virtual SelfPtr     operator[](ObjectId id)       noexcept;
+    virtual bool        remove(ObjectId id)           noexcept;
+    virtual bool        remove(IteratorConst it)    noexcept;
+    virtual Iterator    begin()                     noexcept;
+    virtual Iterator    end()                       noexcept;
+    virtual bool insert(const SelfPtr& sceneObject) noexcept;
 
 private:
+    static ObjectId generateId();
+
+    ObjectId _id;
     bool _visible;
     std::string _label;
     Transform _transform;

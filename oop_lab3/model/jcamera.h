@@ -5,7 +5,7 @@ namespace Jora {
 
 class Camera3D : public SceneObject {
 public:
-    inline Camera3D(const std::string& label)
+    inline Camera3D(const std::string& label = "Camera")
         : SceneObject(label) {
     }
     inline size_t& viewWidth() { return _viewWidth; }

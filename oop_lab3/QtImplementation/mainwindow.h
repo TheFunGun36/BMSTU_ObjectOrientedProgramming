@@ -14,4 +14,13 @@ public:
 private:
     Ui::MainWindowClass ui;
     std::unique_ptr<Jora::ModelViewer> modelViewer;
+
+private slots:
+    void onMove();
+    void onScale();
+    void onRotate();
+    void onAddCamera();
+    void onAddModel();
+    void onRemove();
+    void onClear();
 };

@@ -7,44 +7,45 @@ namespace Jora {
 
 class CSetActiveCamera : public Command {
 public:
-    using Method = void(RenderManager::*)(const std::weak_ptr<Camera3D>&);
+    using Method = void(RenderManager::*)(const Composite&, ObjectId id);
 
-    inline CSetActiveCamera(const std::weak_ptr<Camera3D>& camera)
-        : _camera(camera)
-        , _method(&RenderManager::setActiveCamera) {
+    inline CSetActiveCamera(ObjectId cameraId)
+        : _method(&RenderManager::setActiveCamera)
+        , _cameraId(cameraId) {
     }
-    virtual void execute(Composite& scene, Composite& selection, Manager& manager) override {
-        (dynamic_cast<RenderManager&>(manager).*_method)(_camera);
+    virtual void execute(Composite& scene, Manager& manager) override {
+        (dynamic_cast<RenderManager&>(manager).*_method)(scene, _cameraId);
     }
     virtual const std::type_info& neededManager() const noexcept override {
         return typeid(RenderManager);
     }
 
 private:
-    std::weak_ptr<Camera3D> _camera;
     Method _method;
+    ObjectId _cameraId;
 };
 
 class CRender : public Command {
 public:
-    using Method = void(RenderManager::*)(Painter&, const SceneObject&);
+    using Method = void(RenderManager::*)(const Composite&, std::weak_ptr<Painter>, ObjectId);
 
-    inline CRender(Painter& painter, const SceneObject& target)
-        : _painter(painter)
-        , _target(target)
-        , _method(&RenderManager::render) {
+    inline CRender(const std::weak_ptr<Painter>& painter, ObjectId targetId)
+        : _method(&RenderManager::render)
+        , _painter(painter)
+        , _targetId(targetId) {
     }
-    virtual void execute(Composite& scene, Composite& selection, Manager& manager) override {
-        (dynamic_cast<RenderManager&>(manager).*_method)(_painter, _target);
+
+    virtual void execute(Composite& scene, Manager& manager) override {
+        (dynamic_cast<RenderManager&>(manager).*_method)(scene, _painter, _targetId);
     }
     virtual const std::type_info& neededManager() const noexcept override {
         return typeid(RenderManager);
     }
 
 private:
-    Painter& _painter;
-    const SceneObject& _target;
     Method _method;
+    std::weak_ptr<Painter> _painter;
+    ObjectId _targetId;
 };
 
 }

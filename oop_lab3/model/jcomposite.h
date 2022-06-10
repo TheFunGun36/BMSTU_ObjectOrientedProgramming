@@ -6,35 +6,44 @@ namespace Jora {
 
 class Composite : public SceneObject {
 public:
+    using SelfPtr = std::shared_ptr<Composite>;
+    using SelfRef = Composite&;
+    using SelfCRef = const Composite&;
+    using Self = Composite;
+
     using ElementPtr = std::shared_ptr<SceneObject>;
+    using ElementRef = SceneObject&;
+    using ElementCRef = const SceneObject&;
     using Element = SceneObject;
 
-    inline Composite(const std::string& label)
+    inline Composite(const std::string& label = "Group")
         : SceneObject(label) {
     }
     inline virtual ~Composite() = default;
 
-    using Iterator = std::list<ElementPtr>::iterator;
-    using IteratorConst = std::list<ElementPtr>::const_iterator;
 
-    inline virtual bool isComposite() const { return false; }
+    virtual SelfCPtr        operator[](ObjectId id)     const noexcept override;
+    virtual bool            isComposite()               const noexcept override;
+    virtual bool            contains(size_t id)         const noexcept override;
+    virtual size_t          count()                     const noexcept override;
+    virtual IteratorConst   begin()                     const noexcept override;
+    virtual IteratorConst   end()                       const noexcept override;
+    virtual IteratorConst   cbegin()                    const noexcept override;
+    virtual IteratorConst   cend()                      const noexcept override;
 
-    inline virtual bool add(const ElementPtr& sceneObject) override { _list.push_back(sceneObject); return true; }
-    inline virtual bool remove(IteratorConst it) noexcept override { _list.erase(it, it); return true; }
-    inline virtual size_t count() const noexcept override { return _list.size(); }
-    inline virtual Iterator begin() noexcept override { return _list.begin(); }
-    inline virtual Iterator end() noexcept override { return _list.end(); }
-    inline virtual IteratorConst begin() const noexcept override { return _list.begin(); }
-    inline virtual IteratorConst end() const noexcept override { return _list.end(); }
-    inline virtual IteratorConst cbegin() const noexcept override { return _list.cbegin(); }
-    inline virtual IteratorConst cend() const noexcept override { return _list.cend(); }
+    virtual ElementPtr  operator[](size_t id)                   noexcept override;
+    virtual bool        remove(size_t id)                       noexcept override;
+    virtual bool        remove(IteratorConst it)                noexcept override;
+    virtual Iterator    begin()                                 noexcept override;
+    virtual Iterator    end()                                   noexcept override;
+    virtual bool        insert(const ElementPtr& sceneObject)   noexcept override;
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const;
     virtual std::wostream& addToStream(std::wostream& stream) const;
 
 private:
-    std::list<ElementPtr> _list;
+    std::map<size_t, ElementPtr> _map;
 };
 
 }

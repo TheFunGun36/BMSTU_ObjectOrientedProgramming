@@ -2,7 +2,7 @@
 #include "jpainter.h"
 #include "jcamera.h"
 #include "jmodel3d.h"
-#include "jwireframemodel3d_impl.h"
+#include "jpolygonalmodel3d_impl.h"
 
 namespace Jora {
 
@@ -14,7 +14,7 @@ protected:
     bool project(ScreenPoint &dst, const Vector3D& src, const Camera3D& camera);
 };
 
-class WireframeModelRenderer : public Renderer {
+class PolygonalModelRenderer : public Renderer {
 public:
     virtual inline void render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) override;
 };
