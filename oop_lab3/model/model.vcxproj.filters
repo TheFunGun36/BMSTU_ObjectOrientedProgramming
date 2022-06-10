@@ -119,9 +119,6 @@
     <ClInclude Include="jrenderercommands.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="jinitializationmanager.h">
-      <Filter>Initialization</Filter>
-    </ClInclude>
     <ClInclude Include="jmodelviewercreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
     <ClInclude Include="jtransformaction.h">
       <Filter>Data\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="jinitializationmanager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -238,9 +238,6 @@
     <ClCompile Include="jrenderer.cpp">
       <Filter>Managers\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="jinitializationmanager.cpp">
-      <Filter>Initialization</Filter>
-    </ClCompile>
     <ClCompile Include="jmodelviewercreator.cpp">
       <Filter>Initialization</Filter>
     </ClCompile>
@@ -261,6 +258,15 @@
     </ClCompile>
     <ClCompile Include="jeulerangles.cpp">
       <Filter>Data\Basic</Filter>
+    </ClCompile>
+    <ClCompile Include="jinitializationmanager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="jinitializationmanagercommands.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="jscenemanager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

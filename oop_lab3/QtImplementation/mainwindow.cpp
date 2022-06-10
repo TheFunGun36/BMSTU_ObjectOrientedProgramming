@@ -58,11 +58,3 @@ void MainWindow::onRemove() {
 void MainWindow::onClear() {
     modelViewer->execute(CClear());
 }
-
-/*
-Transform   (objectId,  Action)
-AddCamera   (newObjectId)
-AddModel    (newObjectId, filename)
-
-*/
-

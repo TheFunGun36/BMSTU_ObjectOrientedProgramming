@@ -2,12 +2,13 @@
 #include "jcommand.h"
 #include "jmodelviewer.h"
 #include "jscenemanager.h"
+#include "jtransformaction.h"
 
 namespace Jora {
 
 class CSceneObjectsCount : public Command {
 public:
-    using Method = void(SceneManager::*)(const std::weak_ptr<size_t>&);
+    using Method = void(SceneManager::*)(const Composite&, const std::weak_ptr<size_t>&);
 
     CSceneObjectsCount(const std::weak_ptr<size_t>& value)
         : _method(&SceneManager::countSceneObjects)
@@ -15,7 +16,7 @@ public:
     }
 
     virtual inline void execute(Composite& scene, Manager& manager) override {
-        (dynamic_cast<SceneManager&>(manager).*_method)(_value);
+        (dynamic_cast<SceneManager&>(manager).*_method)(scene, _value);
     }
 
     virtual inline const std::type_info& neededManager() const noexcept override {
@@ -29,7 +30,7 @@ private:
 
 class CMakeGroup : public Command {
 public:
-    using Method = void(SceneManager::*)(const std::weak_ptr<ObjectId>&, std::initializer_list<ObjectId>);
+    using Method = void(SceneManager::*)(Composite&, const std::weak_ptr<ObjectId>&, std::initializer_list<ObjectId>);
 
     CMakeGroup(const std::weak_ptr<ObjectId>& groupId, std::initializer_list<ObjectId> objectsId)
         : _method(&SceneManager::makeGroup)
@@ -38,7 +39,7 @@ public:
     }
 
     virtual inline void execute(Composite& scene, Manager& manager) override {
-        (dynamic_cast<SceneManager&>(manager).*_method)(_groupId, std::move(_objectsId));
+        (dynamic_cast<SceneManager&>(manager).*_method)(scene, _groupId, std::move(_objectsId));
     }
 
     virtual inline const std::type_info& neededManager() const noexcept override {
@@ -53,7 +54,7 @@ private:
 
 class CGetLabel : public Command {
 public:
-    using Method = void(SceneManager::*)(const std::weak_ptr<std::string>&, ObjectId);
+    using Method = void(SceneManager::*)(const Composite&, const std::weak_ptr<std::string>&, ObjectId);
 
     CGetLabel(ObjectId id, const std::weak_ptr<std::string>& label) 
         : _method(&SceneManager::getLabel)
@@ -61,7 +62,7 @@ public:
         , _label(label) { }
 
     virtual inline void execute(Composite& scene, Manager& manager) override {
-        (dynamic_cast<SceneManager&>(manager).*_method)(_label, _id);
+        (dynamic_cast<SceneManager&>(manager).*_method)(scene, _label, _id);
     }
 
     virtual inline const std::type_info& neededManager() const noexcept override {
@@ -77,7 +78,7 @@ private:
 
 class CSetLabel : public Command {
 public:
-    using Method = void(SceneManager::*)(ObjectId, std::string&&);
+    using Method = void(SceneManager::*)(Composite&, ObjectId, std::string&&);
 
     CSetLabel(ObjectId id, std::string&& label)
         : _method(&SceneManager::setLabel)
@@ -86,7 +87,7 @@ public:
     }
 
     virtual inline void execute(Composite& scene, Manager& manager) override {
-        (dynamic_cast<SceneManager&>(manager).*_method)(_id, std::move(_label));
+        (dynamic_cast<SceneManager&>(manager).*_method)(scene, _id, std::move(_label));
     }
 
     virtual inline const std::type_info& neededManager() const noexcept override {
@@ -140,6 +141,29 @@ public:
 private:
     Method _method;
 
+};
+
+class CTransform : public Command {
+public:
+    using Method = void(SceneManager::*)(Composite&, std::unique_ptr<TransformAction>, ObjectId);
+
+    CTransform(std::unique_ptr<TransformAction> action, ObjectId id)
+        : _method(&SceneManager::transform)
+        , _action(std::move(action))
+        , _id(id) {
+    }
+
+    virtual inline void execute(Composite& scene, Manager& manager) override {
+        (dynamic_cast<SceneManager&>(manager).*_method)(scene, std::move(_action), _id);
+    }
+
+    virtual inline const std::type_info& neededManager() const noexcept override {
+        return typeid(SceneManager);
+    }
+private:
+    Method _method;
+    std::unique_ptr<TransformAction> _action;
+    ObjectId _id;
 };
 
 }

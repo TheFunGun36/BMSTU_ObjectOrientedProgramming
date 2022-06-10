@@ -205,11 +205,13 @@
     <ClCompile Include="jcomposite.cpp" />
     <ClCompile Include="jeulerangles.cpp" />
     <ClCompile Include="jinitializationmanager.cpp" />
+    <ClCompile Include="jinitializationmanagercommands.cpp" />
     <ClCompile Include="jmodel3d.cpp" />
     <ClCompile Include="jmodelviewer.cpp" />
     <ClCompile Include="jmodelviewercreator.cpp" />
     <ClCompile Include="jprintable.cpp" />
     <ClCompile Include="jrenderer.cpp" />
+    <ClCompile Include="jscenemanager.cpp" />
     <ClCompile Include="jsceneobject.cpp" />
     <ClCompile Include="jscreenline.cpp" />
     <ClCompile Include="jscreenpoint.cpp" />
