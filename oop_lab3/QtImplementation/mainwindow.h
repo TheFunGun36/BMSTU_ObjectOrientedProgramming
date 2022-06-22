@@ -15,7 +15,9 @@ public:
 private:
     Ui::MainWindowClass ui;
     std::unique_ptr<Jora::ModelViewer> modelViewer;
-    Jora::ObjectId currentObject;
+    Jora::ObjectId currentObject();
+
+    double fov = 30.;
 
 private slots:
     void onMove();
@@ -25,4 +27,5 @@ private slots:
     void onAddModel();
     void onRemove();
     void onClear();
+    void upd(QPainter &qp);
 };

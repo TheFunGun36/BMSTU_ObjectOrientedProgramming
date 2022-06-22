@@ -4,7 +4,7 @@
 
 namespace Jora {
 
-inline void PolygonalModelRenderer::render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) {
+void PolygonalModelRenderer::render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) {
     auto implPtr = dynamic_cast<const Model3D&>(sceneObject).implementation();
     const auto& impl = dynamic_cast<const PolygonalModel3DImpl&>(*implPtr);
 
@@ -28,18 +28,16 @@ bool Renderer::project(ScreenPoint& dst, const Vector3D& src, const Camera3D& ca
     const Vector3D& cpos = ctr.position();
     const EulerAngles& crot = ctr.rotation();
 
+
     // Translate input point using camera position
     Vector3D pt = camera.transform().pointGlobalToLocal(src);
 
-    real aspectRatio = real(camera.viewWidth()) / camera.viewHeight();
+    double cameraDistance = camera.projectionDistance();
+    if (-pt.z() + cameraDistance > 0)
+        return false;
 
-    // Apply projection to X and Y
-    dst.x() = int(round(pt.x() / -pt.z() / tan(camera.fieldOfView() / 2.)));
-    dst.y() = int(round(pt.y() * aspectRatio / -pt.z() / tan(camera.fieldOfView() / 2.)));
-
-    // Convert to screen coordinates
-    dst.x() = int(round(dst.x() * camera.viewWidth()));
-    dst.y() = int(round(dst.y() * camera.viewHeight()));
+    double k = cameraDistance / (-pt.z() + cameraDistance);
+    dst = ScreenPoint(k * pt.x() + camera.viewWidth() / 2, k * pt.y() + camera.viewHeight() / 2);
 
     return true;
 }

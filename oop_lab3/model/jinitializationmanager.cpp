@@ -20,7 +20,9 @@ unique_ptr<Derived> staticUniquePtrCast(std::unique_ptr<Base>&& p) {
 unique_ptr<ModelViewer> InitializationManager::createModelViewer() {
     unique_ptr<ModelViewer> result = make_unique<ModelViewer>();
     result->addManager(make_shared<InitializationManager>(*this));
-    result->addManager(make_shared<RenderManager>());
+    auto renderMgr = make_shared<RenderManager>();
+    renderMgr->addRenderer(typeid(Model3D), make_shared<PolygonalModelRenderer>());
+    result->addManager(renderMgr);
     result->addManager(make_shared<SceneManager>());
     return result;
 }

@@ -7,7 +7,7 @@
 
 namespace Jora {
 
-class Painter : public Printable {
+class Painter {
 public:
     virtual ~Painter() = default;
 
@@ -19,11 +19,9 @@ public:
     virtual void drawCircle(ScreenPoint center, int radius) = 0;
 
     virtual void setOutlineColor(const Color& color) = 0;
-    virtual void setOutlineWidth(const Color& color) = 0;
-    virtual void setOutlineStyle(int styleId) = 0;
+    virtual void setOutlineWidth(int value) = 0;
 
     virtual void setFillColor(const Color& color) = 0;
-    virtual void setFillStyle(int styleId) = 0;
 };
 
 }

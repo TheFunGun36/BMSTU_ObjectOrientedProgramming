@@ -16,7 +16,7 @@ protected:
 
 class PolygonalModelRenderer : public Renderer {
 public:
-    virtual inline void render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) override;
+    virtual void render(Painter& painter, const Camera3D& camera, const SceneObject& sceneObject) override;
 };
 
 }

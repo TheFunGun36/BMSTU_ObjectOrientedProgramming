@@ -33,7 +33,7 @@ void SceneManager::setLabel(Composite& scene, ObjectId id, std::string&& label) 
 }
 
 void SceneManager::transform(Composite& scene, std::unique_ptr<TransformAction> transformAction, ObjectId id) {
-    if (transformAction)
+    if (transformAction && scene.contains(id))
         scene[id]->apply(*transformAction);
 }
 

@@ -26,7 +26,8 @@ bool PolygonalModel3DStreamBuilder::readData(std::istream& stream) noexcept {
     std::string line;
     bool result = true;
     while (result && std::getline(stream, line))
-        result = processLine(std::stringstream(line));
+        if (!line.empty())
+            result = processLine(std::stringstream(line));
     return true;
 }
 
@@ -43,6 +44,8 @@ bool PolygonalModel3DStreamBuilder::processLine(std::istream&& lineStream) {
             result = processVertex(std::move(lineStream));
         else if (firstWord == "f")
             result = processFace(std::move(lineStream));
+        else
+            result = true;
     }
 
     return result;
@@ -64,30 +67,30 @@ bool PolygonalModel3DStreamBuilder::processVertex(std::istream&& lineStream) {
 
 bool PolygonalModel3DStreamBuilder::processFace(std::istream&& lineStream) {
     using std::array;
-    bool result = false;
+    bool result = true;
 
-    std::string junk;
+    std::string word;
     array<size_t, 3> idx;
 
-    if (lineStream >> idx[0]) {
-        lineStream >> junk; // skip /1/2 "f 1/2/3 4/5/6 7/8/9" or "f 1 4 7"
-        if (lineStream >> idx[1]) {
-            lineStream >> junk;
-            if (lineStream >> idx[2])
-                result = true;
-        }
+    for (int i = 0; result && i < 3; i++) {
+        if (lineStream >> word)
+            idx[i] = std::stol(word) - 1;
+        else
+            result = false;
     }
 
     if (result) {
         auto implPtr = _model->implementation();
         auto& impl = dynamic_cast<PolygonalModel3DImpl&>(*implPtr);
-        do {
-            lineStream >> junk;
-            impl.addFace(array(idx));
+
+        impl.addFace(array(idx));
+
+        while (lineStream >> word) {
             idx[0] = idx[1];
             idx[1] = idx[2];
+            idx[2] = std::stol(word) - 1;
+            impl.addFace(array(idx));
         }
-        while (lineStream >> idx[2]);
     }
 
     return result;

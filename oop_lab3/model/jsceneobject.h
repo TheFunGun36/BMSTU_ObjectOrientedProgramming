@@ -36,7 +36,7 @@ public:
     virtual const Transform& transform() const noexcept;
     virtual Transform& transform() noexcept;
 
-    virtual void setVisible(const bool& _visible) noexcept;
+    virtual void setVisible(const bool& visible) noexcept;
     virtual void setLabel(const std::string& label) noexcept;
 
     virtual void apply(const TransformAction& action) noexcept;
@@ -62,11 +62,13 @@ public:
     virtual bool insert(const SelfPtr& sceneObject) noexcept;
     virtual void        clear()                     noexcept;
 
+protected:
+    bool _visible;
+
 private:
     static ObjectId generateId();
 
     ObjectId _id;
-    bool _visible;
     std::string _label;
     Transform _transform;
 };

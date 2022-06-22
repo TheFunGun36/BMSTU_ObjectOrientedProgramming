@@ -70,7 +70,7 @@ Composite::Iterator Composite::end() noexcept {
 }
 
 bool Composite::insert(const ElementPtr& sceneObject) noexcept {
-    bool result = sceneObject && contains(sceneObject->id());
+    bool result = sceneObject && !contains(sceneObject->id());
     if (result)
         _map[sceneObject->id()] = sceneObject;
     return result;

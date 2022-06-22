@@ -1,3 +1,4 @@
+#pragma once
 #include "pch.h"
 #include "jcommand.h"
 #include "jinitializationmanager.h"
@@ -27,7 +28,7 @@ public:
 
 private:
     Method _method;
-    std::weak_ptr<ObjectId> _resultId;
+    std::shared_ptr<ObjectId> _resultId;
 };
 
 class CAddModel : public Command {
@@ -55,7 +56,7 @@ public:
 private:
     Method _method;
     std::string _filename;
-    std::weak_ptr<ObjectId> _resultId;
+    std::shared_ptr<ObjectId> _resultId;
 };
 
 }

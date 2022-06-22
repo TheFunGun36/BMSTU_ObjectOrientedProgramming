@@ -10,15 +10,15 @@ public:
     }
     inline size_t& viewWidth() { return _viewWidth; }
     inline size_t& viewHeight() { return _viewHeight; }
-    inline real& fieldOfView() { return _fieldOfView; }
+    inline real& projectionDistance() { return _projectionDistance; }
 
     inline size_t viewWidth() const { return _viewWidth; }
     inline size_t viewHeight() const { return _viewHeight; }
-    inline const real& fieldOfView() const { return _fieldOfView; }
+    inline const real& projectionDistance() const { return _projectionDistance; }
 
     inline void setViewWidth(size_t value) { _viewWidth = value; }
     inline void setViewHeight(size_t value) { _viewHeight = value; }
-    inline void fieldOfView(real value) { _fieldOfView = value; }
+    inline void setProjectionDistance(real value) { _projectionDistance = value; }
 
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const override {
@@ -26,18 +26,18 @@ protected:
             << transform() << ", "
             << _viewWidth << 'x'
             << _viewHeight << ", fov:"
-            << _fieldOfView << ")";
+            << _projectionDistance << ")";
     };
     virtual std::wostream& addToStream(std::wostream& stream) const override {
         return stream << L"Camera("
             << transform() << L", "
             << _viewWidth << L'x'
             << _viewHeight << L", fov:"
-            << _fieldOfView << L")";
+            << _projectionDistance << L")";
     };
     size_t _viewWidth = 0;
     size_t _viewHeight = 0;
-    real _fieldOfView = 90.;
+    real _projectionDistance = 30.;
 };
 
 }

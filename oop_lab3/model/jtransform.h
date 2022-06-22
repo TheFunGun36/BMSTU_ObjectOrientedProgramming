@@ -7,7 +7,7 @@ namespace Jora {
 class Transform : public Printable {
 public:
     inline Transform(const Transform& other) = default;
-    inline Transform(Vector3D position = Vector3D(), EulerAngles rotation = EulerAngles(), Vector3D scale = Vector3D())
+    inline Transform(Vector3D position = Vector3D(), EulerAngles rotation = EulerAngles(), Vector3D scale = Vector3D(1., 1., 1.))
         :_position(position), _rotation(rotation), _scale(scale) {
     }
 

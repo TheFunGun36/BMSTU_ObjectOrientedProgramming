@@ -6,15 +6,17 @@ namespace Jora {
 Model3D::Model3D(const ImplPtr& implementation, const std::string& _label)
     : SceneObject(_label)
     , _implementation(implementation) {
+    setVisible(true);
 }
 
 Model3D::Model3D(const std::string& _label)
     : SceneObject(_label)
     , _implementation(nullptr) {
+    setVisible(true);
 }
 
 Model3D::Model3D(Model3D&& other) noexcept
-    : SceneObject(other.label())
+    : SceneObject(std::move(other))
     , _implementation(other._implementation) {
     other._implementation = nullptr;
 }
@@ -40,6 +42,9 @@ void Model3D::setImplementation(const ImplPtr& implementation) noexcept {
         _implementation = implementation;
 }
 
+void Model3D::setVisible(const bool& visible) noexcept {
+    _visible = visible;
+}
 
 std::ostream& Model3D::addToStream(std::ostream& stream) const {
     return stream << "Model3D(id=" << id() << ")";

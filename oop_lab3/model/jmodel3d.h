@@ -25,6 +25,8 @@ public:
     virtual ConstImplPtr implementation() const noexcept;
     virtual void setImplementation(const ImplPtr& implementation) noexcept;
 
+    virtual void setVisible(const bool& visible) noexcept override;
+
 protected:
     ImplPtr _implementation;
 
