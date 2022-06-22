@@ -1,5 +1,7 @@
 #include "mainwindow.h"
+#include "itemrow.h"
 #include "../model/jinitializationmanager.h"
+#include "../model/jinitializationmanagercommands.h"
 #include "../model/jtransformaction.h"
 #include "../model/jinitializationmanagercommands.h"
 #include "../model/jscenemanagercommands.h"
@@ -22,8 +24,8 @@ void MainWindow::onMove() {
     shift.setX(ui.spinX->value());
     shift.setY(ui.spinY->value());
     shift.setZ(ui.spinZ->value());
-    //auto command = CTransform(TransformMove(shift));
-    //modelViewer->execute(command);
+    auto command = CTransform(std::make_unique<TransformMove>(shift), currentObject);
+    modelViewer->execute(std::move(command));
 }
 
 void MainWindow::onScale() {
@@ -31,8 +33,8 @@ void MainWindow::onScale() {
     scale.setX(ui.spinX->value());
     scale.setY(ui.spinY->value());
     scale.setZ(ui.spinZ->value());
-    //auto command = CTransform(TransformScale(scale));
-    //modelViewer->execute(command);
+    auto command = CTransform(std::make_unique<TransformScale>(scale), currentObject);
+    modelViewer->execute(std::move(command));
 }
 
 void MainWindow::onRotate() {
@@ -40,22 +42,33 @@ void MainWindow::onRotate() {
     angles.setX(Angle::fromDegrees(ui.spinX->value()));
     angles.setY(Angle::fromDegrees(ui.spinY->value()));
     angles.setZ(Angle::fromDegrees(ui.spinZ->value()));
-    //auto command = CTransform(TransformRotate(angles));
-    //modelViewer->execute(command);
+    auto command = CTransform(std::make_unique<TransformRotate>(angles), currentObject);
+    modelViewer->execute(std::move(command));
 }
 
 void MainWindow::onAddCamera() {
-    //modelViewer->execute(CAddCamera());
+    std::shared_ptr<ObjectId> id = std::make_shared<ObjectId>();
+    modelViewer->execute(CAddCamera(id));
+    ItemRow* row = new ItemRow(*id, QString("Camera"), this);
+    auto* item = new QListWidgetItem(ui.list);
+    ui.list->addItem(item);
+    ui.list->setItemWidget(item, row);
 }
 
 void MainWindow::onAddModel() {
     QString filename = QFileDialog::getOpenFileName();
-    if (!filename.isEmpty())
-        modelViewer->execute(CAddModel(filename.toStdString()));
+    if (!filename.isEmpty()) {
+        std::shared_ptr<ObjectId> id = std::make_shared<ObjectId>();
+        modelViewer->execute(CAddModel(filename.toStdString(), id));
+        ItemRow* row = new ItemRow(*id, QString("Model"), this);
+        auto* item = new QListWidgetItem(ui.list);
+        ui.list->addItem(item);
+        ui.list->setItemWidget(item, row);
+    }
 }
 
 void MainWindow::onRemove() {
-    /*modelViewer->execute(CRemoveObject(beeba));*/
+    modelViewer->execute(CRemoveObject(currentObject));
 }
 
 void MainWindow::onClear() {

@@ -4,8 +4,7 @@
 namespace Jora {
 
 ModelViewer::ModelViewer()
-    : _scene("Scene")
-    , _selection("Selection") {
+    : _scene("Scene") {
 }
 
 void ModelViewer::execute(Command&& cmd) {

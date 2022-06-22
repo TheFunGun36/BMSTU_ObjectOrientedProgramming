@@ -55,10 +55,8 @@ public:
     virtual inline void setScale(const Vector3D& value) { _scale = value; }
 
     virtual void apply(Transform& transform) const noexcept override {
-        //transform.scale() *= _scale;
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 3; i++)
             transform.scale()[i] *= _scale[i];
-        }
     }
 
 private:

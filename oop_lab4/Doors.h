@@ -14,9 +14,18 @@ signals:
     void opening();
     void closing();
 
+    void goOpen();
+    void goClosed();
+    void goIdle();
+
+    void startedOpening();
+    void startedClosing();
+
 
 public slots:
     void open();
+    void openTick();
+    void closeTick();
     void close();
     void idle();
 
@@ -29,7 +38,9 @@ public:
     enum State {
         StateBlocked,
         StateOpening,
+        StateStartOpening,
         StateClosing,
+        StateStartClosing,
         StateOpened,
         StateClosed
     };
