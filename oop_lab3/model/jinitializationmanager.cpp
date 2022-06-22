@@ -17,14 +17,6 @@ unique_ptr<Derived> staticUniquePtrCast(std::unique_ptr<Base>&& p) {
     return unique_ptr<Derived>(d);
 }
 
-template <typename To, typename From>
-unique_ptr<To> dyncast(unique_ptr<From> ptr) {
-    std::unique_ptr<To> result;
-    result.reset(dynamic_cast<To*>(ptr.get()));
-    ptr.release();
-    return result;
-}
-
 unique_ptr<ModelViewer> InitializationManager::createModelViewer() {
     unique_ptr<ModelViewer> result = make_unique<ModelViewer>();
     result->addManager(make_shared<InitializationManager>(*this));

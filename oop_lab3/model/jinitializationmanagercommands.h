@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "jcommand.h"
 #include "jinitializationmanager.h"
 
@@ -8,7 +9,7 @@ public:
     using Method = std::unique_ptr<Camera3D>(InitializationManager::*)();
 
     CAddCamera()
-        : _method(&InitializationManager::createCamera3D) {
+        : _method(&InitializationManager::createCamera3D) { 
     }
 
     virtual void execute(Composite& scene, Manager& manager) {

@@ -44,6 +44,9 @@ public:
     EulerAngles operator*(const Vector3D& value) const;
     EulerAngles operator/(const Vector3D& value) const;
 
+    Vector3D rotatePoint(Vector3D point) const noexcept;
+    Vector3D rotatePointReverse(Vector3D point) const noexcept;
+
 protected:
     virtual std::ostream& addToStream(std::ostream& stream) const;
     virtual std::wostream& addToStream(std::wostream& stream) const;

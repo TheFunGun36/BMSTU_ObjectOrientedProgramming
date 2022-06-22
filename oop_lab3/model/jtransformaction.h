@@ -4,7 +4,7 @@ namespace Jora {
 
 class TransformAction {
 public:
-    virtual void apply(Transform& transform) = 0;
+    virtual void apply(Transform& transform) const noexcept = 0;
     virtual ~TransformAction() = default;
 };
 
@@ -18,7 +18,7 @@ public:
     virtual inline Vector3D& shift() { return _shift; }
     virtual inline void setShift(const Vector3D& value) { _shift = value; }
 
-    virtual void apply(Transform& transform) override {
+    virtual void apply(Transform& transform) const noexcept override {
         transform.position() += _shift;
     }
 
@@ -36,7 +36,7 @@ public:
     virtual inline EulerAngles& angles() { return _angles; }
     virtual inline void setAngles(const EulerAngles& value) { _angles = value; }
 
-    virtual void apply(Transform& transform) override {
+    virtual void apply(Transform& transform) const noexcept override {
         transform.rotation() += _angles;
     }
 
@@ -54,8 +54,11 @@ public:
     virtual inline Vector3D& scale() { return _scale; }
     virtual inline void setScale(const Vector3D& value) { _scale = value; }
 
-    virtual void apply(Transform& transform) override {
-        transform.scale() *= _scale;
+    virtual void apply(Transform& transform) const noexcept override {
+        //transform.scale() *= _scale;
+        for (int i = 0; i < 3; i++) {
+            transform.scale()[i] *= _scale[i];
+        }
     }
 
 private:
@@ -81,7 +84,7 @@ public:
     virtual inline Vector3D& scale() { return _scale; }
     virtual inline void setScale(const Vector3D& value) { _scale = value; }
     
-    virtual void apply(Transform& transform) override {
+    virtual void apply(Transform& transform) const noexcept override {
         transform.position() = _position;
         transform.rotation() = _rotation;
         transform.scale() = _scale;

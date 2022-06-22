@@ -23,7 +23,7 @@ public:
     }
 
     inline void setActiveCamera(const Composite& scene, ObjectId id) {
-        _currentCamera = scene[id];
+        _currentCamera = std::static_pointer_cast<const Camera3D>(scene[id]);
     }
 
     inline void addRenderer(const std::shared_ptr<Renderer>& renderer) {

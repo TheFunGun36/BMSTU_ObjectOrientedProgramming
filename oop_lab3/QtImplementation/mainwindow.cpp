@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "../model/jinitializationmanager.h"
 #include "../model/jtransformaction.h"
+#include "../model/jinitializationmanagercommands.h"
 #include "../model/jscenemanagercommands.h"
 #include <qfiledialog.h>
 
@@ -12,6 +13,8 @@ MainWindow::MainWindow(QWidget* parent)
 
     InitializationManager im;
     modelViewer = im.createModelViewer();
+
+    connect(ui.actionAddModel, &QAction::triggered, this, &MainWindow::onAddModel);
 }
 
 void MainWindow::onMove() {
@@ -47,8 +50,8 @@ void MainWindow::onAddCamera() {
 
 void MainWindow::onAddModel() {
     QString filename = QFileDialog::getOpenFileName();
-    //if (!filename.isEmpty())
-    //    modelViewer->execute(CAddModel(filename.toStdString()));
+    if (!filename.isEmpty())
+        modelViewer->execute(CAddModel(filename.toStdString()));
 }
 
 void MainWindow::onRemove() {

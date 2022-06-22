@@ -62,8 +62,15 @@ bool SceneObject::insert(const SceneObject::SelfPtr& sceneObject) noexcept {
     return false;
 }
 
+void SceneObject::clear() noexcept {
+}
+
 bool SceneObject::remove(ObjectId id) noexcept {
     return false;
+}
+
+void SceneObject::apply(const TransformAction& transformAction) noexcept {
+    transformAction.apply(_transform);
 }
 
 bool SceneObject::remove(SceneObject::IteratorConst it) noexcept {

@@ -9,7 +9,7 @@ ModelViewer::ModelViewer()
 }
 
 void ModelViewer::execute(Command&& cmd) {
-    cmd.execute(_scene, _selection, *_managers[cmd.neededManager()]);
+    cmd.execute(_scene, *_managers[cmd.neededManager()]);
 }
 
 void ModelViewer::addManager(const std::shared_ptr<Manager>& manager) {

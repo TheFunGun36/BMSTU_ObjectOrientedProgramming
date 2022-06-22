@@ -23,8 +23,8 @@ public:
     inline Vector3D& scale() { return _scale; }
     inline void setScale(const Vector3D& value) { _scale = value; }
 
-    Vector3D pointGlobalToLocal(const Vector3D& point);
-    Vector3D pointLocalToGlobal(const Vector3D& point);
+    Vector3D pointGlobalToLocal(Vector3D point) const noexcept;
+    Vector3D pointLocalToGlobal(Vector3D point) const noexcept;
 
 protected:
     inline virtual std::ostream& addToStream(std::ostream& stream) const {

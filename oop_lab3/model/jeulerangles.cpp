@@ -103,6 +103,40 @@ EulerAngles EulerAngles::operator/(const Vector3D& value) const {
     return copy;
 }
 
+Vector3D EulerAngles::rotatePoint(Vector3D point) const noexcept {
+    Vector3D result = point;
+
+    result.setY(point.y() * x().cos() - point.z() * x().sin());
+    result.setZ(point.y() * x().sin() + point.z() * x().cos());
+    point = result;
+
+    result.setZ(point.z() * y().cos() - point.x() * y().sin());
+    result.setX(point.z() * y().sin() + point.x() * y().cos());
+    point = result;
+
+    result.setX(point.x() * z().cos() - point.y() * z().sin());
+    result.setY(point.x() * z().sin() + point.y() * z().cos());
+
+    return result;
+}
+
+Vector3D EulerAngles::rotatePointReverse(Vector3D point) const noexcept {
+    Vector3D result = point;
+
+    result.setX(point.x() * z().cos() - point.y() * z().sin());
+    result.setY(point.x() * z().sin() + point.y() * z().cos());
+    point = result;
+
+    result.setZ(point.z() * y().cos() - point.x() * y().sin());
+    result.setX(point.z() * y().sin() + point.x() * y().cos());
+    point = result;
+
+    result.setY(point.y() * x().cos() - point.z() * x().sin());
+    result.setZ(point.y() * x().sin() + point.z() * x().cos());
+
+    return result;
+}
+
 std::ostream& EulerAngles::addToStream(std::ostream& stream) const {
     return stream << "(" << _angle[0] << ", " << _angle[1] << ", " << _angle[2] << ")";
 }

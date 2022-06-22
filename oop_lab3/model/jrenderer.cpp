@@ -12,7 +12,7 @@ inline void PolygonalModelRenderer::render(Painter& painter, const Camera3D& cam
         ScreenPoint p[3];
         bool succeed[3];
         for (int i = 0; i < 3; i++)
-            succeed[i] = project(p[i], impl.vertex(face[i]), camera);
+            succeed[i] = project(p[i], sceneObject.transform().pointLocalToGlobal(impl.vertex(face[i])), camera);
 
         for (int i = 0; i <= 1; i++) {
             for (int j = i + 1; j < 3; j++) {
@@ -29,15 +29,13 @@ bool Renderer::project(ScreenPoint& dst, const Vector3D& src, const Camera3D& ca
     const EulerAngles& crot = ctr.rotation();
 
     // Translate input point using camera position
-    real inputX = src.x() - cpos.x();
-    real inputY = src.y() - cpos.y();
-    real inputZ = src.z() - cpos.z();
+    Vector3D pt = camera.transform().pointGlobalToLocal(src);
 
     real aspectRatio = real(camera.viewWidth()) / camera.viewHeight();
 
     // Apply projection to X and Y
-    dst.x() = int(round(inputX / -inputZ / tan(camera.fieldOfView() / 2.)));
-    dst.y() = int(round(inputY * aspectRatio / -inputZ / tan(camera.fieldOfView() / 2.)));
+    dst.x() = int(round(pt.x() / -pt.z() / tan(camera.fieldOfView() / 2.)));
+    dst.y() = int(round(pt.y() * aspectRatio / -pt.z() / tan(camera.fieldOfView() / 2.)));
 
     // Convert to screen coordinates
     dst.x() = int(round(dst.x() * camera.viewWidth()));

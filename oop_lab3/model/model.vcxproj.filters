@@ -122,36 +122,6 @@
     <ClInclude Include="jmodelviewercreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
-    <ClInclude Include="jcoords3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jfileexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jmodel3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jtriangle3dexception.h">
-      <Filter>Exceptions\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jcamera.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jcomposite.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jtransform.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jtransformaction.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="jeulerangles.h">
-      <Filter>Model\Header</Filter>
-    </ClInclude>
     <ClInclude Include="jcommand.h">
       <Filter>Facade</Filter>
     </ClInclude>
@@ -200,6 +170,36 @@
     <ClInclude Include="jinitializationmanager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="jcamera.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jcomposite.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jeulerangles.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jfileexception.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jcoords3dexception.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransform.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jtransformaction.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jmodel3dexception.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jtriangle3dexception.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
+    <ClInclude Include="jexception.h">
+      <Filter>Precompile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -241,12 +241,6 @@
     <ClCompile Include="jmodelviewercreator.cpp">
       <Filter>Initialization</Filter>
     </ClCompile>
-    <ClCompile Include="jcomposite.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="jeulerangles.cpp">
-      <Filter>Model\Source</Filter>
-    </ClCompile>
     <ClCompile Include="jmodelviewer.cpp">
       <Filter>Facade</Filter>
     </ClCompile>
@@ -262,11 +256,20 @@
     <ClCompile Include="jinitializationmanager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="jinitializationmanagercommands.cpp">
+    <ClCompile Include="jinitializationmanagercommands.h">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="jscenemanager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="jcomposite.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="jeulerangles.cpp">
+      <Filter>Data</Filter>
+    </ClCompile>
+    <ClCompile Include="jtransform.cpp">
+      <Filter>Data\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

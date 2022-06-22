@@ -3,6 +3,7 @@
 #include "jangle.h"
 #include "property.h"
 #include "jtransform.h"
+#include "jtransformaction.h"
 #include <string>
 #include <map>
 
@@ -36,6 +37,8 @@ public:
     virtual void setVisible(const bool& _visible) noexcept;
     virtual void setLabel(const std::string& label) noexcept;
 
+    virtual void apply(const TransformAction& transformAction) noexcept;
+
     // COMPOSITE PART
     using Iterator = std::map<ObjectId, SelfPtr>::iterator;
     using IteratorConst = std::map<ObjectId, SelfPtr>::const_iterator;
@@ -55,6 +58,7 @@ public:
     virtual Iterator    begin()                     noexcept;
     virtual Iterator    end()                       noexcept;
     virtual bool insert(const SelfPtr& sceneObject) noexcept;
+    virtual void        clear()                     noexcept;
 
 private:
     static ObjectId generateId();
