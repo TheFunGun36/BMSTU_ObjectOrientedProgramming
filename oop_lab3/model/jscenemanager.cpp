@@ -28,6 +28,11 @@ void SceneManager::getLabel(const Composite& scene, const std::weak_ptr<std::str
         *label.lock() = scene[id]->label();
 }
 
+void SceneManager::getTransform(const std::shared_ptr<Transform>& transform, const Composite& scene, ObjectId id) {
+    if (transform && scene.contains(id))
+        *transform = scene[id]->transform();
+}
+
 void SceneManager::setLabel(Composite& scene, ObjectId id, std::string&& label) {
     scene[id]->setLabel(label);
 }

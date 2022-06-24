@@ -7,7 +7,7 @@ namespace Jora {
 
 class CAddCamera : public Command {
 public:
-    using Method = std::unique_ptr<Camera3D>(InitializationManager::*)();
+    using Method = ObjectId(InitializationManager::*)(Composite&);
 
     CAddCamera(const std::shared_ptr<ObjectId>& resultId)
         : _method(&InitializationManager::createCamera3D)
@@ -15,11 +15,7 @@ public:
     }
 
     virtual void execute(Composite& scene, Manager& manager) {
-        auto result = (dynamic_cast<InitializationManager&>(manager).*_method)();
-        if (result) {
-            *_resultId = result->id();
-            scene.insert(std::move(result));
-        }
+        *_resultId = (dynamic_cast<InitializationManager&>(manager).*_method)(scene);
     }
 
     virtual const std::type_info& neededManager() const noexcept override {
@@ -33,7 +29,7 @@ private:
 
 class CAddModel : public Command {
 public:
-    using Method = std::unique_ptr<Model3D>(InitializationManager::*)(const std::string&);
+    using Method = ObjectId(InitializationManager::*)(Composite&, const std::string&);
 
     CAddModel(std::string&& filename, const std::shared_ptr<ObjectId>& resultId)
         : _method(&InitializationManager::createModel)
@@ -42,11 +38,7 @@ public:
     }
 
     virtual void execute(Composite& scene, Manager& manager) {
-        auto result = (dynamic_cast<InitializationManager&>(manager).*_method)(_filename);
-        if (result) {
-            *_resultId = result->id();
-            scene.insert(std::move(result));
-        }
+        *_resultId = (dynamic_cast<InitializationManager&>(manager).*_method)(scene, _filename);
     }
 
     virtual const std::type_info& neededManager() const noexcept override {

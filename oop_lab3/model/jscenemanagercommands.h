@@ -166,4 +166,27 @@ private:
     ObjectId _id;
 };
 
+class CGetTransform : public Command {
+public:
+    using Method = void(SceneManager::*)(const std::shared_ptr<Transform>&, const Composite&, ObjectId);
+
+    CGetTransform(const std::shared_ptr<Transform>& transform, ObjectId id)
+        : _method(&SceneManager::getTransform)
+        , _transform(transform)
+        , _id(id) {
+    }
+
+    virtual inline void execute(Composite& scene, Manager& manager) override {
+        (dynamic_cast<SceneManager&>(manager).*_method)(_transform, scene, _id);
+    }
+
+    virtual inline const std::type_info& neededManager() const noexcept override {
+        return typeid(SceneManager);
+    }
+private:
+    Method _method;
+    std::shared_ptr<Transform> _transform;
+    ObjectId _id;
+};
+
 }

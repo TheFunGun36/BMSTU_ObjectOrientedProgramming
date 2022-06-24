@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>838</width>
+    <width>677</width>
     <height>495</height>
    </rect>
   </property>
@@ -18,38 +18,127 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Позиция</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QDoubleSpinBox" name="spinX"/>
+         <widget class="QDoubleSpinBox" name="posX">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="spinY"/>
+         <widget class="QDoubleSpinBox" name="posY">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="spinZ"/>
+         <widget class="QDoubleSpinBox" name="posZ">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="moveBtn">
+       <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Move</string>
+         <string>Поворот</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="rotateBtn">
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QDoubleSpinBox" name="rotX">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="rotY">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="rotZ">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>Rotate</string>
+         <string>Масштаб</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="scaleBtn">
-        <property name="text">
-         <string>Scale</string>
-        </property>
-       </widget>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QDoubleSpinBox" name="scaleX">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="scaleY">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QDoubleSpinBox" name="scaleZ">
+          <property name="minimum">
+           <double>-1000.000000000000000</double>
+          </property>
+          <property name="maximum">
+           <double>1000.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <spacer name="verticalSpacer">
@@ -93,7 +182,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>838</width>
+     <width>677</width>
      <height>22</height>
     </rect>
    </property>
@@ -159,12 +248,9 @@
   </customwidget>
  </customwidgets>
  <tabstops>
-  <tabstop>spinX</tabstop>
-  <tabstop>spinY</tabstop>
-  <tabstop>spinZ</tabstop>
-  <tabstop>moveBtn</tabstop>
-  <tabstop>rotateBtn</tabstop>
-  <tabstop>scaleBtn</tabstop>
+  <tabstop>posX</tabstop>
+  <tabstop>posY</tabstop>
+  <tabstop>posZ</tabstop>
  </tabstops>
  <resources>
   <include location="mainwindow.qrc"/>

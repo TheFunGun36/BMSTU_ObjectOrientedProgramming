@@ -17,15 +17,15 @@ private:
     std::unique_ptr<Jora::ModelViewer> modelViewer;
     Jora::ObjectId currentObject();
 
-    double fov = 30.;
+    double fov = 90.;
 
 private slots:
-    void onMove();
-    void onScale();
-    void onRotate();
+    void onTransform(double);
+
     void onAddCamera();
     void onAddModel();
     void onRemove();
     void onClear();
+    void onUpdateSelection(const QModelIndex& index);
     void upd(QPainter &qp);
 };

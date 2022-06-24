@@ -67,7 +67,10 @@ class TransformSet : public TransformAction {
 public:
     TransformSet(const Vector3D& position = Vector3D(),
         const EulerAngles& rotation = EulerAngles(),
-        const Vector3D& scale = Vector3D(1., 1., 1.)) {
+        const Vector3D& scale = Vector3D(1., 1., 1.))
+        : _position(position)
+        , _rotation(rotation)
+        , _scale(scale) {
     }
 
     virtual inline const Vector3D& position() const { return _position; }

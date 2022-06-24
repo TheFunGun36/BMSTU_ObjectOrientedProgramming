@@ -27,17 +27,22 @@ unique_ptr<ModelViewer> InitializationManager::createModelViewer() {
     return result;
 }
 
-unique_ptr<Model3D> InitializationManager::createModel(const std::string& filename) {
-    unique_ptr<Model3D> result = nullptr;
+ObjectId InitializationManager::createModel(Composite& group, const std::string& filename) {
+    shared_ptr<Model3D> result = nullptr;
     PolygonalModel3DStreamDirector creator;
-    if (creator.openStream(filename))
-        result = staticUniquePtrCast<Model3D, SceneObject>(creator.create());
-    return result;
+    if (creator.openStream(filename)) {
+        result = std::static_pointer_cast<Model3D, SceneObject>(creator.create());
+        group.insert(result);
+    }
+    return result ? result->id() : 0;
 }
 
-unique_ptr<Camera3D> InitializationManager::createCamera3D() {
+ObjectId InitializationManager::createCamera3D(Composite& group) {
     CameraCreator creator;
-    return staticUniquePtrCast<Camera3D, SceneObject>(creator.create());
+    auto result = std::static_pointer_cast<Camera3D, SceneObject>(creator.create());
+    if (result)
+        group.insert(result);
+    return result ? result->id() : 0;
 }
 
 }
