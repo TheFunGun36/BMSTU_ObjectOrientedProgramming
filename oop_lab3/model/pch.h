@@ -11,7 +11,6 @@
 #include "jvector3d.h"
 #include "jeulerangles.h"
 #include "jreal.h"
-#include "jvector3d.h"
 #include "jprintable.h"
 #include "jtransform.h"
 #include "jtransformaction.h"

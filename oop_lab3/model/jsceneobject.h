@@ -22,6 +22,7 @@ public:
     using Self = SceneObject;
 
     SceneObject(const std::string& _label = "Scene object");
+
     inline virtual ~SceneObject() = default;
 
     Property<Self, bool> Visible;
@@ -63,6 +64,7 @@ public:
     virtual void        clear()                     noexcept;
 
 protected:
+    SceneObject(const SceneObject&) = default;
     bool _visible;
 
 private:

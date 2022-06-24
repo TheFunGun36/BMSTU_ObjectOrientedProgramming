@@ -17,7 +17,6 @@ public:
 
 private:
     Composite _scene;
-    Composite _selection;
     std::unordered_map<std::type_index, std::shared_ptr<Manager>> _managers;
 };
 

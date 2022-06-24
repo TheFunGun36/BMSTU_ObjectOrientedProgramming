@@ -107,7 +107,7 @@
     <ClInclude Include="jpolygonalmodelcreator.h">
       <Filter>Initialization</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\bmstu_oop\oop_lab3\model\jcolor.h">
+    <ClInclude Include="jcolor.h">
       <Filter>View</Filter>
     </ClInclude>
     <ClInclude Include="jscreenrect.h">
